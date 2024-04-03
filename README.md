@@ -6,6 +6,8 @@ Currently, [Sector-Coupled Euro Calliope (SCEC)](https://github.com/calliope-pro
 
 **Modularisation is needed to abstract complexity, letting people focus on doing science instead!**
 
+<p align="center"><img src="docs/images/module_connection.png" /></p>
+
 ## Setup
 
 Please run the following commands:
@@ -27,9 +29,7 @@ Successful modularisation must meet the following criteria to ensure maximum com
 - **Isolated configuration YAML**: some sort of module configurability is needed to keep things flexible. However, modules must only have access to their own configuration parameters to avoid potential conflicts. Providing template configuration files is also recommended.
 - **Debuggable and testable**: problems are bound to happen, so modules should be relatively easy to debug, and should include a few test cases by default.
 
-<p align="center">
-  <img src="docs/images/module_setup.png" />
-</p>
+<p align="center"><img src="docs/images/module_setup.png" /></p>
 
 ## Proposals
 
