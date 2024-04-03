@@ -31,14 +31,33 @@ Successful modularisation must meet the following criteria to ensure maximum com
   <img src="docs/images/module_setup.png" />
 </p>
 
-A detailed summary of potential modularisation candidates can be found [here](docs/euro-calliope%20DAG%20structure%202024-04-02.pdf).
-
 ## Proposals
 
 These are tryouts since Snakemake is very picky on how code is included.
 
-To do:
+Todo:
 
 - [x] Find a pseudo-modularisation method within a single repo (most friendly to current calliope approaches).
 - [ ] Find an approach using Snakemake's wrapper functionality.
 - [ ] If not all requirements are fulfilled, look for alternative approaches.
+
+### Candidate modules
+
+This is a list of potential candidates for modularisation. **Bold** implies the module is likely a pre-requisite for others.
+
+Euro-Calliope modules (detailed summary can be found [here](docs/euro-calliope%20DAG%20structure%202024-04-02.pdf)):
+
+- [ ] Bioenergy
+- [ ] **Potentials** (?)
+- [ ] Electrical load
+- [ ] Nuclear generation
+- [ ] **Spatial units**
+- [ ] Transmission
+- [ ] Wind/solar
+- [ ] Hydro
+
+Sector Coupled Euro-Calliope modules:
+
+- [ ] Transport
+- [ ] Heat
+- [ ] Industry
