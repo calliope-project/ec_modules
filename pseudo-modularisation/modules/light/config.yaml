@@ -1,0 +1,7 @@
+light:
+  inputs:
+  params:
+    number-of-scenarios: 9823
+  setup:
+    datapath: modules/light/tmp
+    outpath: modules/light/out

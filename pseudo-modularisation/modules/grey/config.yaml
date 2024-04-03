@@ -1,0 +1,7 @@
+grey:
+  inputs:
+  params:
+    number-of-scenarios: 78
+  setup:
+    datapath: modules/grey/tmp
+    outpath: modules/grey/out
