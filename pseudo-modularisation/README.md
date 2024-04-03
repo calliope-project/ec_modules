@@ -4,6 +4,8 @@ This approach is meant to be an improvement over the current setup in EC and SCE
 
 It is based on Snakemake's [`module` command](https://snakemake.readthedocs.io/en/stable/snakefiles/modularization.html#modules).
 
+**IMPORTANT:** git does not add empty folders, so the repo does not show the full file structure. Run `snakemake -c 1` to get a better view of the setup!
+
 Pros:
 
 - Module configuration is fully isolated (through workarounds).
@@ -16,5 +18,5 @@ Cons:
 
 - No containerization due to Snakemake's operation: `configfile` must be defined outside the module's `Snakefile`, and modules share a common `env` location.
 - All modules are still present in the same repository.
-- DAG is still cluttered due to all rules being present.
+- The DAG is still cluttered due to all rules being present.
 - Proper debugging is still not possible.
