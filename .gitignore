@@ -32,4 +32,5 @@ gurobi.log
 ### Project-specific
 .ipynb_checkpoints
 **/out/*
+**/output/*
 **/tmp/*

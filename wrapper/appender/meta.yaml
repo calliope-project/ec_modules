@@ -1,0 +1,14 @@
+name: "appender"
+description: Silly wrapper that appends text to files.
+url: https://github.com/calliope-project/ec_modules/wrappers/appender
+authors:
+  - Ivan Ruiz Manuel
+input: |
+  Input file to read. Will not be modified. Only *.txt files are valid.
+output: |
+  Path to output file with appended text.
+params:
+  - append_text: "Will be written to the output file."
+  - capitalize: If `True`, all the text in the file will be capitalized.
+notes: |
+  This is a test on how to avoid more mess.

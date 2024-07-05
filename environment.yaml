@@ -1,8 +1,6 @@
 name: ec_modules
 channels:
   - conda-forge
-  - bioconda
 dependencies:
-  - python<=13.12.2
-  - snakemake-minimal<=8.10.4
-
+  - python<=13.12
+  - snakemake-minimal<=8.14
