@@ -27,31 +27,33 @@ mamba env create -f wrappers/name_here/environment.yaml
 mamba activate name_here
 ```
 
-## What are modules and wrappers?
+## Two options for better reproducibility
 
-There are two different functionalities that `snakemake` provides to speed up workflow creation: modules and wrappers.
+There are two different functionalities that `snakemake` provides to speed up workflow creation.
 
 ### [Modules](https://snakemake.readthedocs.io/en/stable/snakefiles/modularization.html#modules)
 
 Think of them as **workflows that can be exported to other projects**.
-They can be **re-configured**, allowing you to reproduce a dataset with different parametric assumptions.
-Also, their **inputs are static**, meaning that you cannot pass results from other snakemake rules.
-This means that modules are best used stable workflows whose inputs are not expected to change.
+Their settings can be **re-configured**, allowing you to reproduce data with different parametric assumptions.
+They have one disadvantage: their **inputs are static**, meaning that you cannot pass results from other snakemake rules.
+Modules are best for stable workflows whose inputs are not expected to change.
 Some use cases:
 
 - Downloading and converting transmission line data into nodes / regions.
 - Downloading and combining datasets of existing power production facilities.
 
-A module is used in the following way:
+![Module example](docs/images/module.png)
+
+A module can be called as follows:
 
 ```python
 module hydropower:
-    # Plain paths, URLs and markers for github and gitlab are possible
+    # Plain paths, URLs and github / gitlab calls are possible
     snakefile:
         github(
           "calliope-project/ec_modules", path="modules/hydropower/Snakefile", tag="v1.0.0"
         )
-    # It is possible to override the default configuration
+    # Override the module's default configuration
     config: config["hydropower"]
 
 # Rewrites rule names to avoid conflicts (e.g., all -> module_hydro_all)
@@ -61,9 +63,11 @@ use rule * from module_hydro as module_hydro_*
 ### [Wrappers](https://snakemake.readthedocs.io/en/stable/snakefiles/modularization.html#wrappers)
 
 These are **reusable `snakemake` rules to interface with applications**.
-They are useful tools that can be used for a myriad of cases, but have little variance on their inputs (CLI, useful python libraries, etc).
+They are useful for tools with broad use cases but generally stable interfacing. Any kind of software can be called by them as long as it can be executed from a python script (CLI, python libraries, R libraries, etc).
 
-Here is an example for the [`tsam`](https://github.com/FZJ-IEK3-VSA/tsam) tool for time series aggregation:
+![Wrapper example](docs/images/wrapper.png)
+
+Here is an example for [`tsam`](https://github.com/FZJ-IEK3-VSA/tsam), a tool for time series aggregation:
 
 ```python
 rule tsam:
