@@ -34,7 +34,7 @@ modules/
 
 Some suggestions:
 
-- `results/` can hold snakemake [report](https://snakemake.readthedocs.io/en/stable/snakefiles/reporting.html) files, which will allow users to easily follow your workflow, evaluate runtimes and even visualise plots. See [here](https://snakemake.github.io/resources/report.html) for an example of how this looks.
+- Make use of snakemake's [report](https://snakemake.readthedocs.io/en/stable/snakefiles/reporting.html) function, which will allow users to easily follow your workflow, evaluate runtimes and even visualise plots. See [here](https://snakemake.github.io/resources/report.html) for an example of how this looks.
 - Avoid placing large files in `/resources`. Instead, download them from `zenodo`.
 - Use stable URLs (like DOIs) for downloads whenever possible!
 
