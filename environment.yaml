@@ -3,4 +3,4 @@ channels:
   - conda-forge
 dependencies:
   - python<=13.12
-  - snakemake-minimal<=8.14
+  - snakemake-minimal<=8.16

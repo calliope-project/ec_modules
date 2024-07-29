@@ -1,0 +1,93 @@
+name: tsam - timeseries
+description: |
+  Wrapper for `tsam`'s `TimeSeriesAggregation` class.
+  Please consult `tsam`'s documentation for more information.
+url: https://github.com/calliope-project/ec_modules/wrappers/tsam/
+authors:
+  - Ivan Ruiz Manuel
+input: |
+  Series of files with timeseries data to combine into a single dataset and then aggregate.
+  Format should be:
+    - row::datetime observation (YYYY-MM-DD hh:mm:ss)
+    - column::unique variable name
+output:
+  - typical_periods: Path to save aggregated timeseries in csv format.
+  - accuracy_indicators: Path to save evaluation of clustering accuracy.
+  - index_matching: Path to save matching between original and aggregated timeseries.
+params:
+  - resolution: |
+      Optional. Float, default None.
+      Resolution of timeseries in hours. If None, delta_T in timeseries will be used.
+  - noTypicalPeriods: |
+      Optional. Integer, default 10.
+      Number of cluster periods to obtain.
+  - noSegments: |
+      Optional. Integer, default 10.
+      Number of segments (aka "inter-period clusters") within each typical period.
+  - hoursPerPeriod: |
+      Optional. Integer, default 24.
+      Length of cluster period in hours.
+  - clusterMethod: |
+      Optional. String, default "hierarchical".
+      Cluster method to use. Options: averaging, k_means, k_medoids, k_maxoids, hierarchical, adjacent_periods.
+  - evalSumPeriods: |
+      Optional. Bool, default False.
+      If True, the average period values is considered during the clustering process.
+  - sortValues: |
+      Optional. Bool, default False.
+      If True, clustering considers the period duration curve instead of the original shape of the data.
+  - sameMean: |
+      Optional. Bool, default False.
+      If True, time series are normalized so they have the same mean value.
+  - rescaleClusterPeriods: |
+      Optional. Bool, default True.
+      If true, the clustered time series is rescaled so that its weighted mean is the same as the original time series.
+  - weightDict: |
+      Optional. Dict, default None.
+      Dictionary to weight the profiles.
+  - segmentation: |
+      Optional. Bool, default True.
+      If True, cluster segmentation is used.
+  - extremePeriodMethod: |
+      Optional. String, default "None".
+      Method to use for extreme periods. Options are: append, new_cluster_center, replace_cluster_center.
+  - representationMethod: |
+      Optional. String, default None.
+      Clusters are represented in the chosen way. Otherwise, a preset for each cluster method is used.
+  - representationDict: |
+      Optional. Dict, default None.
+      States for each attribute whether the profiles in each cluster should be represented by the minimum value or maximum value of each time step.
+      This enables estimations to the safe side. Needed when 'minmaxmeanRepresentation' is chosen.
+      If not specified, the dictionary is set to containing 'mean' values only.
+  - distributionPeriodWise: |
+      Optional. Bool, default True.
+      If "durationRepresentation" is chosen and this is True, the distribution of each cluster will be
+      separately preserved. Otherwise, it is preserved for the original time series only.
+  - segmentRepresentationMethod: |
+      Optional. String, default None.
+      Chosen representation for the segments. If not specified, presets are used based on "representationMethod".
+  - predefClusterOrder: |
+      Optional. List, default None.
+      If specified, this list is used to establish the grouping instead of the aggregation.
+  - predefClusterCenterIndices: |
+      Optional. List, default None.
+      If "predefClusterOrder" is set, this list is used to define the cluster candidates.
+      Otherwise, the medoid is used.
+  - solver: |
+      Optional. String, default "highs".
+      Solver for the k_meoids clustering.
+  - roundOutput: |
+      Optional. Integer, default None.
+      Decimals to use when rounding the resulting time series.
+  - addPeakMin: |
+      Optional. List[str], default None.
+      List of column names which minimal value shall be added to the typical periods.
+  - addPeakMax: |
+      Optional. List[str], default None.
+      List of column names which maximal value shall be added to the typical periods.
+  - addMeanMin: |
+      Optional. List[str], default None.
+      List of column names for which the period with the cumulative minimum shall be added to the typical periods.
+  - addMeanMax: |
+      Optional. List[str], default None.
+      List of column names for which the period with the cumulative maximum shall be added to the typical periods.

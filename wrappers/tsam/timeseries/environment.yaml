@@ -1,0 +1,8 @@
+name: ec-tsam-timeseries
+channels:
+  - conda-forge
+  - nodefaults
+dependencies:
+  - pip
+  - pip:
+    - tsam == 2.3.1
