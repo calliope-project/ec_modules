@@ -23,5 +23,5 @@ rule ppm_powerplants:
     params:
         from_url= False
     threads: 8
-    wrapper: "file:../"
+    wrapper: github("calliope-project/ec_modules", path="wrappers/powerplantmatching/powerplants")
 ```
