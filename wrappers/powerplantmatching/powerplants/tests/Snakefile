@@ -1,0 +1,9 @@
+
+rule ppm_powerplants:
+    output:
+        powerplants= "output/powerplants.csv",
+        stats_aggregated = "output/stats_aggregated.png",
+    params:
+        from_url= False
+    threads: 1
+    wrapper: "file:../"
