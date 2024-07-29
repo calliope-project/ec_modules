@@ -1,0 +1,26 @@
+name: atlite - cutout
+description:
+url: https://github.com/calliope-project/ec_modules/wrappers/atlite/
+authors:
+  - Ivan Ruiz Manuel
+input:
+  - data: |
+      Optional user provided cutout data. Some parameters might be ignored if set.
+output:
+  - path: path where the saved netCDF file will be placed.
+params:
+  # Obligatory Cutout params
+  - time: "str. Time range for the cutout in the format YYYY | YYYY-MM | YYYY-MM-DD"
+  - x: list. Outer longitudinal bounds in the form (west, east).
+  - y: list. Outer latitudinal bounds in the form (south, north).
+  # Optional Cutout params
+  - dx: float, default 0.25. Step of x coordinate.
+  - dy: float, default 0.25. Step of y coordinate.
+  - dt: str, default "h". Time coordinate frequency, in `pandas` offset alias.
+  - chunks: "dict, default {'time': 20}. Chunksize of netCDF."
+  # Optional prepare
+  - features: str | list, default None. If specified, will limit prepared features (e.g., only wind, influx, runoff).
+  - tmpdir: str, default None. If specified, intermediate files will be placed here and NOT DELETED.
+  - overwrite: bool, default False. If True, variables already present in the data will be overwritten.
+  - compression: "dict, default {'zlib': True, 'complevel': 9, 'shuffle': True}. xarray compression to use."
+notes: Only ERA5 cutouts are supported.

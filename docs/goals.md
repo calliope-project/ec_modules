@@ -14,12 +14,12 @@ Although each model has its own differences, the data needed by them is often si
 
 ## Bloat and reproducibility
 
-In theory, more research should lead to scientific refinement and improved insights.
-Research _needs_ previous work to be accessible in order to advance the field and produce better insights.
+In theory, more research should lead to scientific refinement.
+Scientists _need_ previous work to be accessible in order to advance the field and produce better insights.
 The current approach of model-specific workflows hampers progress in two ways.
 
 1. **By making sharing methodological improvements more difficult**, since these processes are "locked-in" to a specific tool (e.g., Calliope, PyPSA, OSeMOSYS, etc). This leads to a lot of re-implementation between communities, which is error prone and more difficult to evaluate, which diminishes trust.
-2. **By making model workflows less comprehensible over time**. Workflows they tend to grow in size and complexity as more studies are conducted with them, eventually turning into [black boxes](https://doi.org/10.1088/2516-1083/ad371e), increasing the risk of combining incompatible assumptions or using depreciated data, which in turn can lead to misleading studies.
+2. **By making model workflows less comprehensible over time**. Workflows tend to grow in size and complexity as more studies are conducted with them, eventually turning into [black boxes](https://doi.org/10.1088/2516-1083/ad371e), increasing the risk of combining incompatible assumptions or using depreciated data, which in turn can lead to misleading studies.
 
 ![Bloat example](images/bloat-growth-problem.png)
 
