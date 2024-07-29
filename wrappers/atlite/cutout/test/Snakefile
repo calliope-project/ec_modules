@@ -1,0 +1,10 @@
+rule atlite_cutout:
+    output:
+        path = "output/test.nc",
+    params:
+        time = "2012-01-01",
+        x = [3.9, 4.7],
+        y = [50, 52.2],
+        features = ["wind", "runoff"]
+    threads: 4
+    wrapper: "file:../"
