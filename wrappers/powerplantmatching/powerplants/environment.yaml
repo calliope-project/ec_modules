@@ -1,0 +1,7 @@
+name: ec-powerplantmatching-powerplants
+channels:
+  - conda-forge
+  - nodefaults
+dependencies:
+  - powerplantmatching = 0.5.15
+  - openpyxl = 3.1.4

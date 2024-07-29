@@ -1,0 +1,38 @@
+name: powerplantmatching - powerplants
+description: |
+  Wrapper for powerplantmatching's main function.
+  Please consult ppm's documentation for all details.
+url: https://github.com/calliope-project/ec_modules/wrappers/powerplantmatching/
+authors:
+  - Ivan Ruiz Manuel
+input:
+  - config: |
+      Optional. Path to yaml file with the powerplantmatching configuration.
+      Can be left empty to get the standard configuration.
+output:
+  - powerplants: Path where the generated powerplant dataset will be saved.
+  - stats_aggregated: |
+      Optional. Formats: any valid pyplot format (png, pdf, jpeg, etc).
+      Aggregated comparison between the ppm's dataset and ENTSO-E statistics.
+params:
+  - config_update: Optional. Dict, default None. Overrides configuration.
+  - update: |
+      Optional. Bool, default False.
+      Re-run the matching algorithm if True. Ignored if `from_url` is True.
+  - from_url: |
+      Optional. Bool, default False.
+      Whether to download the data from the repo instead of re-building it.
+      `update` will be ignored if True.
+  - extend_by_vres: |
+      Optional. Bool, default False.
+      Whether to use additional variable renewable data (memory intensive!).
+  - extend_by_kwargs: |
+      Dict, default None. Needs update == True.
+      Additional arguments for the `extend_by_non_matched` function.
+  - fill_geopositions: |
+      Optional. Bool, default True. Needs update == True.
+      Fill coordinates after the matching process.
+  - filter_missing_geopositions: |
+      Bool, default True. Needs update == True.
+      Whether to remove resulting entries without coordinates.
+notes: Some parameter combinations might be incompatible!
