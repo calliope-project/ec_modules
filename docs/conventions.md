@@ -76,6 +76,7 @@ To future proof your workflow, try to follow these simple rules.
 - **Units**: although not strictly necessary, we recommend to use [`pint`](https://pint.readthedocs.io/en/stable/) if your data will be unit-sensitive. This library automatically takes care of unit metadata and conversions, and is compatible with with [`xarray`](https://github.com/xarray-contrib/pint-xarray) and [`pandas`](https://github.com/hgrecco/pint-pandas).
 - **Country names**: existing countries should use the [ISO 3166-1 alpha-3](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-3) standard (e.g., `MEX`), while historic countries should follow [ISO 3166-3](https://en.wikipedia.org/wiki/ISO_3166-3) (e.g., `SUHH`). We recommend using the [`pycountry`](https://github.com/pycountry/pycountry) package.
 - **Regions/subdivisions**: [NUTS](https://ec.europa.eu/eurostat/web/nuts) or [GADM](https://gadm.org/) ids should be used, and the dataset version (`NUTS2024`, `GADM v1.3`) should be specified in either metadata or a separate column.
+- **Timeseries**: please ensure that your timeseries are in [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) format in the form YYYY-MM-DD hh:mm:ss.
 
 >[!warning]
 > Specifying dataset version is extremely important! Subregions tend to be updated regularly, and additional processing might be needed in cases were two workflows use different versions.
