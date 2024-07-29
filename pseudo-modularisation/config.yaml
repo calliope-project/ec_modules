@@ -1,3 +1,0 @@
-setup:
-  datapath: tmp
-  outpath: out

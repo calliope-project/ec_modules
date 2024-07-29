@@ -1,9 +1,0 @@
-dark:
-  inputs:
-    global-subtask-path: "tmp/subprocess_global.txt"
-  params:
-    number-of-scenarios: 4
-    a-thing-here: "wooow"
-  setup:
-    datapath: modules/dark/tmp
-    outpath: modules/dark/out
