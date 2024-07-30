@@ -2,9 +2,10 @@ rule atlite_cutout:
     output:
         path = "output/test.nc",
     params:
-        time = "2012-01-01",
-        x = [3.9, 4.7],
-        y = [50, 52.2],
-        features = ["wind", "runoff"]
+        time = "2019-05",
+        x = [-9.497466600999928, -6.205947224999932],
+        y = [36.96588776200008, 42.15362966000002],
+        features = ["influx", "temperature"],
+        cutout_offset = 1
     threads: 4
     wrapper: "file:../"

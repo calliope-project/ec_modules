@@ -1,0 +1,13 @@
+rule atlite_pv_cf_series:
+    input:
+        cutout = "test.nc",
+        shapefile = "portugal.geojson"
+    output:
+        timeseries = "output/portugal.csv",
+        plot_mean_cf = "output/mean_cf.png"
+    params:
+        shapefile_name_column = "state",
+        pv_panel = "CSi",
+        pv_orientation = "latitude_optimal",
+    threads: 4
+    wrapper: "file:../"

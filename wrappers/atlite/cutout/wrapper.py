@@ -17,10 +17,14 @@ for param in CUTOUT_OPTIONAL:
     if value is not None:
         cutout_params[param] = value
 
+offset = snakemake.params.get("cutout_offset", 0)
+x = slice(snakemake.params.x[0] - offset, snakemake.params.x[1] + offset)
+y = slice(snakemake.params.y[0] - offset, snakemake.params.y[1] + offset)
+
 cutout = atlite.Cutout(
     path=snakemake.output.path,
-    x=slice(snakemake.params.x[0], snakemake.params.x[1]),
-    y=slice(snakemake.params.y[0], snakemake.params.y[1]),
+    x=x,
+    y=y,
     time=snakemake.params.time,
     module="era5",
     **cutout_params,

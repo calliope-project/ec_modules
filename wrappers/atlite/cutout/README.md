@@ -8,6 +8,9 @@ Downloads and stores a cutout of the requested latitude/longitude and saves it l
 >1. Cutout exists in given path (output.path) -> take it.
 >2. Otherwise, input.data (optional) given -> take it.
 >3. Otherwise, build cutout using snakemake.params.
+>
+>Also, `atlite` downloads all possible features by default. This can take hours!
+>Always try to only fetch the features you need.
 
 ## Example
 
@@ -22,5 +25,4 @@ rule atlite_cutout:
         features = ["wind", "runoff"]
     threads: 4
     wrapper: github("calliope-project/ec_modules", path="wrappers/atlite/cutout")
-
 ```
