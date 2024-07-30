@@ -4,9 +4,6 @@ import atlite
 import geopandas as gpd
 from matplotlib import pyplot as plt
 
-CUTOUT_OPTIONAL_PARAMS = {"cutout_chunks"}
-PV_OPTIONAL_PARAMS = {"pv_tracking", "pv_clearsky_model"}
-
 shapes = gpd.read_file(snakemake.input.shapefile)
 
 column = snakemake.params.shapefile_name_column
@@ -17,29 +14,21 @@ if shape_names:
     shapes = shapes.query(f"{column} in {shape_names}")
 shapes = shapes.set_index(column)
 
-cutout_optional_params = {
-    param: snakemake.params.get(param)
-    for param in CUTOUT_OPTIONAL_PARAMS
-    if param in snakemake.params.keys()
-}
-cutout = atlite.Cutout(path=snakemake.input.cutout, **cutout_optional_params)
+cutout_kwargs = snakemake.params.get("cutout_kwargs", {})
+cutout = atlite.Cutout(path=snakemake.input.cutout, **cutout_kwargs)
 
 assert cutout.bounds[0] < shapes.bounds.minx.min()
 assert cutout.bounds[1] < shapes.bounds.miny.min()
 assert cutout.bounds[2] > shapes.bounds.maxx.max()
 assert cutout.bounds[3] > shapes.bounds.maxy.max()
 
-pv_optional_params = {
-    param: snakemake.params.get(param)
-    for param in PV_OPTIONAL_PARAMS
-    if param in snakemake.params.keys()
-}
+pv_kwargs = snakemake.params.get("pv_kwargs", {})
 pv = cutout.pv(
     panel=snakemake.params.pv_panel,
     orientation=snakemake.params.pv_orientation,
     per_unit=True,
     shapes=shapes,
-    **pv_optional_params,
+    **pv_kwargs,
 )
 pv.name = "pv-cf-series"
 pv_df = pv.to_dataframe().unstack()

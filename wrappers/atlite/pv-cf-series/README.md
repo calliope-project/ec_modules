@@ -1,7 +1,15 @@
-# Wrapper for `atlite` pv functionality
+# Wrapper for producing pv capacity factor series with `atlite`
 
 Uses a cutout with PV relevant data to produce timeseries for energy system models.
 Optionally, get some nice plots with the average CF per calculated region.
+
+```mermaid
+flowchart LR
+    I1(Cutout) -->W((pv-cf-series))
+    I2(Shapefile) --> W
+    W --> O1(timeseries)
+    W -->|Optional|O2(plot_mean_cf)
+```
 
 ## Example
 

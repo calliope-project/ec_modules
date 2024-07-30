@@ -17,7 +17,7 @@ params:
       either 'latitude_optimal' or dict in the form {'slope': 0.0, 'azimuth': 0.0}
   # Optional
   - shapefile_specific_names: name(s) of regions to calculate specifically. Others will be ignored.
-  - cutout_chunks: "chunksize of netCDF (e.g., {'time': 20})"
+  - cutout_kwargs: "additional arguments for processing the Cutout (e.g., {chunks: {'time': 20}})"
   - pv_tracking: "options: None | 'horizontal' | 'tilted_horizontal' | 'vertical' | 'dual'"
-  - pv_clearsky_model: "either 'simple' or 'enhanced'. By default, the choice will be made depending on the cutout data."
+  - pv_kwargs: "additional arguments for the pv function (e.g., {tracking: 'horizontal'})"
 notes: Requested shapes must be within the cutout!
