@@ -5,10 +5,10 @@ Optionally, get some nice plots with the average CF per calculated region.
 
 ```mermaid
 flowchart LR
-    I1(Cutout) -->W((pv-cf-series))
-    I2(Shapefile) --> W
-    W --> O1(timeseries)
-    W -->|Optional|O2(plot_mean_cf)
+    I1(Cutout.nc) -->W((pv-cf-series))
+    I2(Shapefile.shp) --> W
+    W --> O1(timeseries.csv)
+    W -->|Optional|O2(plot_mean_cf.png)
 ```
 
 ## Example
