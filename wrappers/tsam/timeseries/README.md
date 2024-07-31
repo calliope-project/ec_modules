@@ -3,6 +3,16 @@
 Runs `tsam` time series aggregation methods for a list of time series files.
 Optionally, outputs accuracy indicator data and index matching data.
 
+```mermaid
+flowchart LR
+    I1(data1.csv) --> W((timeseries))
+    I2(data2.csv) --> W
+    I3(data3.csv) --> W
+    W --> O1(typtical_periods.csv)
+    W --> |Optional| O2(accuracy_indicators.csv)
+    W --> |Optional| O3(index_matching.csv)
+```
+
 >[!warning]
 >Please ensure that all timeseries have the following format:
 >|                     | T    | Load        |
@@ -12,7 +22,7 @@ Optionally, outputs accuracy indicator data and index matching data.
 >| 2010-01-01 01:30:00 | -3.3 | 357.4168443 |
 >| 2010-01-01 02:30:00 | -3.2 | 350.1913058 |
 >
->Simiarly, multiple variables per file are possible. However, the same variable names must be unique across all files!
+>Similarly, multiple variables per file are possible. However, the variable names must be unique across all files!
 
 ## Example
 

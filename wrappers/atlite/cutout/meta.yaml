@@ -10,7 +10,7 @@ output:
   - path: path where the saved netCDF file will be placed.
 params:
   # Optional wrapper params
-  - cutout_offset: extend cutout dimensions by the given amount (e.g., x +/- 0.2, y +/- 0.2).
+  - cutout_offset: extend cutout in all directions by the given amount (i.e., "enlarges" the cutout rectangle).
   # Obligatory Cutout params
   - time: "str. Time range for the cutout in the format YYYY | YYYY-MM | YYYY-MM-DD"
   - x: list. Outer longitudinal bounds in the form (west, east).
