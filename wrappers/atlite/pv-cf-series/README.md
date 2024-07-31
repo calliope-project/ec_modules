@@ -1,6 +1,6 @@
 # Wrapper for producing pv capacity factor series with `atlite`
 
-Uses a cutout with PV relevant data to produce timeseries for energy system models.
+Uses a cutout with PV relevant data to produce capacity factor timeseries for energy system models.
 Optionally, get some nice plots with the average CF per calculated region.
 
 ```mermaid

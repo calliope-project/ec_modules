@@ -7,7 +7,7 @@ input:
   - cutout: atlite cutout netCDF with relevant PV data.
   - shapefile: file with the regions to process.
 output:
-  - timeseries: pv time series in row::variable column::observation format.
+  - timeseries: pv capacity factor time series (row::observation column::region).
   # Optional
   - plot_mean_cf: map with average capacity factor per region.
 params:

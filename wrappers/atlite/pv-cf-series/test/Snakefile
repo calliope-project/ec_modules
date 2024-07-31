@@ -1,6 +1,6 @@
 rule atlite_pv_cf_series:
     input:
-        cutout = "test.nc",
+        cutout = "cutout_pv.nc",
         shapefile = "portugal.geojson"
     output:
         timeseries = "output/portugal.csv",

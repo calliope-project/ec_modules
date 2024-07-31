@@ -1,0 +1,13 @@
+rule atlite_wind_cf_series:
+    input:
+        cutout = "cutout_wind.nc",
+        shapefile = "portugal.geojson"
+    output:
+        timeseries = "output/wind_cf.csv",
+        plot_mean_cf = "output/mean_cf.png"
+    params:
+        shapefile_name_column = "state",
+        wind_turbine = "Vestas_V90_3MW",
+        shapefile_specific_names = ["PT-07","PT-09","PT-10","PT-06","PT-01","PT-18"]
+    threads: 4
+    wrapper: "file:../"
