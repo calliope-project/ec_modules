@@ -14,5 +14,16 @@ flowchart LR
 ## Example
 
 ```snakemake
-code here
+rule atlite_csp_cf_series:
+    input:
+        cutout = "cutout_csp.nc",
+        shapefile = "portugal.geojson"
+    output:
+        timeseries = "output/portugal.csv",
+        plot_mean_cf = "output/mean_cf.png"
+    params:
+        shapefile_name_column = "state",
+        installation = "SAM_solar_tower",
+    threads: 4
+    wrapper: github("calliope-project/ec_modules", path="wrappers/atlite/csp-cf-series")
 ```
