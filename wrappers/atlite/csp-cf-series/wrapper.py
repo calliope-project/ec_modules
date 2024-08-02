@@ -29,7 +29,7 @@ csp = cutout.csp(
     shapes=shapes,
     **csp_kwargs,
 )
-csp.name = "wind-cf-series"
+csp.name = "csp-cf-series"
 csp_df = csp.to_dataframe().unstack()
 csp_df.columns = csp_df.columns.droplevel(0)
 csp_df.to_csv(snakemake.output.timeseries)

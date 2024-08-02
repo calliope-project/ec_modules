@@ -73,10 +73,42 @@ Always try to use the following file formats.
 
 To future proof your workflow, try to follow these simple rules.
 
-- **Units**: although not strictly necessary, we recommend to use [`pint`](https://pint.readthedocs.io/en/stable/) if your data will be unit-sensitive. This library automatically takes care of unit metadata and conversions, and is compatible with with [`xarray`](https://github.com/xarray-contrib/pint-xarray) and [`pandas`](https://github.com/hgrecco/pint-pandas).
-- **Country names**: existing countries should use the [ISO 3166-1 alpha-3](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-3) standard (e.g., `MEX`), while historic countries should follow [ISO 3166-3](https://en.wikipedia.org/wiki/ISO_3166-3) (e.g., `SUHH`). We recommend using the [`pycountry`](https://github.com/pycountry/pycountry) package.
-- **Regions/subdivisions**: [NUTS](https://ec.europa.eu/eurostat/web/nuts) or [GADM](https://gadm.org/) ids should be used, and the dataset version (`NUTS2024`, `GADM v1.3`) should be specified in either metadata or a separate column.
-- **Timeseries**: please ensure that your timeseries are in [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) format in the form YYYY-MM-DD hh:mm:ss.
+### Units
+
+Unit conversion tools are not strictly necessary.
+However, we recommend to use [`pint`](https://pint.readthedocs.io/en/stable/) if your data will be unit-sensitive.
+This library automatically takes care of unit metadata and conversions, and is compatible with with [`xarray`](https://github.com/xarray-contrib/pint-xarray) and [`pandas`](https://github.com/hgrecco/pint-pandas).
+
+### Country names
+
+For existing countries, please use the [ISO 3166-1](https://en.wikipedia.org/wiki/ISO_3166-1) standard.
+English short name, alpha-2, alpha-3 or numeric codes are all valid (e.g., "Grenada"::"GD"::"GRD"::308).
+For historic regions, use [ISO 3166-3](https://en.wikipedia.org/wiki/ISO_3166-3) instead (e.g., "Czechoslovakia"::"CSHH"::200).
+
+We recommend using the [`pycountry`](https://github.com/pycountry/pycountry) package, which follows [ISO 3166](https://en.wikipedia.org/wiki/ISO_3166).
+
+>[!tip]
+>To make data easier to parse, try to do the following:
+>
+>- Use alpha-2 or alpha-3 instead of English names.
+>- Include the ISO 3166 numeric code. These are stable and non-repeating, even for former countries.
+
+### Regions and subdivisions
+
+Any official standard is valid: [NUTS](https://ec.europa.eu/eurostat/web/nuts), [GADM](https://gadm.org/) codes or [ISO 3166-2](https://en.wikipedia.org/wiki/ISO_3166-2) subdivisions.
+The dataset version (`NUTS2024`, `GADM v1.3`, `ISO 3166-2:2013`) should be specified in either metadata or a separate column.
 
 >[!warning]
 > Specifying dataset version is extremely important! Subregions tend to be updated regularly, and additional processing might be needed in cases were two workflows use different versions.
+
+### Timeseries
+
+Please ensure that your timeseries are in [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) UTC format **with no offset** in the form YYYY-MM-DD hh:mm:ss.
+
+### Coordinate reference systems
+
+Different coordinate systems are necessary [depending on the purpose of the spatial data](https://www.esri.com/arcgis-blog/products/arcgis-pro/mapping/gcs_vs_pcs/).
+For simplicity, try to follow these standards:
+
+- **Geographic data** (*position* matters) should be in [EPSG 4326](https://epsg.io/4326). Most code should, in the end, return data in this format.
+- **Projected data** should use the representation that [best fits](https://learn.arcgis.com/en/projects/choose-the-right-projection/) the needs of the calculation (e.g., preserving *distance*, *area* or *angle*). For European data, [EPSG:3035](https://epsg.io/3035) should fit most needs.
