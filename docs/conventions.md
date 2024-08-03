@@ -110,5 +110,5 @@ Please ensure that your timeseries are in [ISO 8601](https://en.wikipedia.org/wi
 Different coordinate systems are necessary [depending on the purpose of the spatial data](https://www.esri.com/arcgis-blog/products/arcgis-pro/mapping/gcs_vs_pcs/).
 For simplicity, try to follow these standards:
 
-- **Geographic data** (*position* matters) should be in [EPSG 4326](https://epsg.io/4326). Most code should, in the end, return data in this format.
-- **Projected data** should use the representation that [best fits](https://learn.arcgis.com/en/projects/choose-the-right-projection/) the needs of the calculation (e.g., preserving *distance*, *area* or *angle*). For European data, [EPSG:3035](https://epsg.io/3035) should fit most needs.
+- **Geographic data** (preserving *position* matters) should be in [EPSG 4326](https://epsg.io/4326). Most code should, in the end, return data in this format.
+- **Projected data** (preserving *distance* or *area* matters) should use the representation that [best fits](https://learn.arcgis.com/en/projects/choose-the-right-projection/) the needs of the calculation. For European data, [EPSG:3035](https://epsg.io/3035) should fit most needs.
