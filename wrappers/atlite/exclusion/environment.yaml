@@ -1,7 +1,0 @@
-name: ec-atlite-exclusion
-channels:
-  - conda-forge
-  - nodefaults
-dependencies:
-  - atlite = 0.2.13
-  - numpy = 1.23

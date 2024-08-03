@@ -2,12 +2,14 @@ rule atlite_cutout:
     input:
         cutout = "cutout.nc",
         shapefile = "portugal.geojson",
-        rasters = "dem_tdem_pt_80m.tif",
+        rasters = ["dem_tdem_pt_80m.tif"],
     output:
         availability_matrix = "output/test.nc",
-        plot_shape_availability = "output/shape.png",
+        plot_availability_shape = "output/shape.png",
         plot_availability_matrix = "output/matrix.png"
     params:
+        exclusion_crs = 3035,
+        exclusion_resolution = 100,
         shapefile_name_column = "state",
         raster_codes = [list(range(1, 300))],
         raster_kwargs = [{"invert": False}]

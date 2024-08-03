@@ -5,20 +5,19 @@ authors:
   - Ivan Ruiz Manuel
 input:
   - cutout: atlite Cutout file.
-  - shapefile: Shapefile to use for regions. Must be within cutout.
+  - shapefile: Shapefile to use for regions.
   - rasters: One or more raster files to use for filtering.
 output:
   - availability_matrix: NetCDF file with post-filtering availability.
   # Optional
-  - plot_shape_avaiability: Figure showing the filtered area and its position in the cutout.
+  - plot_availability_shape: Figure showing the filtered area and its position in the cutout.
   - plot_availability_matrix: Figure showing resulting availability matrix.
 params:
+  - exclusion_crs: projected CRS to use for raster analysis.
+  - exclusion_resolution: resolution to use for raster analysis.
   - shapefile_name_column: Column with the names of regions in the shapefile.
-  - raster_codes: List of codes to filter (one per added raster).
-  - raster_kwargs: Kwargs for `add_raster` function (one per added raster, if none use `{}`).
+  - raster_codes: Per raster, a list of codes to filter.
+  - raster_kwargs: Per raster, kwargs for the `add_raster` function (use `{}` if empty).
   # Optional
   - exclusion_kwargs: dict. Additional `ExclusionContainer` parameters.
-  - cutout_kwargs: dict. Additional `Cutout` parameters.
-  - prepare_kwargs: dict. Additional `prepare` parameters.
-notes: |
-  rasters, raster_codes and raster_kwargs must always match in length!
+  - availability_matrix_kwargs: dict. Additional `availabilitymatrix` parameters.
