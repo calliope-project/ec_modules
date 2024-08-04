@@ -1,6 +1,0 @@
-name: ec-atlite-pv-cf-series
-channels:
-  - conda-forge
-  - nodefaults
-dependencies:
-  - atlite = 0.2.13

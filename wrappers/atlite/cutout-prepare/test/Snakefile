@@ -1,4 +1,4 @@
-rule atlite_cutout:
+rule test:
     input:
         shapefile = "portugal.geojson"
     output:

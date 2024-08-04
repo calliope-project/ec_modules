@@ -1,0 +1,19 @@
+name: ec-atlite-pv
+description:
+url: https://github.com/calliope-project/ec_modules/wrappers/atlite/
+authors:
+  - Ivan Ruiz Manuel
+input:
+  - cutout: Cutout netCDF with relevant features.
+  - shapefile: Regions within the cutout to process.
+  - layout: Layout to apply to the cutout.
+output:
+  - dataset: Requested data with profiles and maximum capacity.
+  # Optional
+  - plot_profile: Plot the time series profile per shape.
+  - plot_max_capacity: Plot the max nominal capacity per shape.
+params:
+  - pv_kwargs: Arguments for the technology function (see atlite docs for more info).
+  - shapefile_name_column: column to use as region name. Necessary if 'shapefile' is given.
+  # Optional
+  - cutout_kwargs: "additional arguments for processing the Cutout (e.g., {chunks: {'time': 20}})"
