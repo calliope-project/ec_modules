@@ -1,0 +1,11 @@
+rule test:
+    output:
+        shapefile = "output/global_regions.shp",
+        plot_shapefile = "output/global_regions.png"
+    params:
+        resolution = "10m",
+        category = "cultural",
+        name = "admin_1_states_provinces",
+        driver = "GeoJSON"
+    threads: 4
+    wrapper: "file:../"
