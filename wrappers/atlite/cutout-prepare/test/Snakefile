@@ -6,7 +6,7 @@ rule test:
         plot_cutout = "output/plot_cutout.png"
     params:
         time = "2019-05-02",
-        features = ["influx", "temperature", "wind"],
+        features = ["height", "wind", "influx", "temperature", "runoff"],
         offset_degrees = 1,
         module = ["era5"],
     threads: 4
