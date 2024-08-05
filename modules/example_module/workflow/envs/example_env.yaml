@@ -1,0 +1,6 @@
+name: example
+channels:
+  - conda-forge
+  - nodefaults
+dependencies:
+

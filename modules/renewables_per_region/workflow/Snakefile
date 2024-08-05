@@ -1,0 +1,18 @@
+from snakemake.utils import min_version
+
+min_version("8.8.0")
+
+configfile: "config/config.yaml"
+report: "report/workflow.rst"
+
+# this container defines the underlying OS for each job when using the workflow
+# with --use-conda --use-singularity
+container: "docker://continuumio/miniconda3"
+
+include: "rules/regions.smk"
+include: "rules/renewables.smk"
+
+
+rule all:
+    input:
+        expand("results/availability/{region}.nc", region=config["regions"]["names"])
