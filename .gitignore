@@ -26,11 +26,15 @@ coverage.xml
 .*[cC]ache*
 
 ### Snakemake
-**/.snakemake/
+.snakemake/
 gurobi.log
 
-### Project-specific
+### Notebooks
 .ipynb_checkpoints
+
+### Project-specific
 out/
 output/
 tmp/
+results/
+report/
