@@ -38,3 +38,5 @@ output/
 tmp/
 results/
 report/
+
+!modules/example_module/**
