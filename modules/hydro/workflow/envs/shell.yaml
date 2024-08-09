@@ -1,0 +1,8 @@
+name: shell
+channels:
+    - conda-forge
+dependencies:
+    - curl=8.6.0
+    - unzip=6.0
+    - rsync=3.2.3
+    - graphviz=2.50.0
