@@ -1,0 +1,28 @@
+# generate heat demand and heat pump cop time series
+
+configfile: "config/config.yaml"
+include: "rules/aggregated_heat_demand.smk"
+include: "rules/heat_timeseries.smk"
+include: "rules/hp_cop.smk"
+
+rule heat_demand_final_timeseries:
+    message: "Generate national heat demand timeseries data from gridded data "
+    input:
+        timeseries_data = "results/national/hourly_unscaled_heat_demand.nc",
+        annual_demand = "results/national/annual-heat-demand-twh.csv",
+    conda: "envs/default.yaml"
+    params:
+        sfh_mfh_shares = config["parameters"]["heat"]["sfh-mfh-shares"],
+        scaling_factor = config["scaling-factors"]["power"]
+    output: "results/final_outputs/heat_demand.csv"
+    script: "scripts/heat_demand_final_timeseries.py"
+
+
+rule heat_pump_final_timeseries:
+    message: "Combine hot water and space heating characteristics to generate a weighted average national heat pump cop `heat` carrier timeseries."
+    input:
+        timeseries_data = "results/national/heat-pump-cop.nc",
+        annual_demand = rules.rescale_annual_heat_demand_to_resolution.output.total_demand
+    conda: "envs/default.yaml"
+    output: "results/final_outputs/heat-pump-cop.csv"
+    script: "scripts/heat_pump_final_timeseries.py"
