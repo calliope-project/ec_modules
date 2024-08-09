@@ -1,0 +1,56 @@
+[project]
+name = "ec_modules"
+authors = [
+  { name = "Contributors listed in AUTHORS", email = "i.ruizmanuel@tudelft.nl" },
+]
+maintainers = [
+  { name = "Ivan Ruiz Manuel", email = "i.ruizmanuel@tudelft.nl" },
+]
+description = "Helper workflows for faster and better energy systems modelling prototyping."
+readme = "README.md"
+requires-python = ">=3.11"
+keywords = ["energy systems", "modelling", "workflows"]
+license = { text = "MIT" }
+classifiers = [
+  "Intended Audience :: Science/Research",
+  "License :: OSI Approved :: MIT",
+  "Programming Language :: Python",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3 :: Only",
+]
+dynamic = ["version", "dependencies"]
+
+[tool.codespell]
+skip = 'tests/*.py,AUTHORS,*.shp,*.geojson'
+count = ''
+quiet-level = 3
+ignore-words-list = "socio-economic,manuel"
+
+[tool.ruff]
+target-version = "py311"
+builtins = ["snakemake"]
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "Q", "W", "D", "PT", "C90"]
+
+[tool.ruff.lint.flake8-quotes]
+docstring-quotes = "double"
+
+[tool.ruff.lint.isort]
+split-on-trailing-comma = false
+
+[tool.ruff.lint.per-file-ignores]
+"**/wrapper.py" = ["F821"]
+"__init__.py" = ["E402", "F401", "D104"]
+"*.ipynb" = ["E402"]
+
+[tool.ruff.lint.pydocstyle]
+convention = "google"
+
+[tool.ruff.lint.pycodestyle]
+max-doc-length = 200
+ignore-overlong-task-comments = true
+
+[tool.ruff.format]
+exclude = [".*.egg-info", "requirements/**"]
+skip-magic-trailing-comma = true

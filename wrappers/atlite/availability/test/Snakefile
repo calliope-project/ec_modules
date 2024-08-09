@@ -1,0 +1,23 @@
+rule test:
+    input:
+        cutout = "cutout.nc",
+        shapefile = "portugal.geojson",
+        rasters = ["dem_tdem_pt_80m.tif"],
+    output:
+        availability_matrix = "output/test.nc",
+        plot_availability_shape = "output/shape.png",
+        plot_availability_matrix = "output/matrix.png"
+    params:
+        exclusion_crs = 3035,
+        exclusion_resolution = 100,
+        shapefile_name_column = "state",
+        raster_codes = [list(range(1, 300))],
+        raster_kwargs = [{"invert": False}]
+    threads: 4
+    wrapper: "file:../"
+
+# Raster file obtained from Portugal's coastal monitoring and management group
+# https://www.fc.up.pt/pessoas/jagoncal/dems/
+# Data originally from TerraSAR-X
+# https://download.geoservice.dlr.de/TDM90/
+# The data is only used for testing purposes here.

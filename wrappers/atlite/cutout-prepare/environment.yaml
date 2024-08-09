@@ -1,0 +1,6 @@
+name: ec-atlite-cutout
+channels:
+  - conda-forge
+  - nodefaults
+dependencies:
+  - atlite = 0.2.13

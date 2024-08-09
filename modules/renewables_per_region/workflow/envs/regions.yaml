@@ -1,0 +1,6 @@
+name: shapes
+channels:
+  - conda-forge
+  - nodefaults
+dependencies:
+  - geopandas = 1.0.1

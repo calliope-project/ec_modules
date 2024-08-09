@@ -1,0 +1,4 @@
+regions:
+  column_in_shapefile: "iso_a2"
+  names: ["PT", "DE", "IT"]
+  bounds: [-30, 35, 43, 72]  # Should cover all of Europe, except far-away islands

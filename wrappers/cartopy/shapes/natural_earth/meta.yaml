@@ -1,0 +1,15 @@
+name: ec-cartopy-shapes-natural_earth
+description:
+url: https://github.com/calliope-project/ec_modules/wrappers/cartopy/
+authors:
+  - Ivan Ruiz Manuel
+output:
+  - shapefile: Requested shapefile.
+  # Optional
+  - plot_shapefile: Figure of the map.
+params:
+  - resolution: Resolution to use.
+  - category: Category to search in.
+  - name: Name of the file.
+  # Optional
+  - driver: Driver to use for the shapefile (defaults to GeoJSON).

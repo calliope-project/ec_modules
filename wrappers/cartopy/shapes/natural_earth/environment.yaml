@@ -1,0 +1,7 @@
+name: ec-cartopy-shapes-natural_earth
+channels:
+  - conda-forge
+  - nodefaults
+dependencies:
+  - cartopy = 0.23
+  - geopandas = 1.0.1
