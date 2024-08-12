@@ -5,7 +5,7 @@ from snakemake.utils import validate, min_version, makedirs
 
 min_version("8.10")
 
-configfile: "../config/default.yaml"
+configfile: "./config/default.yaml"
 
 wildcard_constraints:
     resolution = "[a-zA-Z]+"

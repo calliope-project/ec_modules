@@ -1,4 +1,4 @@
-name: ec-module-hydro
+name: ec-modules-hydro
 channels:
     - conda-forge
     - bioconda
