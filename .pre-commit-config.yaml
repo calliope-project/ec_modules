@@ -13,7 +13,7 @@ repos:
         args: ['--maxkb=250', --enforce-all]
       - id: forbid-submodules
       - id: check-case-conflict
-      - id: check-illegal-windows-names
+      # - id: check-illegal-windows-names  TODO: reactivate once https://github.com/pre-commit/pre-commit-hooks/issues/1048 is fixed
       - id: check-merge-conflict
       - id: debug-statements
       # Config file issues
@@ -23,7 +23,7 @@ repos:
       - id: check-toml
       - id: check-yaml
 
-  - repo: https://github.com/astral-sh/ruff-pre-commit # https://beta.ruff.rs/docs/usage/#github-action
+  - repo: https://github.com/astral-sh/ruff-pre-commit
     rev: v0.4.10
     hooks:
       - id: ruff
