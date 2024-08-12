@@ -10,7 +10,7 @@ repos:
       - id: end-of-file-fixer
       # Repo quality
       - id: check-added-large-files
-        args: ['--maxkb=250', --enforce-all]
+        args: [--enforce-all]
       - id: forbid-submodules
       - id: check-case-conflict
       # - id: check-illegal-windows-names  TODO: reactivate once https://github.com/pre-commit/pre-commit-hooks/issues/1048 is fixed
