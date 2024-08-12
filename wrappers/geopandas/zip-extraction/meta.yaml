@@ -1,0 +1,15 @@
+name: ec-geopandas-zip-extraction
+description:
+url: https://github.com/calliope-project/ec_modules/wrappers/geopandas/
+authors:
+  - Ivan Ruiz Manuel
+input:
+  - zip: .zip file with geodata (containst .shp, .shx).
+output:
+  - shapefile: Shape file in a geopandas compatible format (.geojson, .gpkg, ...)
+  # Optional
+  - plot_shapefile: Figure of the map.
+params:
+  - zip_filepath: Driver to use for the shapefile (defaults to GeoJSON).
+  # Optional
+  - to_file_kwargs: Additional arguments for `geopandas.to_file`.
