@@ -20,5 +20,3 @@ rule crop_regions:
         bounds = config["regions"]["bounds"]
     conda: "../envs/regions.yaml"
     script: "../scripts/get_regions.py"
-
-
