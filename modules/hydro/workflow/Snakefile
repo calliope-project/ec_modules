@@ -19,6 +19,7 @@ rule units:
     shell: "curl -sSLo {output} '{params.url}'"
 
 include: "./rules/hydro.smk"
+include: "./rules/basins.smk"
 
 rule all:
     localrule: True
