@@ -6,7 +6,7 @@ Useful for `.shp`/`.shx` formats that are often zipped.
 
 >[!important]
 >Verify the location within the `.zip` carefully!
->Seach is done as follows:
+>Search is done as follows:
 >
 >`you_zipfile.zip/zip_filepath.shp`
 
