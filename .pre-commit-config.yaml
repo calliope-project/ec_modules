@@ -2,6 +2,27 @@ default_language_version:
   python: python3
 
 repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.6.0
+    hooks:
+      # Machine-friendliness
+      - id: trailing-whitespace
+      - id: end-of-file-fixer
+      # Repo quality
+      - id: check-added-large-files
+        args: ['--maxkb=250', --enforce-all]
+      - id: forbid-submodules
+      - id: check-case-conflict
+      - id: check-illegal-windows-names
+      - id: check-merge-conflict
+      - id: debug-statements
+      # Config file issues
+      - id: check-json
+      - id: pretty-format-json
+        args: [--autofix]
+      - id: check-toml
+      - id: check-yaml
+
   - repo: https://github.com/astral-sh/ruff-pre-commit # https://beta.ruff.rs/docs/usage/#github-action
     rev: v0.4.10
     hooks:
