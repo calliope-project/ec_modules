@@ -12,9 +12,11 @@ for optional_input in OPTIONAL_INPUTS:
     if value:
         cutout_kwargs[optional_input] = value
 
-offset = snakemake.params.offset_degrees
 shapes = gpd.read_file(snakemake.input.shapefile)
 assert shapes.crs.is_geographic
+
+offset = snakemake.params.get("offset_degrees", 0)
+assert offset >= 0
 
 cutout = atlite.Cutout(
     path=snakemake.output.cutout,
