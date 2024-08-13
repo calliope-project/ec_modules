@@ -14,9 +14,9 @@ output:
 params:
   - module: datasets to parse in order of priority (e.g., ['era5', 'sarah']).
   - time: "str. Time range for the cutout in the format YYYY | YYYY-MM | YYYY-MM-DD"
-  - offset_degrees: extend cutout in all directions by the given amount (i.e., "enlarges" the cutout rectangle).
   - features: str | list. Features to prepare (e.g., ['wind', 'influx', 'runoff']).
   # Optional
+  - offset_degrees: extend cutout in all directions by the given amount (i.e., "enlarges" the cutout rectangle). Defaults 0.
   - cutout_kwargs: dict. Additional `Cutout` parameters.
   - prepare_kwargs: dict. Additional `prepare` parameters.
 notes: |

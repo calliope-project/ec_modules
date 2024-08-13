@@ -18,8 +18,6 @@ repos:
       - id: debug-statements
       # Config file issues
       - id: check-json
-      - id: pretty-format-json
-        args: [--autofix]
       - id: check-toml
       - id: check-yaml
 
