@@ -5,3 +5,5 @@ resolution-name: "national"
 resolution-file: https://www.dropbox.com/scl/fi/sjjisuqnzck2mhxs9jca7/units-national.geojson?rlkey=rv0q1exsytxws3gfvankbt9p7&dl=0
 first-year: 2016
 final-year: 2016
+basins:
+  HydroBASINS-level: "07"

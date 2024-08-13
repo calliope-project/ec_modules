@@ -6,7 +6,6 @@ internal_config = yaml.safe_load("""
 data-sources:
     hydro-generation: https://zenodo.org/record/5797549/files/hydro-generation.csv?download=1
     national-phs-storage-capacities: https://zenodo.org/record/5797549/files/pumped-hydro-storage-capacities-gwh.csv?download=1
-    hydro-basins: https://www.dropbox.com/sh/hmpwobbz9qixxpe/AADeU9iCgMd3ZO1KgrFmfWu6a/HydroBASINS/standard/eu/hybas_eu_lev07_v1c.zip?dl=1
     hydro-stations: https://zenodo.org/record/5215920/files/energy-modelling-toolkit/hydro-power-database-v10.zip?download=1
 
 capacity-factors:
@@ -103,17 +102,6 @@ rule download_runoff_data:
     script: "../scripts/runoff.py"
 
 
-rule download_basins_database:
-    message: "Download database of hydro basins."
-    params: url = internal_config["data-sources"]["hydro-basins"]
-    output:
-        protected("build/raw-hydro-basins.zip")
-    conda: "../envs/shell.yaml"
-    localrule: True
-    shell:
-        "curl -sSLo {output} '{params.url}'"
-
-
 rule download_stations_database:
     message: "Download database of hydro electricity stations."
     params: url = internal_config["data-sources"]["hydro-stations"]
@@ -123,15 +111,6 @@ rule download_stations_database:
     localrule: True
     shell:
         "curl -sSLo {output} '{params.url}'"
-
-
-rule basins_database:
-    message: "Unzip basins database."
-    input: rules.download_basins_database.output
-    output: "build/basins/hybas_eu_lev07_v1c.shp"
-    conda: "../envs/shell.yaml"
-    localrule: True
-    shell: "unzip {input} -d ./build/basins/"
 
 
 rule stations_database:
@@ -147,25 +126,11 @@ rule stations_database:
         """
 
 
-rule preprocess_basins:
-    message: "Preprocess basins."
-    input:
-        basins = rules.basins_database.output[0]
-    params:
-        x_min = internal_config["scope"]["spatial"]["bounds"]["x_min"],
-        x_max = internal_config["scope"]["spatial"]["bounds"]["x_max"],
-        y_min = internal_config["scope"]["spatial"]["bounds"]["y_min"],
-        y_max = internal_config["scope"]["spatial"]["bounds"]["y_max"]
-    output: "build/hybas_eu_lev07_v1c.gpkg"
-    conda: "../envs/hydro.yaml"
-    script: "../scripts/preprocess_basins.py"
-
-
 rule preprocess_hydro_stations:
     message: "Preprocess hydro stations."
     input:
         stations = rules.stations_database.output[0],
-        basins = rules.preprocess_basins.output[0],
+        basins = "results/basins/shape_preprocessed.gpkg",
         phs_storage_capacities = rules.download_pumped_hydro_data.output[0]
     params:
         buffer_size_m = internal_config["quality-control"]["hydro"]["station-nearest-basin-max-km"] * 1000,
@@ -180,7 +145,7 @@ rule inflow_m3:
     message: "Determine water inflow time series for all hydro electricity between the years {wildcards.first_year} and {wildcards.final_year}."
     input:
         stations = rules.preprocess_hydro_stations.output[0],
-        basins = rules.preprocess_basins.output[0],
+        basins = "results/basins/shape_preprocessed.gpkg",
         runoff = rules.download_runoff_data.output[0]
     output: "build/hydro-electricity-with-water-inflow-{first_year}-{final_year}.nc"
     conda: "../envs/hydro.yaml"
