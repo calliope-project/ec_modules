@@ -1,0 +1,95 @@
+# This is the default configuration of your module
+module-data-sources:
+  controlled-ev-profiles: https://zenodo.org/record/6579421/files/ramp-ev-{dataset}.csv.gz?download=1
+  uncontrolled-ev-profiles: https://sandbox.zenodo.org/records/45530/files/uncontrolled-charging-profiles.csv.gz?download=1
+  spatial-zones: "https://www.dropbox.com/scl/fi/sjjisuqnzck2mhxs9jca7/units-national.geojson?rlkey=rv0q1exsytxws3gfvankbt9p7&dl=0"
+  resolution: "national"
+parameters:
+  transport:
+      future-vehicle-efficiency-percentile: 0.25 # FIXME Why so low? Why not 0.5?
+      # FIXME road-transport-conversion-factors are redundant, as they are derived using future-vehicle-efficiency-percentile
+      road-transport-conversion-factors: # MWh / mio km 25th percentile efficiency of all countries in 2015 [@Mantzos:2017]
+        light-duty-vehicles: 480
+        heavy-duty-vehicles: 3248 # based on buses
+        coaches-and-buses: 3248
+        passenger-cars: 324
+        motorcycles: 200  # based on passenger car electrical efficiency scaled by relative diesel efficiency
+      vehicle-type-names:
+        light-duty-vehicles: Light duty vehicles
+        heavy-duty-vehicles: Heavy duty vehicles
+        coaches-and-buses: Motor coaches, buses and trolley buses
+        passenger-cars: Passenger cars
+        motorcycles: Powered 2-wheelers
+      ev-battery-sizes:
+        heavy-duty-vehicles: 0.2  # average from [@EUCAR:2019]
+        light-duty-vehicles: 0.1  # own assumption based on passenger cars from [@EUCAR:2019]
+        motorcycles: 0.01  # own assumption
+        coaches-and-buses: 0.2  # own assumption based on HDVs from [@EUCAR:2019]
+        passenger-cars: 0.08  # average from [@EUCAR:2019]
+      uncontrolled-ev-charging-share: 0.8
+      monthly-demand-bound-fraction:
+        min: 0.9
+        max: 1.1
+        equals: 1
+data-pre-processing:
+  fill-missing-values:
+    jrc-idees:
+      ALB: [BGR, HRV, HUN, ROU, GRC]
+      BIH: [BGR, HRV, HUN, ROU, GRC]
+      MNE: [BGR, HRV, HUN, ROU, GRC]
+      MKD: [BGR, HRV, HUN, ROU, GRC]
+      SRB: [BGR, HRV, HUN, ROU, GRC]
+      NOR: [SWE, DNK]
+      CHE: [DEU, AUT, FRA, ITA]
+    ramp:
+      ALB: [HRV]
+      MKD: [HRV]
+      GRC: [ROU]
+      BGR: [ROU]
+      BIH: [HRV, HUN]
+      MNE: [HRV]
+      SRB: [HUN]
+      CYP: [ROU]
+scope:
+  temporal:
+    first-year: 2016
+    final-year: 2016
+  spatial:
+    countries:
+      - "Austria"
+      - "Belgium"
+      - "Bulgaria"
+      - "Croatia"
+      - "Cyprus"
+      - "Czech Republic"
+      - "Denmark"
+      - "Estonia"
+      - "Finland"
+      - "France"
+      - "Germany"
+      - "Greece"
+      - "Hungary"
+      - "Ireland"
+      - "Italy"
+      - "Latvia"
+      - "Lithuania"
+      - "Luxembourg"
+      - "Netherlands"
+      - "Poland"
+      - "Portugal"
+      - "Romania"
+      - "Slovakia"
+      - "Slovenia"
+      - "Spain"
+      - "Sweden"
+      - "United Kingdom"
+      - "Albania"
+      - "Bosnia and Herzegovina"
+      - "North Macedonia"
+      - "Montenegro"
+      - "Norway"
+      - "Serbia"
+      - "Switzerland"
+scaling-factors: # values are tuned for models with a few hours resolution and one year duration
+    power: 0.00001 # from MW(h) to 100 GW(h)
+    transport: 0.01  # from Mio km to 100 Mio km

@@ -1,0 +1,20 @@
+import glob
+from pathlib import Path
+
+from snakemake.utils import validate, min_version, makedirs
+
+configfile: "config/config.yaml"
+
+min_version("8.10")
+
+include: "rules/transport.smk"
+include: "rules/resolution.smk"
+
+rule all:
+    message: "Generate controlled and uncontrolled vehicle timeseries."
+    localrule: True
+    default_target: True
+    input:
+        "results/timeseries/uncontrolled-electrified-road-transport.csv",
+        "results/timeseries/uncontrolled-road-transport-historic-electrification.csv",
+        "results/electrified-transport.csv"
