@@ -38,5 +38,6 @@ output/
 tmp/
 results/
 report/
+resources/jrc-idees
 
 !modules/example_module/**
