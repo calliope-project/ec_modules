@@ -10,7 +10,8 @@ def runoff(path_to_cutout, first_year, final_year, x_min, x_max, y_min, y_max):
     logging.basicConfig(level=logging.INFO)
     x_range = slice(x_min, x_max)
     y_range = slice(y_max, y_min)
-    # We need an extra initial year of data, since runoff inflow is shifted in time by atlite in `inflow_m3`
+    # We need at least a year of extra data before the initial year
+    # since runoff inflow is shifted in time by atlite in `inflow_m3`
     time_range = slice(f"{first_year - 1}-01", f"{final_year}-12")
 
     cutout = atlite.Cutout(

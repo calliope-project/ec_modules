@@ -1,3 +1,5 @@
+"""Hydrobasin processing and shape 'ribbon' removal."""
+
 import geopandas as gpd
 
 DRIVER = "GPKG"

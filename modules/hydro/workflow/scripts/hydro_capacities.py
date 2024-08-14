@@ -8,12 +8,13 @@ WGS_84 = "EPSG:4326"
 def determine_hydro_capacities(
     path_to_plants, path_to_locations, path_to_supply_output, path_to_storage_output
 ):
+    """Determine hydro capacity per region."""
     locations = gpd.read_file(path_to_locations).to_crs(WGS_84).set_index("id")
     plants = pd.read_csv(path_to_plants, index_col="id")
 
     supply_capacities = pd.concat(
         [
-            capacities_per_location(
+            _capacities_per_location(
                 plants[plants.type == tech_name.upper()].copy(),
                 locations,
                 tech_name=tech_name,
@@ -23,13 +24,13 @@ def determine_hydro_capacities(
         axis=1,
     )
     supply_capacities.to_csv(path_to_supply_output)
-    storage_capacities = capacities_per_location(
+    storage_capacities = _capacities_per_location(
         plants[plants.type == "HPHS"].copy(), locations, tech_name="hphs"
     )
     storage_capacities.to_csv(path_to_storage_output, header=True, index=True)
 
 
-def capacities_per_location(plants, locations, tech_name):
+def _capacities_per_location(plants, locations, tech_name):
     plant_centroids = gpd.GeoDataFrame(
         crs=WGS_84,
         geometry=list(map(Point, zip(plants.lon, plants.lat))),

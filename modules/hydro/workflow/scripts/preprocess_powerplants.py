@@ -1,3 +1,5 @@
+"""Powerplant data preparing and gap filling."""
+
 import geopandas as gpd
 import pandas as pd
 import pycountry
@@ -16,6 +18,7 @@ def preprocess_stations(
     scale_phs,
     path_to_output,
 ):
+    """Powerplant preprocessing."""
     stations = pd.read_csv(path_to_stations, index_col=0)
     stations = drop_kosovo(stations)
     stations = drop_stations_without_installed_capacity(stations)
@@ -30,6 +33,7 @@ def preprocess_stations(
 
 
 def resolve_index_duplicates(stations):
+    """Add extra indicators for cases were generators are listed separately."""
     stations.index = stations.index.where(
         ~stations.index.duplicated(), stations.index + "_b"
     )
@@ -37,19 +41,24 @@ def resolve_index_duplicates(stations):
     return stations.rename_axis(index="id")
 
 
+# FIXME: why are we doing this? Hydro is around 8% of the mix of Kosovo...
 def drop_kosovo(stations):
+    """Remove Kosovo from the list."""
     return stations.where(stations.country_code != "XK").dropna(
         axis="index", subset=["country_code"]
     )
 
 
+# TODO: should be adjusted to operate within the given shape(s) instead.
 def drop_out_of_scope(stations, country_codes):
+    """Remove countries outside of the given list."""
     return stations.where(stations.country_code.isin(country_codes)).dropna(
         axis="index", subset=["country_code"]
     )
 
 
 def fill_missing_storage_capacity_values(stations):
+    """Fill empty storage values in the JRC dataset."""
     for mask in [stations.type == "HDAM", stations.type == "HPHS"]:
         stations.loc[mask, "storage_capacity_MWh"] = (
             estimate_missing_storage_capacity_values(stations.loc[mask])
@@ -58,7 +67,11 @@ def fill_missing_storage_capacity_values(stations):
 
 
 def estimate_missing_storage_capacity_values(stations):
-    # ASSUME country specific median E/P ratio for missing values, global median where no country specific available
+    """Estimate missing storage capacity.
+
+    ASSUME: country specific median E/P ratio for missing values, global median where
+    no country specific available.
+    """
     e_to_p = stations.storage_capacity_MWh / stations.installed_capacity_MW
     based_on_global = e_to_p.median() * stations.installed_capacity_MW
     based_on_country_specific = (
@@ -78,14 +91,11 @@ def estimate_missing_storage_capacity_values(stations):
 
 
 def scale_phs_acording_to_geth(stations, path_to_geth_national_capacities):
-    """Scale PHS storage capacities to match (Geth et al., 2015).
+    """Scale PHS storage capacities to match Geth et al., 2015.
 
     Storage capacities of pumped hydro within the JRC database may seem too high.
-    Thus, they are scaled here so that the national numbers of (Geth et al., 2015) are fulfilled.
-
-    Geth, F., Brijs, T., Kathan, J., Driesen, J., Belmans, R., 2015. An overview of large-scale
-    stationary electricity storage plants in Europe: Current status and new developments. Renewable
-    and Sustainable Energy Reviews 52, 1212–1227. https://doi.org/10.1016/j.rser.2015.07.145
+    Thus, they are scaled here so that the national numbers of Geth et al., 2015 are
+    fulfilled.
     """
     hphs_mask = stations.type == "HPHS"
     storage_capacity_share = (
@@ -104,12 +114,14 @@ def scale_phs_acording_to_geth(stations, path_to_geth_national_capacities):
 
 
 def read_national_phs_storage_capacities(path_to_data):
+    """Make the PHS datastet unit-compatible."""
     data = pd.read_csv(path_to_data, index_col=0)
     data.index = data.index.map(utils.eu_country_code_to_iso3)
     return data["storage-capacity-gwh"].mul(1000).rename("storage_capacity_mwh")
 
 
 def drop_stations_without_installed_capacity(stations):
+    """Remove stations with no capacity, ensure the dropped stations are below max."""
     assert (
         stations.installed_capacity_MW.isna().sum()
         <= MAXIMUM_NUMBER_OF_DROPPED_STATIONS
@@ -118,6 +130,7 @@ def drop_stations_without_installed_capacity(stations):
 
 
 def fix_station_country_code(stations):
+    """Convert country codes to our standard ISO alpha 3 format."""
     stations["country_code"] = stations.country_code.apply(
         utils.eu_country_code_to_iso3
     )
@@ -125,6 +138,8 @@ def fix_station_country_code(stations):
 
 
 def station_in_any_basin(basins):
+    """Find stations within basins."""
+
     def station_in_any_basin(station):
         return basins.geometry.intersects(station.geometry).sum() > 0
 
@@ -132,6 +147,7 @@ def station_in_any_basin(basins):
 
 
 def ensure_stations_within_basins(stations, path_to_basins, buffer_size_m):
+    """Stations should correspond to hydrological basins."""
     geo_stations = gpd.GeoDataFrame(
         stations.copy(),
         geometry=gpd.points_from_xy(stations["lon"], stations["lat"]),
@@ -151,6 +167,7 @@ def ensure_stations_within_basins(stations, path_to_basins, buffer_size_m):
 
 
 def new_coords(station, buffer_size_m, hydrobasins):
+    """Adjust powerplant location to correspond with the closest basin."""
     point = station.geometry
     basin_id = hydrobasins.distance(point).idxmin()
     closest_basin = hydrobasins.loc[basin_id]

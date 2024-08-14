@@ -1,3 +1,5 @@
+"""Use atlite to calculate water inflow timeseries."""
+
 import atlite
 import geopandas as gpd
 import pandas as pd
@@ -14,9 +16,10 @@ def determine_water_inflow(
     final_year,
     path_to_output,
 ):
-    plants = read_plants(path_to_stations)
+    """Determine water inflow timeseries for all plants."""
+    plants = _read_plants(path_to_stations)
 
-    inflow_m3 = water_inflow(plants, path_to_cutout, path_to_basins)
+    inflow_m3 = _water_inflow(plants, path_to_cutout, path_to_basins)
     (
         xr.merge([plants.to_xarray(), inflow_m3])
         .drop("geometry")
@@ -25,7 +28,7 @@ def determine_water_inflow(
     )
 
 
-def read_plants(path_to_stations):
+def _read_plants(path_to_stations):
     plants = pd.read_csv(path_to_stations, index_col=0)
     plants["country_code"] = plants["country_code"].map(
         lambda iso2: pycountry.countries.lookup(iso2).alpha_3
@@ -36,7 +39,7 @@ def read_plants(path_to_stations):
     )
 
 
-def water_inflow(plants, path_to_cutout, path_to_basins):
+def _water_inflow(plants, path_to_cutout, path_to_basins):
     cutout = atlite.Cutout(path=path_to_cutout)
     inflow = cutout.hydro(plants, path_to_basins).rename(plant="id").rename("inflow_m3")
     return inflow

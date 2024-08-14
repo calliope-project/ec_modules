@@ -1,10 +1,12 @@
+"""Generate hydro power time series."""
+
 import numpy as np
 import pandas as pd
 import xarray as xr
 from scipy.optimize import minimize
 
 
-def determine_energy_inflow(
+def _determine_energy_inflow(
     path_to_stations_with_water_inflow,
     path_to_generation,
     first_year,
@@ -17,7 +19,7 @@ def determine_energy_inflow(
         [
             energy_inflow(
                 plants_with_inflow_m3.sel(time=str(year)),
-                read_generation(path_to_generation, year),
+                _read_generation(path_to_generation, year),
                 max_capacity_factor,
             )
             for year in range(first_year, final_year + 1)
@@ -26,7 +28,7 @@ def determine_energy_inflow(
     xr.merge([plants_with_inflow_m3, inflow_MWh]).to_netcdf(path_to_output)
 
 
-def read_generation(path_to_generation, year):
+def _read_generation(path_to_generation, year):
     return (
         pd.read_csv(path_to_generation, index_col=[0, 1])
         .loc[:, "generation_gwh"]
@@ -57,7 +59,7 @@ def energy_inflow(
     factors can be as small as 1e-3, than a capacity factor of 1e1 means a numerical
     range of 10e5 which is large. Uncapped, capacity factors are up to 1e2.
     """
-    # ASSUME national fixed capacity / annual generation ratio for run of river and dammed hydro
+    # ASSUME national fixed capacity / annual generation ratio for RoR and dammed hydro
     # ASSUME dammed hydro never spills water
     # ASSUME dammed hydro inflow is limited
     annual_generation_MWh = allocate_generation_to_plant(
@@ -76,13 +78,13 @@ def energy_inflow(
     for plant_id in [id.item() for id in plants_with_inflow_m3.id]:
         plant = plants_with_inflow_m3.sel(id=plant_id)
         if plant.type.item() == "HROR":
-            inflow_MWh.loc[{"id": plant_id}] = water_to_capped_energy_inflow(
+            inflow_MWh.loc[{"id": plant_id}] = _water_to_capped_energy_inflow(
                 inflow_m3=plant.inflow_m3,
                 annual_generation=annual_generation_MWh.loc[plant_id],
                 cap=plant.installed_capacity_MW.item(),
             )
         elif plant.type.item() == "HDAM":
-            inflow_MWh.loc[{"id": plant_id}] = water_to_capped_energy_inflow(
+            inflow_MWh.loc[{"id": plant_id}] = _water_to_capped_energy_inflow(
                 inflow_m3=plant.inflow_m3,
                 annual_generation=annual_generation_MWh.loc[plant_id],
                 cap=plant.installed_capacity_MW.item() * max_capacity_factor,
@@ -90,7 +92,7 @@ def energy_inflow(
     return inflow_MWh
 
 
-def water_to_capped_energy_inflow(inflow_m3, annual_generation, cap):
+def _water_to_capped_energy_inflow(inflow_m3, annual_generation, cap):
     assert annual_generation <= cap * 8760
 
     def generation(scaling_factor):
@@ -110,10 +112,14 @@ def water_to_capped_energy_inflow(inflow_m3, annual_generation, cap):
 
 
 def allocate_generation_to_plant(plants, annual_national_generation_mwh):
+    """Plant generation estimation.
+
+    Also re-scales capacity share to account for zero timestep errors in inflow data.
+    """
     inflows = plants.inflow_m3.to_pandas().fillna(0)
     plants = plants[["country_code", "installed_capacity_MW"]].to_dataframe()
 
-    # Capacity share is scaled to account for erroneous zero timesteps in the inflow data
+    # Re-scale capacity share to account for erroneous zero timesteps in the inflow data
     inflow_count = inflows.where(inflows > 1).count(axis=1) / inflows.count(axis=1)
     capacity_share = (
         plants.assign(
@@ -138,7 +144,7 @@ def allocate_generation_to_plant(plants, annual_national_generation_mwh):
 
 
 if __name__ == "__main__":
-    determine_energy_inflow(
+    _determine_energy_inflow(
         path_to_stations_with_water_inflow=snakemake.input.stations,
         path_to_generation=snakemake.input.generation,
         first_year=int(snakemake.wildcards.first_year),

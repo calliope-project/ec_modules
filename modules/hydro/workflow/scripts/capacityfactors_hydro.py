@@ -1,8 +1,11 @@
+"""Capacity factor calculation for hydropower basin and run-of-river plants."""
+
 import geopandas as gpd
 import pandas as pd
 import xarray as xr
 from shapely.geometry import Point
 
+# CRS configuration, corresponds to EPSG:4326
 WGS_84 = "+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs"
 
 
@@ -14,6 +17,7 @@ def main(
     path_to_ror,
     path_to_reservoir,
 ):
+    """Process capacity factors for each plant type."""
     locations = gpd.read_file(path_to_locations).to_crs(WGS_84).set_index("id")
     capacities = pd.read_csv(path_to_capacities, index_col=0)
     plants = xr.open_dataset(path_to_hydro_stations)
@@ -32,6 +36,7 @@ def main(
 
 
 def time_series(plants, locations, capacities):
+    """Calulate the capacity factors for a given technology."""
     plant_centroids = gpd.GeoDataFrame(
         crs=WGS_84,
         geometry=list(map(Point, zip(plants.lon, plants.lat))),
