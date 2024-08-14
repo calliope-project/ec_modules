@@ -36,7 +36,7 @@ def main(
 
 
 def time_series(plants, locations, capacities):
-    """Calulate the capacity factors for a given technology."""
+    """Calculate the capacity factors for a given technology."""
     plant_centroids = gpd.GeoDataFrame(
         crs=WGS_84,
         geometry=list(map(Point, zip(plants.lon, plants.lat))),
