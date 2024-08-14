@@ -20,8 +20,6 @@ rule hydrobasin_download:
         "curl -sSLo {output} '{params.prefix}{wildcards.continent}{params.suffix}' "
 
 
-def zip_filepath(wildcards):
-    return f"hybas_{wildcards.continent}_lev{config["basins"]["HydroBASINS_level"]}_v1c.shp"
 rule hydrobasin_zip_extract:
     message: "Extract requested basin resolution level."
     input:
@@ -30,7 +28,7 @@ rule hydrobasin_zip_extract:
         shapefile = "results/basins/raw_shape_{continent}.geojson",
         plot_shapefile = "results/basins/plots/basin_{continent}.png"
     params:
-        zip_filepath = zip_filepath,
+        zip_filepath = lambda wc: f"hybas_{wc.continent}_lev"+config["basins"]["HydroBASINS_level"]+"_v1c.shp"
     wrapper: "v0.0.1/wrappers/geopandas/zip-extraction"
 
 # FIXME: unclear if necessary. Might be distorting results?
