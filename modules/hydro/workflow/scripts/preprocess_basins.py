@@ -4,7 +4,7 @@ DRIVER = "GPKG"
 
 
 def preprocess_basins(path_to_basins, bbox, path_to_output):
-    "Filter and fix basin shapes."
+    """Filter and fix basin shapes."""
     basins = gpd.read_file(path_to_basins, bbox=bbox)
     basins.geometry = basins.geometry.map(_buffer_if_necessary)
     basins.to_file(path_to_output, driver=DRIVER)

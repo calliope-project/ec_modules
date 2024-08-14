@@ -13,14 +13,16 @@ def determine_energy_inflow(
     path_to_output,
 ):
     plants_with_inflow_m3 = xr.open_dataset(path_to_stations_with_water_inflow)
-    inflow_MWh = xr.merge([
-        energy_inflow(
-            plants_with_inflow_m3.sel(time=str(year)),
-            read_generation(path_to_generation, year),
-            max_capacity_factor,
-        )
-        for year in range(first_year, final_year + 1)
-    ])
+    inflow_MWh = xr.merge(
+        [
+            energy_inflow(
+                plants_with_inflow_m3.sel(time=str(year)),
+                read_generation(path_to_generation, year),
+                max_capacity_factor,
+            )
+            for year in range(first_year, final_year + 1)
+        ]
+    )
     xr.merge([plants_with_inflow_m3, inflow_MWh]).to_netcdf(path_to_output)
 
 
