@@ -87,31 +87,21 @@ rule download_pumped_hydro_data:
 
 rule powerplants_download:
     message: "Download the JRC hydro-power-database."
-    params: url = internal_config["data-sources"]["hydro-stations"]
-    output: temp("results/downloads/powerplants.zip")
-    conda: "../envs/shell.yaml"
-    localrule: True
-    shell:
-        "curl -sSLo {output} '{params.url}'"
-
-
-rule powerplants_unzip:
-    message: "Unzip the JRC hydro-power-database."
-    input: rules.powerplants_download.output
+    params:
+        prefix = "https://github.com//energy-modelling-toolkit/hydro-power-database/raw/",
+        version = config["hydro_power_database_version"],
+        suffix = "/data/jrc-hydro-power-plant-database.csv"
     output: "results/downloads/jrc-hydro-power-plant-database.csv"
-    shadow: "full"
     conda: "../envs/shell.yaml"
     localrule: True
     shell:
-        """
-        unzip -j {input} "**/jrc-hydro-power-plant-database.csv" -d results/downloads
-        """
+        "curl -sSLo {output} '{params.prefix}{params.version}{params.suffix}'"
 
 
 rule preprocess_powerplants:
     message: "Preprocess hydro stations."
     input:
-        stations = rules.powerplants_unzip.output[0],
+        stations = rules.powerplants_download.output[0],
         basins = "results/basins/preprocessed_shape_eu.gpkg",
         phs_storage_capacities = rules.download_pumped_hydro_data.output[0]
     params:
