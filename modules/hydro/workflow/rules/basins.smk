@@ -21,7 +21,7 @@ rule hydrobasin_download:
 
 
 def zip_filepath(wildcards):
-    return f"hybas_{wildcards.continent}_lev{config["basins"]["HydroBASINS-level"]}_v1c.shp"
+    return f"hybas_{wildcards.continent}_lev{config["basins"]["HydroBASINS_level"]}_v1c.shp"
 rule hydrobasin_zip_extract:
     message: "Extract requested basin resolution level."
     input:

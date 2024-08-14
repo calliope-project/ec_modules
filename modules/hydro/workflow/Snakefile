@@ -13,7 +13,7 @@ wildcard_constraints:
 rule shapes:
     message: "Download spatial zones for {wildcards.resolution}."
     params:
-        url = config["resolution-file"],
+        url = config["resolution_file"],
     output: "results/{resolution}/shapes.geojson"
     conda: "./envs/shell.yaml"
     shell: "curl -sSLo {output} '{params.url}'"
@@ -27,13 +27,13 @@ rule all:
     input:
         expand("results/{resolution}/{first_year}-{final_year}/capacity-factors-run-of-river.csv",
             zip,
-            resolution=config["resolution-name"],
-            first_year=config["first-year"],
-            final_year=config["final-year"]),
+            resolution=config["resolution_name"],
+            first_year=config["first_year"],
+            final_year=config["final_year"]),
         expand("results/{resolution}/{first_year}-{final_year}/capacity-factors-reservoir.csv",
             zip,
-            resolution=config["resolution-name"],
-            first_year=config["first-year"],
-            final_year=config["final-year"]),
-        expand("results/{resolution}/supply-hydro.csv", resolution=config["resolution-name"]),
-        expand("results/{resolution}/storage-hydro.csv", resolution=config["resolution-name"]),
+            resolution=config["resolution_name"],
+            first_year=config["first_year"],
+            final_year=config["final_year"]),
+        expand("results/{resolution}/supply-hydro.csv", resolution=config["resolution_name"]),
+        expand("results/{resolution}/storage-hydro.csv", resolution=config["resolution_name"]),
