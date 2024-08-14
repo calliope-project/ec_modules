@@ -4,5 +4,5 @@ channels:
     - bioconda
 dependencies:
     - python=3.11
-    - pycountry=18.12.8
+    # - pycountry=18.12.8
     - snakemake-minimal=8.10.7

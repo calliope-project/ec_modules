@@ -10,11 +10,11 @@ configfile: "./config/default.yaml"
 wildcard_constraints:
     resolution = "[a-zA-Z]+"
 
-rule units:
+rule shapes:
     message: "Download spatial zones for {wildcards.resolution}."
     params:
         url = config["resolution-file"],
-    output: "results/{resolution}/units.geojson"
+    output: "results/{resolution}/shapes.geojson"
     conda: "./envs/shell.yaml"
     shell: "curl -sSLo {output} '{params.url}'"
 
@@ -25,11 +25,13 @@ rule all:
     localrule: True
     default_target: True
     input:
-        expand("results/{resolution}/capacityfactors-hydro-run-of-river-{first_year}-{final_year}.csv",
+        expand("results/{resolution}/{first_year}-{final_year}/capacity-factors-run-of-river.csv",
+            zip,
             resolution=config["resolution-name"],
             first_year=config["first-year"],
             final_year=config["final-year"]),
-        expand("results/{resolution}/capacityfactors-hydro-reservoir-{first_year}-{final_year}.csv",
+        expand("results/{resolution}/{first_year}-{final_year}/capacity-factors-reservoir.csv",
+            zip,
             resolution=config["resolution-name"],
             first_year=config["first-year"],
             final_year=config["final-year"]),
