@@ -36,9 +36,9 @@ rule download_uncontrolled_timeseries:
 rule download_jrc_transport_road:
     message: "Get tidy JRC data for road transport."
     params:
-        distance = config["data-sources"]["jrc-idees"]["transport-road-distance"],
-        energy = config["data-sources"]["jrc-idees"]["transport-road-energy"],
-        vehicles = config["data-sources"]["jrc-idees"]["transport-road-vehicles"]
+        distance_url = config["data-sources"]["jrc-idees"]["transport-road-distance"],
+        energy_url = config["data-sources"]["jrc-idees"]["transport-road-energy"],
+        vehicles_url = config["data-sources"]["jrc-idees"]["transport-road-vehicles"]
     conda: "../envs/shell.yaml"
     output:
         distance = "results/downloads/jrc-idees-transport-road-distance.csv",
@@ -47,7 +47,18 @@ rule download_jrc_transport_road:
     localrule: True
     shell:
         """
-        curl -sSLo '{output.distance}' '{params.distance}'
-        curl -sSLo '{output.energy}' '{params.energy}'
-        curl -sSLo '{output.vehicles}' '{params.vehicles}'
+        curl -sSLo '{output.distance}' '{params.distance_url}'
+        curl -sSLo '{output.energy}' '{params.energy_url}'
+        curl -sSLo '{output.vehicles}' '{params.vehicles_url}'
         """
+
+
+rule download_annual_energy_balances:
+    message: "Get tidy annual energy balance data for European countries."
+    params:
+        url = config["data-sources"]["annual-energy-balances"]
+    conda: "../envs/shell.yaml"
+    output:
+        balances = "results/downloads/annual-energy-balances.csv"
+    localrule: True
+    shell: "curl -sSLo '{output.balances}' '{params.url}'"

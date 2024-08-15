@@ -3,9 +3,9 @@
 rule annual_transport_demand:
     message: "Calculate future transport energy demand based on JRC IDEES"
     input:
-        energy_balances = "resources/annual-energy-balances.csv",
-        jrc_road_energy = "resources/jrc-idees/processed-road-energy.csv",
-        jrc_road_distance = "resources/jrc-idees/processed-road-distance.csv",
+        energy_balances = "results/downloads/annual-energy-balances.csv",
+        jrc_road_energy = "results/downloads/jrc-idees-transport-road-energy.csv",
+        jrc_road_distance = "results/downloads/jrc-idees-transport-road-distance.csv",
     params:
         fill_missing_values = config["data-pre-processing"]["fill-missing-values"]["jrc-idees"],
         efficiency_quantile = config["parameters"]["transport"]["future-vehicle-efficiency-percentile"],
@@ -22,8 +22,8 @@ rule create_controlled_road_transport_annual_demand_and_installed_capacities:
     message: "Create annual demand for controlled charging and corresponding charging potentials at a given resolution"
     input:
         annual_controlled_demand = "results/downloads/annual-road-transport-distance-demand-controlled.csv",
-        ev_vehicle_number = "resources/jrc-idees/processed-road-vehicles.csv",
-        jrc_road_distance = "resources/jrc-idees/processed-road-distance.csv",
+        ev_vehicle_number = "results/downloads/jrc-idees-transport-road-vehicles.csv",
+        jrc_road_distance = "results/downloads/jrc-idees-transport-road-distance.csv",
         locations = "results/downloads/units.csv",
         populations = expand("resources/population/population_{resolution}.csv", resolution=config["data-sources"]["resolution"]),  #FIXME: temporary hack
     params:

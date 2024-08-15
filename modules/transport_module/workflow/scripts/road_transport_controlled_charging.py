@@ -120,6 +120,7 @@ def reshape_and_add_suffix(df, suffix):
 
 
 if __name__ == "__main__":
+
     resolution = snakemake.params.resolution
 
     path_to_controlled_annual_demand = snakemake.input.annual_controlled_demand

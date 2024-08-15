@@ -70,9 +70,7 @@ def create_road_transport_demand_timeseries(
 def fill_empty_country(df, country_neighbour_dict):
     for country, neighbours in country_neighbour_dict.items():
         if country in df.columns:
-            print(f"Country {country} is already in dataframe")
             continue
-        print(f"Country {country} is not in dataframe, filling with neighbours")
         df[country] = df[neighbours].mean(axis=1)
     return df
 

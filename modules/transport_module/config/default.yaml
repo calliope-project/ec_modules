@@ -4,6 +4,7 @@ data-sources:
   uncontrolled-ev-profiles: https://sandbox.zenodo.org/records/45530/files/uncontrolled-charging-profiles.csv.gz?download=1
   resolution: "national"
   spatial-zones: "https://www.dropbox.com/scl/fi/sjjisuqnzck2mhxs9jca7/units-national.geojson?rlkey=rv0q1exsytxws3gfvankbt9p7&dl=0"
+  annual-energy-balances: https://surfdrive.surf.nl/files/index.php/s/5VUl2qZcThf2oL6/download
   jrc-idees:
     transport-road-distance: https://surfdrive.surf.nl/files/index.php/s/8JCUB0oSDLsm4TA/download
     transport-road-energy: https://surfdrive.surf.nl/files/index.php/s/CTEMENWJBseI7g8/download
@@ -89,7 +90,7 @@ scope:
       - "United Kingdom"
       - "Albania"
       - "Bosnia and Herzegovina"
-      - "North Macedonia"
+      - "Macedonia, Republic of"
       - "Montenegro"
       - "Norway"
       - "Serbia"
