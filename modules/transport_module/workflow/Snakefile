@@ -3,10 +3,11 @@ from pathlib import Path
 
 from snakemake.utils import validate, min_version, makedirs
 
-configfile: "config/config.yaml"
+configfile: "config/default.yaml"
 
 min_version("8.10")
 
+include: "rules/downloads.smk"
 include: "rules/transport.smk"
 include: "rules/resolution.smk"
 

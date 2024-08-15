@@ -1,9 +1,13 @@
 # This is the default configuration of your module
-module-data-sources:
+data-sources:
   controlled-ev-profiles: https://zenodo.org/record/6579421/files/ramp-ev-{dataset}.csv.gz?download=1
   uncontrolled-ev-profiles: https://sandbox.zenodo.org/records/45530/files/uncontrolled-charging-profiles.csv.gz?download=1
-  spatial-zones: "https://www.dropbox.com/scl/fi/sjjisuqnzck2mhxs9jca7/units-national.geojson?rlkey=rv0q1exsytxws3gfvankbt9p7&dl=0"
   resolution: "national"
+  spatial-zones: "https://www.dropbox.com/scl/fi/sjjisuqnzck2mhxs9jca7/units-national.geojson?rlkey=rv0q1exsytxws3gfvankbt9p7&dl=0"
+  jrc-idees:
+    transport-road-distance: https://surfdrive.surf.nl/files/index.php/s/8JCUB0oSDLsm4TA/download
+    transport-road-energy: https://surfdrive.surf.nl/files/index.php/s/CTEMENWJBseI7g8/download
+    transport-road-vehicles: https://surfdrive.surf.nl/files/index.php/s/RACqwmERzUDDUrv/download
 parameters:
   transport:
       future-vehicle-efficiency-percentile: 0.25 # FIXME Why so low? Why not 0.5?
