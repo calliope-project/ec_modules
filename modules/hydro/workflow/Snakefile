@@ -10,11 +10,12 @@ configfile: "./config/default.yaml"
 wildcard_constraints:
     resolution = "[a-zA-Z]+"
 
-rule shapes:
+rule download_shapes:
     message: "Download spatial zones for {wildcards.resolution}."
     params:
         url = config["resolution_file"],
-    output: "results/{resolution}/shapes.geojson"
+    output:
+        shapefile = "results/{resolution}/shapes.geojson"
     conda: "./envs/shell.yaml"
     shell: "curl -sSLo {output} '{params.url}'"
 

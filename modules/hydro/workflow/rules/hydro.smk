@@ -75,10 +75,11 @@ rule download_hydro_generation_data:
         "curl -sSLo {output} '{params.url}'"
 
 
-rule download_pumped_hydro_data:
+rule download_pumped_hydro_storage_capacity:
     message: "Download database of pumped hydro storage capacity data."
     params: url = internal_config["data-sources"]["national-phs-storage-capacities"]
-    output: "results/downloads/pumped-hydro-storage-capacities-gwh.csv"
+    output:
+        database = "results/downloads/pumped-hydro-storage-capacities-gwh.csv"
     conda: "../envs/shell.yaml"
     localrule: True
     shell:
@@ -91,21 +92,22 @@ rule powerplants_download:
         prefix = "https://github.com//energy-modelling-toolkit/hydro-power-database/raw/",
         version = config["hydro_power_database_version"],
         suffix = "/data/jrc-hydro-power-plant-database.csv"
-    output: "results/downloads/jrc-hydro-power-plant-database.csv"
+    output:
+        database = "results/downloads/jrc-hydro-power-plant-database.csv"
     conda: "../envs/shell.yaml"
     localrule: True
     shell:
         "curl -sSLo {output} '{params.prefix}{params.version}{params.suffix}'"
 
-
+M_TO_KM = 1000
 rule preprocess_powerplants:
     message: "Preprocess hydro stations."
     input:
-        stations = rules.powerplants_download.output[0],
+        stations = rules.powerplants_download.output.database,
         basins = "results/basins/preprocessed_shape_eu.gpkg",
-        phs_storage_capacities = rules.download_pumped_hydro_data.output[0]
+        phs_storage_capacities = rules.download_pumped_hydro_storage_capacity.output.database
     params:
-        buffer_size_m = internal_config["quality-control"]["hydro"]["station-nearest-basin-max-km"] * 1000,
+        buffer_size_m = internal_config["quality-control"]["hydro"]["station-nearest-basin-max-km"] * M_TO_KM,
         countries = internal_config["scope"]["spatial"]["countries"],
         scale_phs = internal_config["quality-control"]["hydro"]["scale-phs-according-to-geth-et-al"]
     output: "results/jrc-hydro-power-plant-database-preprocessed.csv"
@@ -116,8 +118,8 @@ rule preprocess_powerplants:
 rule hydro_capacities:
     message: "Determine hydro capacities on {wildcards.resolution} resolution."
     input:
-        locations = rules.shapes.output[0],
-        plants = rules.preprocess_powerplants.output[0]
+        locations = "results/{resolution}/shapes.geojson",
+        plants = "results/jrc-hydro-power-plant-database-preprocessed.csv"
     output:
         supply = "results/{resolution}/supply-hydro.csv",
         storage = "results/{resolution}/storage-hydro.csv"
@@ -143,7 +145,7 @@ rule prepare_runoff_cutout:
 rule inflow_m3:
     message: "Determine water inflow time series for all hydro electricity between the years {wildcards.first_year} and {wildcards.final_year}."
     input:
-        stations = rules.preprocess_powerplants.output[0],
+        stations = "results/jrc-hydro-power-plant-database-preprocessed.csv",
         basins = "results/basins/preprocessed_shape_eu.gpkg",
         runoff = "results/{resolution}/{first_year}-{final_year}/cutout.nc"
     output: "results/{resolution}/{first_year}-{final_year}/hydro-electricity-water-inflow.nc"
@@ -157,7 +159,7 @@ rule inflow_mwh:
     message: "Determine energy inflow time series for all hydro electricity between the years {wildcards.first_year} and {wildcards.final_year}."
     input:
         stations = "results/{resolution}/{first_year}-{final_year}/hydro-electricity-water-inflow.nc",
-        generation = rules.download_hydro_generation_data.output[0]
+        generation = "results/downloads/hydro-generation.csv"
     params:
         max_capacity_factor = internal_config["capacity-factors"]["max"]
     output: "results/{resolution}/{first_year}-{final_year}/hydro-electricity-with-energy-inflow.nc"
@@ -171,9 +173,9 @@ rule inflow_mwh:
 rule capacity_factors_hydro:
     message: "Generate capacityfactor time series for hydro electricity on {wildcards.resolution} resolution."
     input:
-        capacities = rules.hydro_capacities.output.supply,
+        capacities = "results/{resolution}/supply-hydro.csv",
         stations = "results/{resolution}/{first_year}-{final_year}/hydro-electricity-with-energy-inflow.nc",
-        locations = rules.shapes.output[0]
+        locations = "results/{resolution}/shapes.geojson"
     params:
         threshold = internal_config["capacity-factors"]["min"]
     output:
