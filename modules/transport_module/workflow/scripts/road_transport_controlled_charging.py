@@ -1,6 +1,6 @@
 import pandas as pd
 import pycountry
-
+from contextlib import suppress
 
 def scale_to_regional_resolution(df, region_country_mapping, populations):
     """
@@ -73,14 +73,18 @@ def extract_national_ev_charging_potentials(
     conversion_factors: dict[str, float],
     battery_sizes: dict[str, float],
     country_codes: list[str],
+    fill_missing_values: dict[str, str],
+    populations: pd.DataFrame
 ) -> pd.DataFrame:
     # Extract number of EVs per vehicle type
     df_ev_numbers = (
         pd.read_csv(path_to_ev_numbers, index_col=[0, 1, 2, 3, 4])
+        .groupby(["vehicle_type","country_code","year"])["value"].sum()
         .squeeze()
-        .droplevel(["vehicle_subtype", "section"])
     )
     assert not df_ev_numbers.isnull().values.any()
+
+    df_ev_numbers = fill_missing_countries_and_years(df_ev_numbers, fill_missing_values, populations)
     # Compute max. distance travelled per full battery for one EV [in Mio km / vehicle]
     battery_size = pd.DataFrame.from_dict(
         {
@@ -119,6 +123,57 @@ def reshape_and_add_suffix(df, suffix):
     return df.T.add_suffix(suffix)
 
 
+def fill_missing_countries_and_years(
+    df_ev_numbers: pd.DataFrame, fill_missing_values: dict, populations: pd.DataFrame
+) -> pd.DataFrame:
+    # Ensure the MultiIndex is in the correct order
+    df_ev_numbers_ext = {}
+
+    df_road_vehicles = df_ev_numbers.reset_index()
+
+    # Compute the vehicle per capita, proxy to assign the number of vehicles to missing countries.
+    populations.index.name = 'country_code'
+    df_vehicle_per_capita = df_road_vehicles.merge(populations["population_sum"], left_on='country_code', right_index=True)
+    df_vehicle_per_capita['value_per_capita'] = df_vehicle_per_capita['value'] / df_vehicle_per_capita['population_sum']
+
+    df_vehicle_per_capita = (
+        df_vehicle_per_capita
+        .drop(columns=["value", "population_sum"])
+        .groupby(["vehicle_type","country_code","year"])["value_per_capita"]
+        .mean()
+    )
+
+    vehicle_types = df_ev_numbers.index.get_level_values('vehicle_type').unique()
+
+    for vehicle in vehicle_types:
+        df_vehicle_per_capita_type = df_vehicle_per_capita.xs(vehicle, level='vehicle_type')
+        df_ev_numbers_type = df_ev_numbers.xs(vehicle, level='vehicle_type')
+
+        df_ev_numbers_type = df_ev_numbers_type.unstack("country_code")
+        df_vehicle_per_capita_type = df_vehicle_per_capita_type.unstack("country_code")
+
+        with suppress(
+            KeyError
+        ):  # it's fine. Just checking there is no MultiIndex in the columns
+            df_ev_numbers_type = df_ev_numbers_type.loc[:, "value"]
+        for country, neighbors in fill_missing_values.items():
+            df_vehicle_per_capita_type = df_vehicle_per_capita_type.assign(**{country: df_vehicle_per_capita_type[neighbors].mean(axis=1)})
+            df_ev_numbers_type = df_ev_numbers_type.assign(**{country: df_vehicle_per_capita_type[country].mul(populations.loc[country,"population_sum"])})
+
+        df_ev_numbers_type = df_ev_numbers_type.stack().unstack("year")
+        df_ev_numbers_type = df_ev_numbers_type.assign(**{
+            str(year): df_ev_numbers_type[2015] for year in range(2016, 2019)
+        })
+        df_ev_numbers_type.columns = df_ev_numbers_type.columns.astype(int)
+        df_ev_numbers_type = df_ev_numbers_type.unstack().reset_index()
+        df_ev_numbers_type["vehicle_type"] = vehicle
+        df_ev_numbers_ext[vehicle] = df_ev_numbers_type
+
+    df_road_vehicle = pd.concat(df_ev_numbers_ext.values())
+    df_road_vehicle = df_road_vehicle.set_index(['country_code','year','vehicle_type'])[0]
+
+    return df_road_vehicle
+
 if __name__ == "__main__":
     resolution = snakemake.params.resolution
 
@@ -140,6 +195,7 @@ if __name__ == "__main__":
     battery_sizes = snakemake.params.battery_sizes
     transport_scaling_factor = snakemake.params.transport_scaling_factor
     path_to_ev_numbers = snakemake.input.ev_vehicle_number
+    fill_missing_values = snakemake.params.fill_missing_values
 
     #  Convert annual distance driven demand to electricity demand for controlled charging
     df_demand = convert_annual_distance_to_electricity_demand(
@@ -160,6 +216,8 @@ if __name__ == "__main__":
         conversion_factors,
         battery_sizes,
         country_codes,
+        fill_missing_values,
+        populations
     )
 
     # Add prefix for yaml template
