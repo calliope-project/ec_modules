@@ -25,7 +25,7 @@ rule create_controlled_road_transport_annual_demand_and_installed_capacities:
         ev_vehicle_number = "results/downloads/jrc-idees-transport-road-vehicles.csv",
         jrc_road_distance = "results/downloads/jrc-idees-transport-road-distance.csv",
         locations = "results/downloads/units.csv",
-        populations = expand("resources/population/population_{resolution}.csv", resolution=config["data-sources"]["resolution"]),  #FIXME: temporary hack
+         populations = f"resources/population/population_{config["data-sources"]["resolution"]}.csv"  # FIXME: temporary hack
     params:
         first_year = config["scope"]["temporal"]["first-year"],
         final_year = config["scope"]["temporal"]["final-year"],
@@ -34,7 +34,7 @@ rule create_controlled_road_transport_annual_demand_and_installed_capacities:
         battery_sizes = config["parameters"]["transport"]["ev-battery-sizes"],
         conversion_factors = config["parameters"]["transport"]["road-transport-conversion-factors"],
         countries = config["scope"]["spatial"]["countries"],
-        country_neighbour_dict = config["data-pre-processing"]["fill-missing-values"]["ramp"],
+        fill_missing_values = config["data-pre-processing"]["fill-missing-values"]["jrc-idees"],
         resolution = config["data-sources"]["resolution"] #FIXME: temporary hack
     conda: "../envs/default.yaml"
     output:
@@ -45,9 +45,9 @@ rule create_controlled_road_transport_annual_demand_and_installed_capacities:
 rule create_controlled_ev_charging_parameters:
     message: "Create timeseries parameters {wildcards.dataset_name} for controlled EV charging at a given resolution"
     input:
-        ev_profiles = lambda wildcards: "results/downloads/ramp-ev-consumption-profiles.csv.gz" if "demand" in wildcards.dataset_name else f"results/downloads/ramp-ev-{wildcards.dataset_name}.csv.gz",
+        ev_profiles = lambda wildcards: "results/downloads/ramp-ev-consumption-profiles.csv.gz" if "demand" in wildcards.dataset_name else f"results/automatic/ramp-ev-{wildcards.dataset_name}.csv.gz",
         locations = "results/downloads/units.csv",
-        populations = expand("resources/population/population_{resolution}.csv", resolution=config["data-sources"]["resolution"]),  #FIXME: temporary hack
+        populations = f"resources/population/population_{config["data-sources"]["resolution"]}.csv" # FIXME: temporary hack
     params:
         demand_range = config["parameters"]["transport"]["monthly-demand-bound-fraction"],
         first_year = config["scope"]["temporal"]["first-year"],
@@ -107,7 +107,7 @@ rule aggregate_timeseries: # TODO consider merge with other rules, as this is ti
             for vehicle_type in config["parameters"]["transport"]["road-transport-conversion-factors"].keys()
         ],
         locations = "results/downloads/units.csv",
-        populations = expand("resources/population/population_{resolution}.csv", resolution=config["data-sources"]["resolution"]),  #FIXME: temporary hack
+        populations = f"resources/population/population_{config["data-sources"]["resolution"]}.csv"  #FIXME: temporary hack
     params:
         resolution = config["data-sources"]["resolution"], #FIXME: temporary hack
     conda: "../envs/default.yaml"
@@ -124,7 +124,7 @@ use rule aggregate_timeseries as aggregate_timeseries_historic_electrified with:
             "results/timeseries/timeseries-uncontrolled-coaches-and-buses-historic-electrification.csv",
             "results/timeseries/timeseries-uncontrolled-passenger-cars-historic-electrification.csv",),
         locations = "results/downloads/units.csv",
-        populations = expand("resources/population/population_{resolution}.csv", resolution=config["data-sources"]["resolution"]),  #FIXME: temporary hack
+        populations = f"resources/population/population_{config["data-sources"]["resolution"]}.csv" # FIXME: temporary hack
     params:
         resolution = config["data-sources"]["resolution"], #FIXME: temporary hack
     output:
