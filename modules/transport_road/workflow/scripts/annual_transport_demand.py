@@ -134,9 +134,9 @@ def fill_missing_countries_and_years(
         jrc_data = jrc_data.assign(**{country: jrc_data[neighbors].mean(axis=1)})
 
     jrc_data = jrc_data.stack().unstack("year")
-    jrc_data = jrc_data.assign(**{
-        str(year): jrc_data[2015] for year in range(2016, 2019)
-    })
+    jrc_data = jrc_data.assign(
+        **{str(year): jrc_data[2015] for year in range(2016, 2019)}
+    )
     jrc_data.columns = jrc_data.columns.astype(int)
     return jrc_data.stack()
 
@@ -214,11 +214,9 @@ if __name__ == "__main__":
     )
 
     # Calculate total road distance
-    total_road_distance = total_road_distance.groupby([
-        "vehicle_type",
-        "country_code",
-        "year",
-    ]).sum()
+    total_road_distance = total_road_distance.groupby(
+        ["vehicle_type", "country_code", "year"]
+    ).sum()
 
     # Extract historical electricity consumption
     total_historically_electrified_distance = (
