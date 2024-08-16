@@ -1,5 +1,5 @@
 conda:
-    "envs/global.yaml"
+    workflow.source_path("envs/global.yaml")
 
 import yaml
 
