@@ -1,11 +1,16 @@
-import glob
+conda:
+    "envs/global.yaml"
+
+import yaml
+
 from pathlib import Path
-
-from snakemake.utils import validate, min_version, makedirs
-
-configfile: "config/default.yaml"
+from snakemake.utils import min_version
 
 min_version("8.10")
+
+configfile: "config/default.yaml"
+with open(workflow.source_path("resources/internal.yaml"), "r") as f:
+    internal = yaml.safe_load(f)
 
 include: "rules/downloads.smk"
 include: "rules/transport.smk"

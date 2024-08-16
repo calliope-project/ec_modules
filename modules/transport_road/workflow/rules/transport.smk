@@ -7,7 +7,7 @@ rule annual_transport_demand:
         jrc_road_energy = "results/downloads/jrc-idees-transport-road-energy.csv",
         jrc_road_distance = "results/downloads/jrc-idees-transport-road-distance.csv",
     params:
-        fill_missing_values = config["data-pre-processing"]["fill-missing-values"]["jrc-idees"],
+        fill_missing_values = internal["data-pre-processing"]["fill-missing-values"]["jrc-idees"],
         efficiency_quantile = config["parameters"]["transport"]["future-vehicle-efficiency-percentile"],
         uncontrolled_charging_share = config["parameters"]["transport"]["uncontrolled-ev-charging-share"],
     conda: "../envs/default.yaml"
@@ -29,12 +29,12 @@ rule create_controlled_road_transport_annual_demand_and_installed_capacities:
     params:
         first_year = config["scope"]["temporal"]["first-year"],
         final_year = config["scope"]["temporal"]["final-year"],
-        power_scaling_factor = config["scaling-factors"]["power"],
-        transport_scaling_factor = config["scaling-factors"]["transport"],
+        power_scaling_factor = internal["scaling-factors"]["power"],
+        transport_scaling_factor = internal["scaling-factors"]["transport"],
         battery_sizes = config["parameters"]["transport"]["ev-battery-sizes"],
         conversion_factors = config["parameters"]["transport"]["road-transport-conversion-factors"],
-        countries = config["scope"]["spatial"]["countries"],
-        fill_missing_values = config["data-pre-processing"]["fill-missing-values"]["jrc-idees"],
+        countries = internal["spatial"]["countries"],
+        fill_missing_values = internal["data-pre-processing"]["fill-missing-values"]["jrc-idees"],
         resolution = config["data-sources"]["resolution"] #FIXME: temporary hack
     conda: "../envs/default.yaml"
     output:
@@ -45,16 +45,16 @@ rule create_controlled_road_transport_annual_demand_and_installed_capacities:
 rule create_controlled_ev_charging_parameters:
     message: "Create timeseries parameters {wildcards.dataset_name} for controlled EV charging at a given resolution"
     input:
-        ev_profiles = lambda wildcards: "results/downloads/ramp-ev-consumption-profiles.csv.gz" if "demand" in wildcards.dataset_name else f"results/automatic/ramp-ev-{wildcards.dataset_name}.csv.gz",
+        ev_profiles = lambda wildcards: "results/downloads/ramp-ev-consumption-profiles.csv.gz" if "demand" in wildcards.dataset_name else f"results/downloads/ramp-ev-{wildcards.dataset_name}.csv.gz",
         locations = "results/downloads/units.csv",
         populations = workflow.source_path(f"../resources/population_{config['data-sources']['resolution']}.csv") # FIXME: temporary hack
     params:
         demand_range = config["parameters"]["transport"]["monthly-demand-bound-fraction"],
         first_year = config["scope"]["temporal"]["first-year"],
         final_year = config["scope"]["temporal"]["final-year"],
-        country_neighbour_dict = config["data-pre-processing"]["fill-missing-values"]["ramp"],
-        countries = config["scope"]["spatial"]["countries"],
-        resolution = config["data-sources"]["resolution"] #FIXME: temporary hack
+        resolution = config["data-sources"]["resolution"], #FIXME: temporary hack
+        country_neighbour_dict = internal["data-pre-processing"]["fill-missing-values"]["ramp"],
+        countries = internal["spatial"]["countries"],
     wildcard_constraints:
         dataset_name = "demand-shape-equals|demand-shape-max|demand-shape-min|plugin-profiles"
     conda: "../envs/default.yaml"
@@ -70,11 +70,11 @@ rule create_uncontrolled_road_transport_timeseries:
     params:
         first_year = config["scope"]["temporal"]["first-year"],
         final_year = config["scope"]["temporal"]["final-year"],
-        power_scaling_factor = config["scaling-factors"]["power"],
+        power_scaling_factor = internal["scaling-factors"]["power"],
         conversion_factor = lambda wildcards: config["parameters"]["transport"]["road-transport-conversion-factors"][wildcards.vehicle_type],
         historic = False,
-        countries = config["scope"]["spatial"]["countries"],
-        country_neighbour_dict = config["data-pre-processing"]["fill-missing-values"]["ramp"]
+        countries = internal["spatial"]["countries"],
+        country_neighbour_dict = internal["data-pre-processing"]["fill-missing-values"]["ramp"]
     conda: "../envs/default.yaml"
     wildcard_constraints:
         vehicle_type = "light-duty-vehicles|heavy-duty-vehicles|coaches-and-buses|passenger-cars|motorcycles"
@@ -91,11 +91,11 @@ use rule create_uncontrolled_road_transport_timeseries as create_uncontrolled_ro
     params:
         first_year = config["scope"]["temporal"]["first-year"],
         final_year = config["scope"]["temporal"]["final-year"],
-        power_scaling_factor = config["scaling-factors"]["power"],
+        power_scaling_factor = internal["scaling-factors"]["power"],
         conversion_factor = lambda wildcards: config["parameters"]["transport"]["road-transport-conversion-factors"][wildcards.vehicle_type],
         historic = True,
-        countries = config["scope"]["spatial"]["countries"],
-        country_neighbour_dict = config["data-pre-processing"]["fill-missing-values"]["ramp"],
+        countries = internal["spatial"]["countries"],
+        country_neighbour_dict = internal["data-pre-processing"]["fill-missing-values"]["ramp"],
     output:
         "results/timeseries/timeseries-uncontrolled-{vehicle_type}-historic-electrification.csv"
 
