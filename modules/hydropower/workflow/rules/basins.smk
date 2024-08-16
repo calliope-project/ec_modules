@@ -37,10 +37,10 @@ rule preprocess_basins:
     input:
         basins = "results/basins/raw_shape_eu.geojson"
     params:
-        x_min = internal_config["scope"]["spatial"]["bounds"]["x_min"],
-        x_max = internal_config["scope"]["spatial"]["bounds"]["x_max"],
-        y_min = internal_config["scope"]["spatial"]["bounds"]["y_min"],
-        y_max = internal_config["scope"]["spatial"]["bounds"]["y_max"]
+        x_min = internal["scope"]["spatial"]["bounds"]["x_min"],
+        x_max = internal["scope"]["spatial"]["bounds"]["x_max"],
+        y_min = internal["scope"]["spatial"]["bounds"]["y_min"],
+        y_max = internal["scope"]["spatial"]["bounds"]["y_max"]
     output: "results/basins/preprocessed_shape_eu.gpkg"
     conda: "../envs/hydro.yaml"
     script: "../scripts/preprocess_basins.py"

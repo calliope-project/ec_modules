@@ -1,73 +1,13 @@
 """Rules to generate hydro electricity capacities and time series."""
 
-import yaml
-
-
 # TODO: should improve the code to automatically determine countries
 # and bounds based on the supplied GeoJSON file, and all intermediate
 # build artefacts resolution-dependent or unit_id-dependent rather
 # than bounds-dependent
-internal_config = yaml.safe_load("""
-data-sources:
-    hydro-generation: https://zenodo.org/record/5797549/files/hydro-generation.csv?download=1
-    national-phs-storage-capacities: https://zenodo.org/record/5797549/files/pumped-hydro-storage-capacities-gwh.csv?download=1
-    hydro-stations: https://zenodo.org/record/5215920/files/energy-modelling-toolkit/hydro-power-database-v10.zip?download=1
-
-capacity-factors:
-    min: 0.001
-    max: 10 # 0.001 -> 10 leads to a numerical range of 1e5 (hourly resolution)
-
-quality-control:
-    hydro:
-        scale-phs-according-to-geth-et-al: false
-        station-nearest-basin-max-km: 1
-scope:
-    spatial:
-        countries:
-            - "Austria"
-            - "Belgium"
-            - "Bulgaria"
-            - "Croatia"
-            - "Cyprus"
-            - "Czech Republic"
-            - "Denmark"
-            - "Estonia"
-            - "Finland"
-            - "France"
-            - "Germany"
-            - "Greece"
-            - "Hungary"
-            - "Ireland"
-            - "Italy"
-            - "Latvia"
-            - "Lithuania"
-            - "Luxembourg"
-            - "Netherlands"
-            - "Poland"
-            - "Portugal"
-            - "Romania"
-            - "Slovakia"
-            - "Slovenia"
-            - "Spain"
-            - "Sweden"
-            - "United Kingdom"
-            - "Albania"
-            - "Bosnia and Herzegovina"
-            - "Macedonia, Republic of"
-            - "Montenegro"
-            - "Norway"
-            - "Serbia"
-            - "Switzerland"
-        bounds:
-            x_min: -15.8
-            x_max: 37
-            y_min: 30
-            y_max: 75
-""")
 
 rule download_hydro_generation_data:
     message: "Download database of historical hydro power generation."
-    params: url = internal_config["data-sources"]["hydro-generation"]
+    params: url = internal["data-sources"]["hydro-generation"]
     output: "results/downloads/hydro-generation.csv"
     conda: "../envs/shell.yaml"
     localrule: True
@@ -77,7 +17,7 @@ rule download_hydro_generation_data:
 
 rule download_pumped_hydro_storage_capacity:
     message: "Download database of pumped hydro storage capacity data."
-    params: url = internal_config["data-sources"]["national-phs-storage-capacities"]
+    params: url = internal["data-sources"]["national-phs-storage-capacities"]
     output:
         database = "results/downloads/pumped-hydro-storage-capacities-gwh.csv"
     conda: "../envs/shell.yaml"
@@ -107,9 +47,9 @@ rule preprocess_powerplants:
         basins = "results/basins/preprocessed_shape_eu.gpkg",
         phs_storage_capacities = rules.download_pumped_hydro_storage_capacity.output.database
     params:
-        buffer_size_m = internal_config["quality-control"]["hydro"]["station-nearest-basin-max-km"] * M_TO_KM,
-        countries = internal_config["scope"]["spatial"]["countries"],
-        scale_phs = internal_config["quality-control"]["hydro"]["scale-phs-according-to-geth-et-al"]
+        buffer_size_m = internal["quality-control"]["hydro"]["station-nearest-basin-max-km"] * M_TO_KM,
+        countries = internal["scope"]["spatial"]["countries"],
+        scale_phs = internal["quality-control"]["hydro"]["scale-phs-according-to-geth-et-al"]
     output: "results/jrc-hydro-power-plant-database-preprocessed.csv"
     conda: "../envs/hydro.yaml"
     script: "../scripts/preprocess_powerplants.py"
@@ -161,7 +101,7 @@ rule inflow_mwh:
         stations = "results/{resolution}/{first_year}-{final_year}/hydro-electricity-water-inflow.nc",
         generation = "results/downloads/hydro-generation.csv"
     params:
-        max_capacity_factor = internal_config["capacity-factors"]["max"]
+        max_capacity_factor = internal["capacity-factors"]["max"]
     output: "results/{resolution}/{first_year}-{final_year}/hydro-electricity-with-energy-inflow.nc"
     conda: "../envs/hydro.yaml"
     resources:
@@ -177,7 +117,7 @@ rule capacity_factors_hydro:
         stations = "results/{resolution}/{first_year}-{final_year}/hydro-electricity-with-energy-inflow.nc",
         locations = "results/{resolution}/shapes.geojson"
     params:
-        threshold = internal_config["capacity-factors"]["min"]
+        threshold = internal["capacity-factors"]["min"]
     output:
         ror = "results/{resolution}/{first_year}-{final_year}/capacity-factors-run-of-river.csv",
         reservoir = "results/{resolution}/{first_year}-{final_year}/capacity-factors-reservoir.csv"
