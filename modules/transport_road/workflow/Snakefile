@@ -1,6 +1,3 @@
-conda:
-    workflow.source_path("envs/global.yaml")
-
 import yaml
 
 from pathlib import Path

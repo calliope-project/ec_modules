@@ -1,5 +1,0 @@
-channels:
-  - conda-forge
-  - nodefaults
-dependencies:
-  - pyyaml = 6.0.2
