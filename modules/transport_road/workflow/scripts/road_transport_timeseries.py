@@ -15,8 +15,7 @@ def create_road_transport_demand_timeseries(
     country_codes: list[str],
     path_to_output: str,
 ) -> None:
-    # Read annual road transport distance into panda dataframe
-
+    """Produce timeseries for uncontrolled vehicle demand cases."""
     df_annual = (
         pd.read_csv(path_to_annual_data, index_col=[0, 1, 2], parse_dates=[2])
         .squeeze()
@@ -38,7 +37,7 @@ def create_road_transport_demand_timeseries(
             .droplevel(level=0, axis="columns")
             .groupby(by=lambda idx: idx.year)
             .transform(lambda x: x / x.sum())
-            .pipe(fill_empty_country, country_neighbour_dict)
+            .pipe(_fill_empty_country, country_neighbour_dict)
             .tz_localize("UTC")
             .mul(df_annual)
         )
@@ -60,14 +59,14 @@ def create_road_transport_demand_timeseries(
         .loc[:, country_codes]
         .tz_localize(None)
         .rename_axis("utc-timestamp")
-    )
+    )  # FIXME: this approach to historical data bloats the model. Re think it.
     assert not df_timeseries.isna().any(
         axis=None
     ), "There are NaN values in the timeseries dataframe"
     df_timeseries.to_csv(path_to_output)
 
 
-def fill_empty_country(df, country_neighbour_dict):
+def _fill_empty_country(df, country_neighbour_dict):
     for country, neighbours in country_neighbour_dict.items():
         if country in df.columns:
             continue

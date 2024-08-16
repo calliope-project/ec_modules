@@ -10,13 +10,13 @@ def scale_to_resolution_and_create_file(
     elif resolution == "continental":
         df = df.sum(axis=1).to_frame("EUR")
     elif resolution in ["regional", "ehighways"]:
-        df = scale_national_to_regional(df, region_country_mapping, populations)
+        df = _scale_national_to_regional(df, region_country_mapping, populations)
     else:
         raise ValueError(f"Resolution {resolution} is not supported")
     df.tz_localize(None).rename_axis("utc-timestamp").to_csv(output_path)
 
 
-def scale_national_to_regional(df, region_country_mapping, populations):
+def _scale_national_to_regional(df, region_country_mapping, populations):
     df_population_share = (
         populations.loc[:, "population_sum"]
         .reindex(region_country_mapping.keys())
@@ -64,10 +64,10 @@ def get_national_ev_profiles(
     elif "plugin" in dataset_name:
         # plugin-profiles are already normalised
         df = df_timeseries
-    return df.pipe(fill_empty_country, country_neighbour_dict).loc[:, country_codes]
+    return df.pipe(_fill_empty_country, country_neighbour_dict).loc[:, country_codes]
 
 
-def fill_empty_country(df, country_neighbour_dict):
+def _fill_empty_country(df, country_neighbour_dict):
     for country, neighbours in country_neighbour_dict.items():
         assert country not in df.columns
         df[country] = df[neighbours].mean(axis=1)

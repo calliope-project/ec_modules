@@ -6,6 +6,7 @@ import pycountry
 
 def scale_to_regional_resolution(df, region_country_mapping, populations):
     """Create regional electricity demand for controlled charging.
+
     ASSUME all road transport is subnationally distributed in proportion to population.
     """
     df_population_share = (
@@ -47,8 +48,9 @@ def convert_annual_distance_to_electricity_demand(
     conversion_factors: dict[str, float],
     country_codes: list[str],
 ) -> pd.DataFrame:
-    """Convert annual distance driven demand to electricity demand for
-    controlled charging accounting for conversion factors.
+    """Convert annual distance driven to electricity demand for controlled charging.
+
+    Accounts for conversion factors.
     """
     df_energy_demand = (
         pd.read_csv(path_to_controlled_annual_demand, index_col=[1, 2])
@@ -98,7 +100,8 @@ def extract_national_ev_charging_potentials(
         columns=["value"],
     )
 
-    # Compute available chargeable distance per vehicle type [in transport scaling unit km]
+    # Compute available chargeable distance per vehicle type
+    # [in transport scaling unit km]
     df_ev_chargeable_distance = (
         df_ev_numbers.align(battery_size, level="vehicle_type")[1]
         .squeeze()
@@ -136,7 +139,7 @@ def fill_missing_countries_and_years(
 
     df_road_vehicles = df_ev_numbers.reset_index()
 
-    # Compute the vehicle per capita, proxy to assign the number of vehicles to missing countries.
+    # Use vehicle per capita as proxy for the number of vehicles in missing countries.
     populations.index.name = "country_code"
     df_vehicle_per_capita = df_road_vehicles.merge(
         populations["population_sum"], left_on="country_code", right_index=True
@@ -218,7 +221,7 @@ if __name__ == "__main__":
     path_to_ev_numbers = snakemake.input.ev_vehicle_number
     fill_missing_values = snakemake.params.fill_missing_values
 
-    #  Convert annual distance driven demand to electricity demand for controlled charging
+    # Convert annual distance driven to electricity demand for controlled charging
     df_demand = convert_annual_distance_to_electricity_demand(
         path_to_controlled_annual_demand,
         power_scaling_factor,
