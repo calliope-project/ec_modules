@@ -11,7 +11,7 @@ It is based on `snakemake`'s [recommended structure to ensure reproducibility](h
 ```text
 _example_module/
 ├── config
-│   └── default.yaml             # Default configuration. Can be overriden by users.
+│   └── default.yaml             # Default configuration. Can be overridden by users.
 ├── LICENSE
 ├── results                      # Place all your output files here.
 └── workflow
