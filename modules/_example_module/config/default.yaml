@@ -1,0 +1,7 @@
+# User modifiable configuration
+shapefile:
+  path: https://www.dropbox.com/scl/fi/sjjisuqnzck2mhxs9jca7/units-national.geojson?rlkey=rv0q1exsytxws3gfvankbt9p7&e=1&dl=0
+  download: true
+  country-id-column: id
+  subregion-id-column: id  # Shapes at national level
+year-slice: [2016, 2016]

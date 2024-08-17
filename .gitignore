@@ -39,4 +39,4 @@ tmp/
 results/
 report/
 
-!modules/example_module/**
+!modules/_example_module/**
