@@ -1,0 +1,9 @@
+# This file contains settings that users cannot modify.
+# Use it for:
+# - stuff that should not change (e.g., the URL of a raster the module needs to download)
+# - data used for checks (e.g., a list of valid countries, if your module is not global)
+valid-country-id:
+- TZA
+- MEX
+- DEU
+- BGD
