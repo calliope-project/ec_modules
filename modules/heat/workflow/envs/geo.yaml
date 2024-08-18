@@ -21,7 +21,4 @@ dependencies:
     - jinja2=2.11.3
     - networkx=2.5
     - pycountry=18.12.8
-    - pip=21.0.1
     - shapely=1.8.5
-    - pip:
-        # - -e ./lib[geo]

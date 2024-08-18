@@ -31,8 +31,8 @@ rule group_gridded_timeseries_hp_cop:
     message: "Generate national heat-pump-cop timeseries data from gridded data "
     input:
         gridded_timeseries_data = "results/heat-pump-cop.nc",
-        grid_weights = rules.population_per_weather_gridbox.output[0],
+        grid_weights =  "results/{shapes}/population.nc",
     conda: "../envs/default.yaml"
     threads: 4
-    output: "results/national/heat-pump-cop.nc"
+    output: "results/{shapes}/heat-pump-cop.nc"
     script: "../scripts/group_gridded_timeseries.py"

@@ -1,7 +1,5 @@
 # The timeseries data comes from 4 different types of data: when2heat, gridded weather data, population, and geounits.
 
-configfile: "config/config.yaml"
-
 # when2heat
 rule download_when2heat_params:
     message: "Get parameters for heat demand profiles from the When2Heat project repository"
@@ -60,22 +58,22 @@ rule population_per_weather_gridbox:
     input:
         weather_grid = "results/gridded-weather/grid.nc",
         population = rules.raw_population_unzipped.output[0],
-        locations = "resources/units.geojson"
+        locations = "results/{shapes}/shapes.geojson"
     params:
         lat_name = "lat",
         lon_name = "lon",
     conda: "../envs/geo.yaml"
-    output: "results/population.nc"
+    output: "results/{shapes}/population.nc"
     script: "../scripts/population_per_gridbox.py"
 
 rule group_gridded_timeseries_heat_demand:
     message: "Generate heat demand hourly timeseries data from gridded data "
     input:
         gridded_timeseries_data = "results/hourly_unscaled_heat_demand.nc",
-        grid_weights = rules.population_per_weather_gridbox.output[0],
+        grid_weights = "results/{shapes}/population.nc",
     conda: "../envs/default.yaml"
     threads: 4
-    output: temp("results/national/hourly_unscaled_heat_demand.nc")
+    output: temp("results/{shapes}/hourly_unscaled_heat_demand.nc")
     script: "../scripts/group_gridded_timeseries.py"
 
 

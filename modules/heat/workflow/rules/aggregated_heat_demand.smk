@@ -1,7 +1,5 @@
 # The aggregated annual heat demand data comes from 4 sources: JRC IDEES, eurostat for European countries, Swiss data, and a certain source for population (don't ask me why).
-# Apart from that, there's a reformatting of units.geojson file.
-
-configfile: "config/config.yaml"
+# Apart from that, there's a reformatting of shapes.geojson file.
 
 # JRC IDEES (subject to change)
 JRC_IDEES_SPATIAL_SCOPE = [
@@ -13,7 +11,7 @@ JRC_IDEES_SPATIAL_SCOPE = [
 rule download_jrc_idees_zipped:
     message: "Download JRC IDEES zip file for {wildcards.country_code}"
     params: url = internal["data-sources"]["jrc-idees"]
-    output: "results/jrc-idees/{country_code}.zip"
+    output: "results/jrc-idees/downloads/{country_code}.zip"
     conda: "../envs/shell.yaml"
     localrule: True
     shell: "curl -sSLo {output} '{params.url}'"
@@ -21,8 +19,8 @@ rule download_jrc_idees_zipped:
 rule jrc_idees_unzipped:
     message: "Unzip JRC-IDEES tertiary sector data for {wildcards.country_code}"
     input:
-        country_data = "results/jrc-idees/{country_code}.zip",
-    output: temp("results/jrc-idees/tertiary/unprocessed/{country_code}.xlsx")
+        country_data = "results/jrc-idees/downloads/{country_code}.zip",
+    output: temp("results/jrc-idees/tertiary/unprocessed_{country_code}.xlsx")
     conda: "../envs/shell.yaml"
     shell: "unzip -p {input.country_data} JRC-IDEES-2015_Tertiary_{wildcards.country_code}.xlsx > {output}"
 
@@ -30,7 +28,7 @@ rule jrc_idees_tertiary_processed:
     message: "Process tertiary heat data from JRC-IDEES"
     input:
         data = expand(
-            "results/jrc-idees/tertiary/unprocessed/{country_code}.xlsx",
+            "results/jrc-idees/tertiary/unprocessed_{country_code}.xlsx",
             country_code=JRC_IDEES_SPATIAL_SCOPE
         )
     output: "results/jrc-idees/tertiary/processed.csv"
@@ -71,8 +69,8 @@ rule annual_energy_balances:
         energy_balance = "results/eurostat-energy-balance.tsv.gz",
         ch_energy_balance = "results/ch-energy-balance.xlsx",
         ch_industry_energy_balance = "results/ch-industry-energy-balance.xlsx",
-        cat_names = "config/energy-balances/energy-balance-category-names.csv",
-        carrier_names = "config/energy-balances/energy-balance-carrier-names.csv"
+        cat_names = workflow.source_path("../resources/energy-balance-category-names.csv"),
+        carrier_names = workflow.source_path("../resources/energy-balance-carrier-names.csv")
     output: temp("results/annual-energy-balances.csv")
     params:
         first_year = 2000
@@ -98,12 +96,11 @@ rule potentials:
     shell: "unzip -p {input} national/population.csv > {output}"
 
 
-# units processing. national only for now
 rule units_without_shape:
     message: "Dataset of units without geo information."
     input:
-        units = "resources/units.geojson"
-    output: "results/units.csv"
+        units = "results/{shapes}/shapes.geojson"
+    output: "results/{shapes}/units.csv"
     conda: "../envs/geo.yaml"
     script: "../scripts/nogeo.py"
 
@@ -116,7 +113,7 @@ rule annual_heat_demand:
         ch_end_use = "results/ch-end-use.xlsx",
         energy_balance = rules.annual_energy_balances.output[0],
         commercial_demand = "results/jrc-idees/tertiary/processed.csv",
-        carrier_names = "config/energy-balances/energy-balance-carrier-names.csv"
+        carrier_names = workflow.source_path("../resources/energy-balance-carrier-names.csv")
     params:
         heat_tech_params = config["parameters"]["heat"]["tech-efficiencies"],
         countries = internal["scope"]["spatial"]["countries"],
@@ -128,16 +125,16 @@ rule annual_heat_demand:
     script: "../scripts/annual_heat_demand.py"
 
 
-# furthur synthesize with units and population
+# further synthesize with units and population
 rule rescale_annual_heat_demand_to_resolution:
     message: "Scale national heat demand for household and commercial sectors"
     input:
         annual_demand = rules.annual_heat_demand.output["total_demand"],
         electricity = rules.annual_heat_demand.output["electricity"],
-        locations = "results/units.csv",
+        locations = "results/{shapes}/units.csv",
         populations = "results/population.csv"
     conda: "../envs/default.yaml"
     output:
-        total_demand = "results/national/annual-heat-demand-twh.csv",
-        electricity = "results/national/annual-historic-electrified-heat-demand-twh.csv",
+        total_demand = "results/{shapes}/annual-heat-demand-twh.csv",
+        electricity = "results/{shapes}/annual-historic-electrified-heat-demand-twh.csv",
     script: "../scripts/rescale.py"

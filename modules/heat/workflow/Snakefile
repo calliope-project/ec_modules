@@ -15,26 +15,35 @@ include: "rules/aggregated_heat_demand.smk"
 include: "rules/heat_timeseries.smk"
 include: "rules/hp_cop.smk"
 
+rule download_shapes:
+    message: "Download {wildcards.shapes} resolution shapefile."
+    params:
+        uri = lambda wc: config["resolution"][f"{wc.shapes}"]["uri"],
+    output: "results/{shapes}/shapes.geojson"
+    conda: "envs/shell.yaml"
+    localrule: True
+    shell: "curl -sSLo {output} '{params.uri}'"
+
 rule heat_demand_final_timeseries:
-    message: "Generate national heat demand timeseries data from gridded data "
+    message: "Generate heat demand timeseries data from gridded data for '{wildcards.shapes}' resolution."
     input:
-        timeseries_data = "results/national/hourly_unscaled_heat_demand.nc",
-        annual_demand = "results/national/annual-heat-demand-twh.csv",
+        timeseries_data = "results/{shapes}/hourly_unscaled_heat_demand.nc",
+        annual_demand = "results/{shapes}/annual-heat-demand-twh.csv",
     conda: "envs/default.yaml"
     params:
         sfh_mfh_shares = config["parameters"]["heat"]["sfh-mfh-shares"],
         scaling_factor = internal["scaling-factors"]["power"]
-    output: "results/final_outputs/heat_demand.csv"
+    output: "results/{shapes}/final_outputs/heat_demand.csv"
     script: "scripts/heat_demand_final_timeseries.py"
 
 
 rule heat_pump_final_timeseries:
     message: "Combine hot water and space heating characteristics to generate a weighted average national heat pump cop `heat` carrier timeseries."
     input:
-        timeseries_data = "results/national/heat-pump-cop.nc",
-        annual_demand = rules.rescale_annual_heat_demand_to_resolution.output.total_demand
+        timeseries_data = "results/{shapes}/heat-pump-cop.nc",
+        annual_demand = "results/{shapes}/annual-heat-demand-twh.csv"
     conda: "envs/default.yaml"
-    output: "results/final_outputs/heat-pump-cop.csv"
+    output: "results/{shapes}/final_outputs/heat-pump-cop.csv"
     script: "scripts/heat_pump_final_timeseries.py"
 
 
@@ -42,5 +51,5 @@ rule all:
     message: "Produce all files for the heat module."
     default_target: True
     input:
-        rules.heat_pump_final_timeseries.output,
-        rules.heat_demand_final_timeseries.output
+        expand("results/{shapes}/final_outputs/heat-pump-cop.csv", shapes=config["resolution"].keys()),
+        expand("results/{shapes}/final_outputs/heat_demand.csv", shapes=config["resolution"].keys())
