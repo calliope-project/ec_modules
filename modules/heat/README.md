@@ -7,6 +7,7 @@ As of 08 Aug 2024, this module can produce national-resolution time series of he
 ## Remaining issues
 
 Author: Chen Meijun, 08 Aug 2024
+Reviewer: Ivan Ruiz, 18 Aug 2024
 
 ### General issues
 
@@ -28,14 +29,13 @@ Author: Chen Meijun, 08 Aug 2024
 
 ### envs-specific issues
 
-1. Some `lib` things were there in euro-calliope version of `default.yaml` and `geo.yaml`. I have no idea what that means, maybe we can get rid of them now.
+1. `default.env` uses an old `pandas` version which, in combination with `xarray`, produces unstable behaviour. It should be updated to a more modern version, but it will most likely trigger script updates.
+2. `default.env` has no `geopandas` dependency, meaning that we translate the `.geojson` file into a `.csv` for processing in those steps. This should be avoided by just passing the `.geojson` file to those rules and opening it with `geopandas`.
 
 ### rules-specific issues
 
-1. `hp_cop.smk` shares some rules in `heat_timeseries.smk`. They are not written in `hp_cop.smk` again. In the future, we might want to avoid cross-referencing rules between snakefiles.
-2. The namings of the rules are directly copied from euro-calliope and may not really make sense. We might want to change them to more understandable names.
-3. The data processing of eurostat and Swiss data is quite messy in terms of rule dependencies. We might want to simplify them later.
-4. There isn't a rule in Snakefile that is called "all". Might not be strictly necessary.
+1. The namings of the rules are directly copied from euro-calliope and may not really make sense. We might want to change them to more understandable names.
+2. The data processing of eurostat and Swiss data is quite messy in terms of rule dependencies. We might want to simplify them later.
 
 ### scripts-specific issues
 
