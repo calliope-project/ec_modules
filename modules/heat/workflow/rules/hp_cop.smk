@@ -12,8 +12,8 @@ rule download_heat_pump_characteristics:
 rule heat_pump_cop:
     message: "Generate gridded heat pump coefficient of performance (COP)"
     input:
-        temperature_air = "results/downloads/gridded-weather-temperature.nc",
-        temperature_ground = "results/downloads/gridded-weather-tsoil5.nc",
+        temperature_air = "results/downloads/gridded-weather/temperature.nc",
+        temperature_ground = "results/downloads/gridded-weather/tsoil5.nc",
         heat_pump_characteristics = rules.download_heat_pump_characteristics.output[0]
     params:
         sink_temperature = config["parameters"]["heat-pump"]["sink-temperature"],

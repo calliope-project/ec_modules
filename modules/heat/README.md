@@ -10,7 +10,8 @@ Author: Chen Meijun, 08 Aug 2024
 
 ### General issues
 
-1. `units.geojson` is temporarily put in the `resources` folder. The workflow for shapes or arbitrary resolution is still missing.
+1. `units.geojson` was temporarily put in the `resources` folder. The workflow for shapes or arbitrary resolution is still missing.
+    - Ivan: unfortunately this polluted the repo history again, meaning pre-commit CI will most likely reject this module when we PR. We'll need to re-write the history of this commit or find an alternative method...
 2. At this stage, this module can only deal with national resolution data. The interface between this module and the input of shapes file is also missing. To change that, we may need to (a) rewrite quite some rules so that they are compatible with the input shape file, and (b) add rules to transform national data into given shape file.
 3. The contents of the current version of heat module is copied from euro-calliope, commit number cff23740. Any updates afterwards are not synced here.
 

@@ -16,7 +16,7 @@ rule download_when2heat_params:
 rule download_gridded_weather_data:
     message: "Download gridded {wildcards.data_var} data"
     params: dataset_url = internal["data-sources"]["gridded-weather-data"]
-    output: "results/downloads/gridded-weather-{data_var}.nc"
+    output: "results/downloads/gridded-weather/{data_var}.nc"
     conda: "../envs/shell.yaml"
     localrule: True
     shell: "curl -f -sSLo {output} '{params.dataset_url}/files/{wildcards.data_var}.nc'"
@@ -44,8 +44,8 @@ rule raw_population_unzipped:
 rule unscaled_heat_profiles:
     message: "Generate gridded heat demand profile shapes from weather and population data"
     input:
-        wind_speed = "results/downloads/gridded-weather-wind10m.nc",
-        temperature = "results/downloads/gridded-weather-temperature.nc",
+        wind_speed = "results/downloads/gridded-weather/wind10m.nc",
+        temperature = "results/downloads/gridded-weather/temperature.nc",
         when2heat = rules.download_when2heat_params.output[0]
     params:
         first_year = config["temporal-scope"]["first-year"],
@@ -57,7 +57,7 @@ rule unscaled_heat_profiles:
 rule population_per_weather_gridbox:
     message: "Get population information per weather data gridbox"
     input:
-        weather_grid = "results/downloads/gridded-weather-grid.nc",
+        weather_grid = "results/downloads/gridded-weather/grid.nc",
         population = rules.raw_population_unzipped.output[0],
         locations = "results/{shapes}/shapes.geojson"
     params:

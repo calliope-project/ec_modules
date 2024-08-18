@@ -44,7 +44,7 @@ rule download_eurostat_energy_data:
     wildcard_constraints:
         dataset = "energy-balance|hh-end-use"
     conda: "../envs/shell.yaml"
-    output: "results/downloads/eurostat-{dataset}.tsv.gz"
+    output: "results/downloads/eurostat/{dataset}.tsv.gz"
     localrule: True
     shell: "curl -sSLo {output} {params.url}"
 
@@ -54,7 +54,7 @@ rule download_CHE_energy_data:
     message: "Get {wildcards.dataset} from Swiss statistics"
     params:
         url = lambda wildcards: internal["data-sources"]["CHE"][f"{wildcards.dataset}"]
-    output: "results/downloads/CHE-{dataset}.xlsx"
+    output: "results/downloads/CHE/{dataset}.xlsx"
     conda: "../envs/shell.yaml"
     wildcard_constraints:
         dataset = "energy-balance|industry-energy-balance|end-use"
@@ -66,9 +66,9 @@ rule download_CHE_energy_data:
 rule annual_energy_balances:
     message: "Get annual energy balances from Eurostat"
     input:
-        energy_balance = "results/downloads/eurostat-energy-balance.tsv.gz",
-        ch_energy_balance = "results/downloads/CHE-energy-balance.xlsx",
-        ch_industry_energy_balance = "results/downloads/CHE-industry-energy-balance.xlsx",
+        energy_balance = "results/downloads/eurostat/energy-balance.tsv.gz",
+        ch_energy_balance = "results/downloads/CHE/energy-balance.xlsx",
+        ch_industry_energy_balance = "results/downloads/CHE/industry-energy-balance.xlsx",
         cat_names = workflow.source_path("../resources/energy-balance-category-names.csv"),
         carrier_names = workflow.source_path("../resources/energy-balance-carrier-names.csv")
     output: temp("results/annual-energy-balances.csv")
@@ -109,8 +109,8 @@ rule units_without_shape:
 rule annual_heat_demand:
     message: "Calculate national heat demand for household and commercial sectors"
     input:
-        hh_end_use = "results/downloads/eurostat-hh-end-use.tsv.gz",
-        ch_end_use = "results/downloads/CHE-end-use.xlsx",
+        hh_end_use = "results/downloads/eurostat/hh-end-use.tsv.gz",
+        ch_end_use = "results/downloads/CHE/end-use.xlsx",
         energy_balance = rules.annual_energy_balances.output[0],
         commercial_demand = "results/jrc-idees/tertiary/processed.csv",
         carrier_names = workflow.source_path("../resources/energy-balance-carrier-names.csv")
