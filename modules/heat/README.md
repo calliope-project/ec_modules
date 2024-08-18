@@ -41,6 +41,10 @@ Author: Chen Meijun, 08 Aug 2024
 1. The namings of the scripts might not make sense. The scripts are directly copied from euro-calliope and not checked in detail.
 2. We might want to separate scripts into different sub-folders according to their functionalities (e.g. which snakefile they are related to).
 
+### When2Heat extraction
+
+1. Scripts and snakemake rules currently extract all When2Heat parameters in a directory and use the `directory()` directive.
+2. We probably want to remove this and make it so that specific variables are downloaded only if requested (like the gridded-weather-data).
 
 ## Pending update of the README
 
