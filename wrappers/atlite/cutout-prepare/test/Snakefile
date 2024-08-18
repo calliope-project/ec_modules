@@ -1,6 +1,6 @@
 rule test:
     input:
-        shapefile = "portugal.geojson"
+        shapefile = "montenegro.geojson"
     output:
         cutout = "output/cutout.nc",
         plot_cutout = "output/plot_cutout.png"
@@ -9,5 +9,5 @@ rule test:
         features = ["height", "wind", "influx", "temperature", "runoff"],
         offset_degrees = 1,
         module = ["era5"],
-    threads: 4
+    threads: 1
     wrapper: "file:../"
