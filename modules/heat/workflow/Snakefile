@@ -1,6 +1,16 @@
 # generate heat demand and heat pump cop time series
 
+import yaml
+
+from pathlib import Path
+from snakemake.utils import min_version
+
+min_version("8.10")
+
 configfile: "config/config.yaml"
+with open(workflow.source_path("resources/internal.yaml"), "r") as f:
+    internal = yaml.safe_load(f)
+
 include: "rules/aggregated_heat_demand.smk"
 include: "rules/heat_timeseries.smk"
 include: "rules/hp_cop.smk"
@@ -13,7 +23,7 @@ rule heat_demand_final_timeseries:
     conda: "envs/default.yaml"
     params:
         sfh_mfh_shares = config["parameters"]["heat"]["sfh-mfh-shares"],
-        scaling_factor = config["scaling-factors"]["power"]
+        scaling_factor = internal["scaling-factors"]["power"]
     output: "results/final_outputs/heat_demand.csv"
     script: "scripts/heat_demand_final_timeseries.py"
 
@@ -26,3 +36,11 @@ rule heat_pump_final_timeseries:
     conda: "envs/default.yaml"
     output: "results/final_outputs/heat-pump-cop.csv"
     script: "scripts/heat_pump_final_timeseries.py"
+
+
+rule all:
+    message: "Produce all files for the heat module."
+    default_target: True
+    input:
+        rules.heat_pump_final_timeseries.output,
+        rules.heat_demand_final_timeseries.output

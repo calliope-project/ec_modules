@@ -7,7 +7,7 @@ rule download_when2heat_params:
     message: "Get parameters for heat demand profiles from the When2Heat project repository"
     output: directory("results/when2heat")
     params:
-        url = lambda wildcards: config["data-sources"]["when2heat-params"].format(dataset=
+        url = lambda wildcards: internal["data-sources"]["when2heat-params"].format(dataset=
             "{" + ",".join(["daily_demand.csv", "hourly_factors_COM.csv", "hourly_factors_MFH.csv", "hourly_factors_SFH.csv"]) + "}"
         )
     conda: "../envs/shell.yaml"
@@ -17,7 +17,7 @@ rule download_when2heat_params:
 # gridded weather data
 rule download_gridded_weather_data:
     message: "Download gridded {wildcards.data_var} data"
-    params: url = lambda wildcards: config["data-sources"]["gridded-weather-data"].format(data_var=wildcards.data_var)
+    params: url = lambda wildcards: internal["data-sources"]["gridded-weather-data"].format(data_var=wildcards.data_var)
     output: "results/gridded-weather/{data_var}.nc"
     conda: "../envs/shell.yaml"
     localrule: True
@@ -29,7 +29,7 @@ rule download_raw_population_zipped:
     message: "Download population data."
     output:
         "results/population/raw-population-data.zip"
-    params: url = config["data-sources"]["population"]
+    params: url = internal["data-sources"]["population"]
     conda: "../envs/shell.yaml"
     shell: "curl -sSLo {output} '{params.url}'"
 
@@ -49,8 +49,8 @@ rule unscaled_heat_profiles:
         temperature = "results/gridded-weather/temperature.nc",
         when2heat = rules.download_when2heat_params.output[0]
     params:
-        first_year = config["scope"]["temporal"]["first-year"],
-        final_year = config["scope"]["temporal"]["final-year"],
+        first_year = config["temporal-scope"]["first-year"],
+        final_year = config["temporal-scope"]["final-year"],
     conda: "../envs/default.yaml"
     output: "results/hourly_unscaled_heat_demand.nc"
     script: "../scripts/unscaled_heat_profiles.py"

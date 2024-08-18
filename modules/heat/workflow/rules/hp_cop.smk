@@ -2,7 +2,7 @@
 
 rule download_heat_pump_characteristics:
     message: "Download manufacturer heat pump data"
-    params: url = config["data-sources"]["heat-pump-characteristics"]
+    params: url = internal["data-sources"]["heat-pump-characteristics"]
     output: "results/heat-pump-characteristics.nc"
     conda: "../envs/shell.yaml"
     localrule: True
@@ -20,8 +20,8 @@ rule heat_pump_cop:
         space_heat_sink_shares = config["parameters"]["heat-pump"]["space-heat-sink-shares"],
         correction_factor = config["parameters"]["heat-pump"]["correction-factor"],
         heat_pump_shares = config["parameters"]["heat-pump"]["heat-pump-shares"],
-        first_year = config["scope"]["temporal"]["first-year"],
-        final_year = config["scope"]["temporal"]["final-year"],
+        first_year = config["temporal-scope"]["first-year"],
+        final_year = config["temporal-scope"]["final-year"],
     conda: "../envs/default.yaml"
     output: "results/heat-pump-cop.nc"
     script: "../scripts/heat_pump_cop.py"

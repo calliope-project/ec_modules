@@ -12,7 +12,7 @@ JRC_IDEES_SPATIAL_SCOPE = [
 
 rule download_jrc_idees_zipped:
     message: "Download JRC IDEES zip file for {wildcards.country_code}"
-    params: url = config["data-sources"]["jrc-idees"]
+    params: url = internal["data-sources"]["jrc-idees"]
     output: "results/jrc-idees/{country_code}.zip"
     conda: "../envs/shell.yaml"
     localrule: True
@@ -42,7 +42,7 @@ rule jrc_idees_tertiary_processed:
 rule download_eurostat_energy_data:
     message: "Download {wildcards.dataset} Eurostat data from euro-calliope datasets"
     params:
-        url = lambda wildcards: config["data-sources"][f"eurostat-{wildcards.dataset}"]
+        url = lambda wildcards: internal["data-sources"][f"eurostat-{wildcards.dataset}"]
     wildcard_constraints:
         dataset = "energy-balance|hh-end-use"
     conda: "../envs/shell.yaml"
@@ -55,7 +55,7 @@ rule download_eurostat_energy_data:
 rule download_ch_energy_data:
     message: "Get {wildcards.dataset} from Swiss statistics"
     params:
-        url = lambda wildcards: config["data-sources"][f"swiss-{wildcards.dataset}"]
+        url = lambda wildcards: internal["data-sources"][f"swiss-{wildcards.dataset}"]
     output: "results/ch-{dataset}.xlsx"
     conda: "../envs/shell.yaml"
     wildcard_constraints:
@@ -83,7 +83,7 @@ rule annual_energy_balances:
 # some source for population. for now, only national resolution
 rule download_potentials:
     message: "Download potential data."
-    params: url = config["data-sources"]["potentials"]
+    params: url = internal["data-sources"]["potentials"]
     output: temp("results/raw-potentials.zip")
     conda: "../envs/shell.yaml"
     localrule: True
@@ -101,7 +101,7 @@ rule potentials:
 # units processing. national only for now
 rule units_without_shape:
     message: "Dataset of units without geo information."
-    input: 
+    input:
         units = "resources/units.geojson"
     output: "results/units.csv"
     conda: "../envs/geo.yaml"
@@ -119,8 +119,8 @@ rule annual_heat_demand:
         carrier_names = "config/energy-balances/energy-balance-carrier-names.csv"
     params:
         heat_tech_params = config["parameters"]["heat"]["tech-efficiencies"],
-        countries = config["scope"]["spatial"]["countries"],
-        fill_missing_values = config["data-pre-processing"]["fill-missing-values"]["jrc-idees"]
+        countries = internal["scope"]["spatial"]["countries"],
+        fill_missing_values = internal["data-pre-processing"]["fill-missing-values"]["jrc-idees"]
     conda: "../envs/default.yaml"
     output:
         total_demand = "results/annual-heat-demand-twh.csv",
