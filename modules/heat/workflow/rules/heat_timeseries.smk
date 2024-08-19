@@ -25,8 +25,7 @@ rule download_gridded_weather_data:
 # population data
 rule download_raw_population_zipped:
     message: "Download population data."
-    output:
-        "results/downloads/raw-population-data.zip"
+    output: temp("results/downloads/raw-population-data.zip")
     params: url = internal["data-sources"]["population"]
     conda: "../envs/shell.yaml"
     shell: "curl -sSLo {output} '{params.url}'"
@@ -35,9 +34,10 @@ rule download_raw_population_zipped:
 rule raw_population_unzipped:
     message: "Extract population data TIF."
     input: rules.download_raw_population_zipped.output
-    output: temp("results/downloads/JRC_1K_POP_2018.tif")
+    shadow: "minimal"
+    output: "results/downloads/JRC_1K_POP_2018.tif"
     conda: "../envs/shell.yaml"
-    shell: "unzip {input} '*.tif' -d ./results/downloads/"
+    shell: "unzip -p '{input}' 'JRC_1K_POP_2018.tif' > '{output}'"
 
 
 # synthesizing
