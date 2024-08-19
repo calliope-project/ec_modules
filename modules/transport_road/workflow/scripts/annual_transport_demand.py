@@ -48,6 +48,7 @@ def get_all_distance_efficiency(
     road_distance: pd.Series,
     fill_missing_values: dict[str, str],
 ) -> tuple[pd.DataFrame, pd.DataFrame]:
+    """Get traveled distance and energy demand of road transport."""
     # Add transport energy demand from agriculture and
     # 'not elsewhere specified' (military) (OTHER_TRANSPORT_ROAD)
     transport_energy_balance = (
@@ -126,6 +127,7 @@ def get_all_distance_efficiency(
 def fill_missing_countries_and_years(
     jrc_data: pd.DataFrame, fill_missing_values: dict[str, str]
 ) -> pd.DataFrame:
+    """Fill in missing country and year."""
     jrc_data = jrc_data.unstack("country_code")
     with suppress(
         KeyError

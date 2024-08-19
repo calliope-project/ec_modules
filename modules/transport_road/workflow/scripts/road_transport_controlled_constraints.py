@@ -5,6 +5,7 @@ from eurocalliopelib import utils
 def scale_to_resolution_and_create_file(
     df, region_country_mapping, populations, resolution, output_path
 ):
+    """Scale the timeseries to the resolution using a given proxy."""
     if resolution == "national":
         df = df
     elif resolution == "continental":
@@ -17,6 +18,7 @@ def scale_to_resolution_and_create_file(
 
 
 def _scale_national_to_regional(df, region_country_mapping, populations):
+    """Scale the dataset from national to regional using the population as proxy."""
     df_population_share = (
         populations.loc[:, "population_sum"]
         .reindex(region_country_mapping.keys())
@@ -54,6 +56,7 @@ def get_national_ev_profiles(
         .unstack("country_code")
         .droplevel(level=0, axis="columns")
     )
+    """Get non-dimensional national plug-in and demand timeseries."""
     if "demand" in dataset_name:
         # Normalise demand and create min-max-equals timeseries
         df = (
@@ -68,6 +71,7 @@ def get_national_ev_profiles(
 
 
 def _fill_empty_country(df, country_neighbour_dict):
+    """Fill in missing countries with average values of neighbors."""
     for country, neighbours in country_neighbour_dict.items():
         assert country not in df.columns
         df[country] = df[neighbours].mean(axis=1)

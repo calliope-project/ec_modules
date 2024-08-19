@@ -32,11 +32,13 @@ def scale_to_regional_resolution(df, region_country_mapping, populations):
 
 
 def scale_to_national_resolution(df):
+    """Get country level values."""
     df.columns.name = None
     return df
 
 
 def scale_to_continental_resolution(df):
+    """Get European level values."""
     return df.sum(axis=1).to_frame("EUR")
 
 
@@ -78,6 +80,7 @@ def extract_national_ev_charging_potentials(
     fill_missing_values: dict[str, str],
     populations: pd.DataFrame,
 ) -> pd.DataFrame:
+    """Compute the maximum traveled distance chargeable per mode of road transport."""
     # Extract number of EVs per vehicle type
     df_ev_numbers = (
         pd.read_csv(path_to_ev_numbers, index_col=[0, 1, 2, 3, 4])
@@ -128,12 +131,14 @@ def extract_national_ev_charging_potentials(
 
 
 def reshape_and_add_suffix(df, suffix):
+    """Transpose a DataFrame and add a suffix to the column names."""
     return df.T.add_suffix(suffix)
 
 
 def fill_missing_countries_and_years(
     df_ev_numbers: pd.DataFrame, fill_missing_values: dict, populations: pd.DataFrame
 ) -> pd.DataFrame:
+    """Fill in missing data by using vehicles-per-capita from neighboring countries."""
     # Ensure the MultiIndex is in the correct order
     df_ev_numbers_ext = {}
 

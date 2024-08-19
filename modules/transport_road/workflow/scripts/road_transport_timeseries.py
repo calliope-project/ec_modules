@@ -67,6 +67,7 @@ def create_road_transport_demand_timeseries(
 
 
 def _fill_empty_country(df, country_neighbour_dict):
+    """Fill in missing countries with average values of neighbors."""
     for country, neighbours in country_neighbour_dict.items():
         if country in df.columns:
             continue

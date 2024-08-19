@@ -2,11 +2,13 @@ import pandas as pd
 
 
 def create_continental_timeseries(paths_to_input: list[str]) -> pd.DataFrame:
+    """Create Europe-wide timeseries."""
     ts = create_national_timeseries(paths_to_input)
     return ts.sum(axis=1).rename("EUR")
 
 
 def create_national_timeseries(paths_to_input: list[str]) -> pd.DataFrame:
+    """Create country-wide timeseries."""
     all_ts = [
         pd.read_csv(path, index_col="utc-timestamp", parse_dates=True)
         for path in paths_to_input
