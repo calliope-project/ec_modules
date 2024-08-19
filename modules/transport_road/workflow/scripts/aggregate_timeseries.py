@@ -15,11 +15,11 @@ def create_national_timeseries(paths_to_input: list[str]) -> pd.DataFrame:
 
 
 def create_regional_timeseries(
-    paths_to_input: list[str],
-    region_country_mapping: str,
-    population: str,
+    paths_to_input: list[str], region_country_mapping: str, population: str
 ) -> pd.DataFrame:
-    """Create regional timeseries by
+    """Create regional timeseries.
+
+    Steps:
         1. disaggregating the national timeseries into regional
         2. scaling each region according to the relative population in that region
 
@@ -27,7 +27,6 @@ def create_regional_timeseries(
 
     ASSUME all road transport is subnationally distributed in proportion to population.
     """
-
     df_national = create_national_timeseries(paths_to_input)
 
     region_country_mapping = (

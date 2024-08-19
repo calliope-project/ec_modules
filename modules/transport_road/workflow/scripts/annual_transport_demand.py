@@ -48,7 +48,8 @@ def get_all_distance_efficiency(
     road_distance: pd.Series,
     fill_missing_values: dict[str, str],
 ) -> tuple[pd.DataFrame, pd.DataFrame]:
-    # Add transport energy demand from agriculture and 'not elsewhere specified' (military) (OTHER_TRANSPORT_ROAD)
+    # Add transport energy demand from agriculture and
+    # 'not elsewhere specified' (military) (OTHER_TRANSPORT_ROAD)
     transport_energy_balance = (
         energy_balance.xs(FinalConsumption.ROAD_TRANSPORT)
         .unstack("carrier_code")
@@ -134,9 +135,9 @@ def fill_missing_countries_and_years(
         jrc_data = jrc_data.assign(**{country: jrc_data[neighbors].mean(axis=1)})
 
     jrc_data = jrc_data.stack().unstack("year")
-    jrc_data = jrc_data.assign(**{
-        str(year): jrc_data[2015] for year in range(2016, 2019)
-    })
+    jrc_data = jrc_data.assign(
+        **{str(year): jrc_data[2015] for year in range(2016, 2019)}
+    )
     jrc_data.columns = jrc_data.columns.astype(int)
     return jrc_data.stack()
 
@@ -167,10 +168,12 @@ if __name__ == "__main__":
             "year",
         ],
     ).squeeze()
-    # Used to add transport energy demand from agriculture and 'not elsewhere specified' (military)
-    # ASSUME: agriculture oil use goes to 'road' transport demand;
-    # 'not elsewhere specified' oil use goes predominantly to 'road' transport, except kerosene which goes to aviation
-    other_transportation_aviation = (  # all kerosene from the military destined for aviation
+
+    # Transport energy demand from agriculture and 'not elsewhere specified' (military)
+    # ASSUME: agriculture oil use goes to 'road' transport demand
+    # 'not elsewhere specified' oil use goes predominantly to 'road' transport
+    # except kerosene which goes to aviation
+    other_transportation_aviation = (
         energy_balances.loc[
             idx[FinalConsumption.OTHER_SECTORS, AVIATION_CARRIERS, :, :, :]
         ]
@@ -202,7 +205,8 @@ if __name__ == "__main__":
 
     fill_missing_values = snakemake.params.fill_missing_values
 
-    # Calculate total road distance, road efficiency and historically electrified road consumption
+    # Calculate total road distance, road efficiency
+    # and historically electrified road consumption
     total_road_distance, road_historically_electrified_consumption = (
         get_all_distance_efficiency(
             energy_balance=energy_balances,
@@ -214,11 +218,9 @@ if __name__ == "__main__":
     )
 
     # Calculate total road distance
-    total_road_distance = total_road_distance.groupby([
-        "vehicle_type",
-        "country_code",
-        "year",
-    ]).sum()
+    total_road_distance = total_road_distance.groupby(
+        ["vehicle_type", "country_code", "year"]
+    ).sum()
 
     # Extract historical electricity consumption
     total_historically_electrified_distance = (
