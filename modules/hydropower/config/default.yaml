@@ -1,0 +1,10 @@
+# See ../resources/internal-config.yaml for configuration that should only be
+# changed infrequently and cautiously rather than at runtime
+
+resolution_name: "national"
+resolution_file: https://www.dropbox.com/scl/fi/sjjisuqnzck2mhxs9jca7/units-national.geojson?rlkey=rv0q1exsytxws3gfvankbt9p7&dl=0
+first_year: 2016
+final_year: 2016
+hydro_power_database_version: "v10"
+basins:
+  HydroBASINS_level: "07"
