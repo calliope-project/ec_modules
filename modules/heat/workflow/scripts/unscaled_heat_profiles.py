@@ -1,7 +1,7 @@
-"""Use weather data to simulate hourly heat profiles using When2Heat
-(https://github.com/oruhnau/when2heat) data processing pipeline.
+"""Use weather data to simulate hourly heat profiles using When2Heat's methods.
 
-Functions attributable to When2Heat are explicitly referenced as such in the function docstring.
+Functions attributable to When2Heat are explicitly referenced as such in docstrings.
+When2Heat can be found here: https://github.com/oruhnau/when2heat
 """
 
 import os
@@ -16,7 +16,8 @@ import xarray as xr
 HOT_WATER_LOWER_BOUND_TEMP = 15
 # 2. the reference temperature is always 30C for hot water demand calcs
 HOT_WATER_REF_TEMP = 30
-# All locations are separated by the average wind speed with the threshold 4.4 m/s separating windy and not-windy (normal) locations
+# All locations are separated by the average wind speed with the threshold
+# 4.4 m/s separating windy and not-windy (normal) locations
 AVE_WIND_SPEED_THRESHOLD = 4.4
 
 
@@ -28,20 +29,22 @@ def get_unscaled_heat_profiles(
     final_year: Union[str, int],
     out_path: str,
 ) -> None:
-    """Produces time series of heat demand profiles with the correct shape, and consistent within themselves, but without meaningful units.
+    """Produces time series of heat demand profiles.
 
-    The profiles need to be scaled so their magnitude matches annual heat demand data in a subsequent step.
+    Profiles have correct shape and are consistent within themselves, but lack units.
+    They must be later scaled so their magnitude matches annual heat demand data!
 
     Args:
-        path_to_population (str): Gridded population data, which will act as the weighting to got from grid-level profiles to profiles per model unit.
+        path_to_population (str): Gridded population data, which will act as weighting.
         path_to_wind_speed (str): Gridded wind speed data in m/s.
         path_to_temperature (str): Gridded air temperature data in degrees C.
-        path_to_when2heat_params (str): Parameters to convert weather data into demand profiles from the When2Heat project.
-        first_year (Union[str, int]): First year of data to include in the profile (inclusive).
-        final_year (Union[str, int]): Final year of data to include in the profile (inclusive).
+        path_to_when2heat_params (str): When2heat parameters.
+        first_year (Union[str, int]): First year of data in the profile (inclusive).
+        final_year (Union[str, int]): Final year of data in the profile (inclusive).
         out_path (str): Path to which data will be saved.
     """
-    # Weather data is subset by the geographic area covered by model run (given by available population sites)
+    # Weather data is subset by the geographic area covered by model run
+    # (given by available population sites)
     temperature_ds = xr.open_dataset(path_to_temperature)
     wind_ds = xr.open_dataset(path_to_wind_speed)
 
@@ -53,22 +56,23 @@ def get_unscaled_heat_profiles(
     average_wind_speed = wind_ds["wind10m"].mean("time")
 
     # Subset temperature to the selected year extended by a couple of days either end,
-    # so we don't compute values for years we don't need, but keep a buffer for the shifts
-    # happening in get_reference_temperature()
+    # so we don't compute values for years we don't need, but keep a buffer for the
+    # shifts happening when obtaining reference temperature.
     temperature_ds = temperature_ds.sel(
         time=slice(
             str(int(first_year) - 1) + "-12-25", str(int(final_year) + 1) + "-01-05"
         )
     )
 
-    # This is a weighted average temperature from 3 days prior to each day in the timeseries
-    # to represent the relative impact of historical daily temperature on the heat demand of each day.
+    # This is a weighted average temperature from 3 days prior to each day in the
+    # timeseries to represent the relative impact of historical daily temperature on
+    # the heat demand of each day.
     # See [@Ruhnau:2019] for more information on the method
     reference_temperature = get_reference_temperature(
         temperature_ds["temperature"], time_dim="time"
     )
 
-    # After running get_reference_temperature(), we now subset to get only the target year
+    # Subset to get only the target year
     reference_temperature = reference_temperature.sel(
         time=slice(str(first_year), str(final_year))
     )
@@ -77,10 +81,10 @@ def get_unscaled_heat_profiles(
     hourly_params = read_hourly_parameters(path_to_when2heat_params)
 
     # Get daily demand
-    daily_heat = daily(
+    daily_heat = when2heat_daily(
         reference_temperature, average_wind_speed, daily_params, _heat_function
     )
-    daily_hot_water = daily(
+    daily_hot_water = when2heat_daily(
         reference_temperature, average_wind_speed, daily_params, _water_function
     )
 
@@ -119,10 +123,10 @@ def get_hourly_heat_profiles(
     Args:
         reference_temperature (xr.DataArray): Daily reference temperature in degrees C.
         daily_heat (xr.DataArray): Relative daily heat demand per site.
-        hourly_params (pd.Series): Parameters from When2Heat to convert from daily to hourly profiles.
+        hourly_params (pd.Series): Parameters from When2Heat.
 
     Returns:
-        xr.DataArray: Hourly heat demand profiles (which are internally consistent but whose magnitudes are meaningless).
+        xr.DataArray: Hourly heat demand profiles (must be re-scaled later).
     """
     # get temperature in 5C increments between -15C and +30C
     temperature_increments = (
@@ -134,7 +138,7 @@ def get_hourly_heat_profiles(
         temperature=temperature_increments, weekday=temperature_increments.weekday
     ).drop(["temperature", "weekday"])
 
-    # daily heat is multiplied by the hourly parameter value to get the relative heat demand for that hour
+    # Get the relative heat demand per hour
     hourly_heat = hourly_params_at_all_locations * daily_heat
     hourly_heat = _hour_and_day_to_datetime(hourly_heat)
 
@@ -151,7 +155,7 @@ def read_daily_parameters(input_path: str) -> pd.DataFrame:
 
 
 def read_hourly_parameters(input_path: str) -> xr.DataArray:
-    """Load When2Heat hourly parameters
+    """Load When2Heat hourly parameters.
 
     Modified from https://github.com/oruhnau/when2heat/blob/351bd1a2f9392ed50a7bdb732a103c9327c51846/scripts/read.py
     to set columns as integer.
@@ -167,7 +171,7 @@ def read_hourly_parameters(input_path: str) -> xr.DataArray:
             .align(parameters["COM"])[0]
         )
 
-    # We postprocess the dataframe from the CSV to make it easier to use in subsequent operations.
+    # Postprocess the dataframe to make it easier to use in subsequent operations.
     combined_df = pd.concat(
         parameters.values(), keys=parameters.keys(), names=["building"]
     )
@@ -180,20 +184,22 @@ def read_hourly_parameters(input_path: str) -> xr.DataArray:
 def get_reference_temperature(
     temperature: xr.DataArray, time_dim: str = "time"
 ) -> xr.DataArray:
-    """Get daily reference temperature values which account for the temperature in preceding days using a weighted average.
+    """Get daily reference temperature values.
+
+    Values account for the temperature in preceding days using a weighted average.
 
     Modified from https://github.com/oruhnau/when2heat/blob/351bd1a2f9392ed50a7bdb732a103c9327c51846/scripts/demand.py
     to expect xarray not pandas
 
     Args:
         temperature (xr.DataArray): Hourly temperature in degrees C
-        time_dim (str, optional): The name of the hourly time dimension. Defaults to "time".
+        time_dim (str, optional): Name of the hourly time dimension. Defaults to "time".
 
     Returns:
         xr.DataArray: Daily reference temperatures per site.
     """
     # Daily average
-    # pandas manages time resampling much quicker than xarray, so we switch to a dataframe here.
+    # pandas manages time resampling much quicker than xarray, so we switch to it here.
     daily_average = (
         temperature.rename(time=time_dim)
         .to_series()
@@ -210,16 +216,21 @@ def get_reference_temperature(
     ) / sum(0.5**i for i in range(4))
 
 
-def daily(
+def when2heat_daily(
     temperature: xr.DataArray,
     wind: xr.DataArray,
     all_parameters: pd.DataFrame,
     func: Callable,
 ) -> xr.DataArray:
-    """Modified from https://github.com/oruhnau/when2heat/blob/351bd1a2f9392ed50a7bdb732a103c9327c51846/scripts/demand.py to not prescribe index level names.
+    """When2Heat's daily function.
+
+    Modified from https://github.com/oruhnau/when2heat/blob/351bd1a2f9392ed50a7bdb732a103c9327c51846/scripts/demand.py
+    The change was to not prescribe index level names.
+
     All locations are separated by the average wind speed with the threshold 4.4 m/s
-    separating windy and not-windy (normal) locations, then relevant paramaters for that
-    windiness are applied in a function derived from [@BDEW:2015] to get "daily heat demand".
+    separating windy and not-windy (normal) locations, then relevant parameters for that
+    windiness are applied in a function derived from [@BDEW:2015] to get
+    "daily heat demand".
     """
     buildings = ["SFH", "MFH", "COM"]
 
@@ -251,7 +262,7 @@ def _group_gridcells(gridded_data: xr.DataArray, weight: xr.DataArray) -> xr.Dat
 
 
 def _hour_and_day_to_datetime(da: xr.DataArray) -> xr.DataArray:
-    """Combine hour and date (a.k.a. 'time') as two dimensions into one datetime ('time') dimension"""
+    """Combine hour and date ('time') into one datetime ('time') dimension."""
     da = da.stack(new_time=["time", "hour"])
     new_time = da.new_time.to_index()
     da.coords["new_time"] = new_time.get_level_values(0) + pd.to_timedelta(
@@ -274,7 +285,9 @@ def _csv_reader(
 
 
 def _heat_function(temperature: xr.DataArray, parameters: pd.DataFrame) -> xr.DataArray:
-    """A function for the total (space + water) daily heating demand, derived from [@BDEW:2015].
+    """A function for the total (space + water) daily heating demand.
+
+    Derived from [@BDEW:2015].
 
     Direct copy from https://github.com/oruhnau/when2heat/blob/351bd1a2f9392ed50a7bdb732a103c9327c51846/scripts/demand.py
 
