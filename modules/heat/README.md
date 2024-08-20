@@ -1,8 +1,35 @@
-# Heat module
+# Module: Heat
+
+A module to estimate COP timeseries and heat demand timeseries for European countries.
+
+>[!important]
+>As of 08 Aug 2024, this module has only been tested for national-resolution time series of heat demand and heat pump cop.
+>Time series at any resolution is coming soon!
 
 ## Main functionality
 
 As of 08 Aug 2024, this module can produce national-resolution time series of heat demand and heat pump cop.
+
+## Input-Output
+
+Here is a brief summary of the IO structure of the module.
+
+The configuration must point to a shapefile with the desired subregions, which will be downloaded and processed into timeseries and capacity values by the module.
+
+```mermaid
+flowchart LR
+    I1(shapefile.geojson) -.-> |Download| C
+    C(config.yaml) -->M((heat))
+    M --> O1(heatpump-cop.csv)
+    M --> O2(heat-demand.csv)
+```
+
+## DAG
+
+Here is a brief overview of the module's steps.
+Please consult the code for more details.
+
+![dag](rulegraph.png)
 
 ## Remaining issues
 

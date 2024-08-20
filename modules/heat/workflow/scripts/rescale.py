@@ -1,7 +1,7 @@
 import pandas as pd
 
 
-def national_to_continental_resolution(
+def _national_to_continental_resolution(
     annual_demand: pd.DataFrame, **kwargs
 ) -> pd.DataFrame:
     demand = annual_demand.sum(axis=1).to_frame("EUR")
@@ -9,13 +9,13 @@ def national_to_continental_resolution(
     return demand
 
 
-def national_to_national_resolution(
+def _national_to_national_resolution(
     annual_demand: pd.DataFrame, **kwargs
 ) -> pd.DataFrame:
     return annual_demand
 
 
-def national_to_regional_resolution(
+def _national_to_regional_resolution(
     annual_demand: pd.DataFrame, region_country_mapping: dict, populations: pd.DataFrame
 ) -> pd.DataFrame:
     # ASSUME national heat demand is spatially distributed by population.
@@ -43,7 +43,7 @@ def national_to_regional_resolution(
     return regional_df
 
 
-def read_data(path_to_file: str):
+def _read_data(path_to_file: str):
     return (
         pd.read_csv(path_to_file, index_col=[0, 1, 2, 3])
         .squeeze()
@@ -53,8 +53,8 @@ def read_data(path_to_file: str):
 
 if __name__ == "__main__":
     resolution = "national"
-    annual_demand = read_data(snakemake.input.annual_demand)
-    electrified = read_data(snakemake.input.electricity)
+    annual_demand = _read_data(snakemake.input.annual_demand)
+    electrified = _read_data(snakemake.input.electricity)
     populations = pd.read_csv(snakemake.input.populations, index_col=0)
     region_country_mapping = (
         pd.read_csv(snakemake.input.locations, index_col=0)
@@ -62,12 +62,13 @@ if __name__ == "__main__":
         .to_dict()
     )
 
+    # FIXME: should be arbitrary, based on the shapefile!
     if resolution == "continental":
-        rescale_function = national_to_continental_resolution
+        rescale_function = _national_to_continental_resolution
     elif resolution == "national":
-        rescale_function = national_to_national_resolution
+        rescale_function = _national_to_national_resolution
     elif resolution in ["regional", "ehighways"]:
-        rescale_function = national_to_regional_resolution
+        rescale_function = _national_to_regional_resolution
     else:
         raise ValueError(f"Unknown resolution {resolution}")
 

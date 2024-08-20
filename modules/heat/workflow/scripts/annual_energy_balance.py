@@ -8,6 +8,8 @@ idx = pd.IndexSlice
 
 
 class CAT_CODE(Enum):
+    """Eurostat codes."""
+
     FINAL_CONSUMPTION_HOUSEHOLD_CATEGORY = "FC_OTH_HH_E"
     FINAL_CONSUMPTION_INDUSTRY_CATEGORY = "FC_IND_E"
     FINAL_CONSUMPTION_OTHER_SECTORS_COMMERCIAL_PUBLIC_SERVICES = "FC_OTH_CP_E"
@@ -22,12 +24,13 @@ def generate_annual_energy_balance_nc(
     path_to_result: str,
     first_year: int,
 ) -> None:
-    """Open a TSV file and reprocess it into a xarray dataset, including long names for
-    Eurostat codes.
+    """Open a TSV file and reprocess it into a xarray dataset.
+
+    Final dataset will include long names for Eurostat codes.
     Switzerland is not included in Eurostat, so we splice in data from their govt.
     statistics.
     """
-    # Names for each consumption category/sub-category and carriers have been prepared by hand
+    # Names for each consumption category/sub-category and carriers preprepared by hand
     cat_names = pd.read_csv(path_to_cat_names, header=0, index_col=0)
     carrier_names = pd.read_csv(path_to_carrier_names, header=0, index_col=0)
 
@@ -57,8 +60,9 @@ def generate_annual_energy_balance_nc(
 
     tdf = df.stack()
 
-    # Add CH energy use (only covers a subset of sectors and carriers, but should be enough)
-    ch_energy_use_tdf = add_ch_energy_balance(
+    # Add CH energy use
+    # Only covers a subset of sectors and carriers, but should be enough
+    ch_energy_use_tdf = _add_ch_energy_balance(
         path_to_ch_excel, path_to_ch_industry_excel, index_levels=tdf.index.names
     )
     tdf = pd.concat([tdf, ch_energy_use_tdf]).sort_index(axis=0)
@@ -68,24 +72,24 @@ def generate_annual_energy_balance_nc(
     tdf.rename("value").to_csv(path_to_result)
 
 
-def add_ch_energy_balance(path_to_ch_excel, path_to_ch_industry_excel, index_levels):
+def _add_ch_energy_balance(path_to_ch_excel, path_to_ch_industry_excel, index_levels):
     household_sheet = "T17a"
     industry_sheet = "T17b"
     other_sectors_sheet = "T17c"
 
-    ch_hh_energy_use = get_ch_energy_balance_sheet(
+    ch_hh_energy_use = _get_ch_energy_balance_sheet(
         path_to_ch_excel,
         household_sheet,
         skipfooter=9,
         cat_code=CAT_CODE.FINAL_CONSUMPTION_HOUSEHOLD_CATEGORY,
     )
-    ch_ind_energy_use = get_ch_energy_balance_sheet(
+    ch_ind_energy_use = _get_ch_energy_balance_sheet(
         path_to_ch_excel,
         industry_sheet,
         skipfooter=12,
         cat_code=CAT_CODE.FINAL_CONSUMPTION_INDUSTRY_CATEGORY,
     )
-    ch_ser_energy_use = get_ch_energy_balance_sheet(
+    ch_ser_energy_use = _get_ch_energy_balance_sheet(
         path_to_ch_excel,
         other_sectors_sheet,
         skipfooter=12,
@@ -93,10 +97,10 @@ def add_ch_energy_balance(path_to_ch_excel, path_to_ch_industry_excel, index_lev
     )
 
     ch_waste_energy_use = get_ch_waste_consumption(path_to_ch_excel)
-    ch_industry_subsector_energy_use = get_ch_industry_energy_balance(
+    ch_industry_subsector_energy_use = _get_ch_industry_energy_balance(
         path_to_ch_industry_excel
     )
-    ch_transport_energy_use = get_ch_transport_energy_balance(path_to_ch_excel)
+    ch_transport_energy_use = _get_ch_transport_energy_balance(path_to_ch_excel)
 
     ch_energy_use_tdf = pd.concat(
         [
@@ -119,7 +123,7 @@ def add_ch_energy_balance(path_to_ch_excel, path_to_ch_industry_excel, index_lev
     return ch_energy_use_tdf
 
 
-def get_ch_energy_balance_sheet(path_to_excel, sheet, skipfooter, cat_code):
+def _get_ch_energy_balance_sheet(path_to_excel, sheet, skipfooter, cat_code):
     ch_energy_carriers = {
         "Erdölprodukte": "O4000XBIO",
         "Elektrizität": "E7000",
@@ -131,7 +135,7 @@ def get_ch_energy_balance_sheet(path_to_excel, sheet, skipfooter, cat_code):
         "Übrige erneuerbare Energien": "RA000",
         "Total\n= %": "TOTAL",
     }
-    # Footnote labels lead to some strings randomly ending in numbers; we remove them here
+    # Footnote labels lead to some strings randomly ending in numbers; remove them
     remove_digits = str.maketrans("", "", digits)
     df = (
         pd.read_excel(
@@ -161,10 +165,12 @@ def get_ch_energy_balance_sheet(path_to_excel, sheet, skipfooter, cat_code):
 
 
 def get_ch_waste_consumption(path_to_excel):
-    """In a different sheet in the CH GEST dataset, get data on the consumed quantity of
-    waste burned in WtE plants, ignoring the small (~2-3%) quantity of fossil fuels
-    also consumed in WtE plants to kickstart the process.
-    ASSUME: Small quantity (~2-3%) of fossil fuels consumed in Swiss WtE plants can be ignored.
+    """Get data on waste burned in WtE plants.
+
+    Present in a sheet CH GEST dataset.
+    FIXME: why do the assumption below?
+    ASSUME: Small quantity (~2-3%) of fossil fuels consumed in Swiss WtE plants can be
+    ignored.
     """
     category_code = "TI_EHG_E"
     carrier_code = "W6100_6220"
@@ -189,7 +195,7 @@ def get_ch_waste_consumption(path_to_excel):
     return waste_stream_tdf
 
 
-def get_ch_transport_energy_balance(path_to_excel):
+def _get_ch_transport_energy_balance(path_to_excel):
     carriers = {
         "Gas übriger Vekehr": ("G3000", "FC_TRA_ROAD_E"),
         "Übrige erneuerbare Energien": ("R5220B", "FC_TRA_ROAD_E"),
@@ -212,7 +218,7 @@ def get_ch_transport_energy_balance(path_to_excel):
         header=[0, 1, 2, 3, 4],
     ).xs("TJ", level=-1, axis=1)
 
-    # Footnote labels lead to some strings randomly ending in numbers; we remove them here
+    # Footnote labels lead to some strings randomly ending in numbers; remove them
     remove_digits = str.maketrans("", "", digits)
     # carrier names span across two column levels, which we merge with fillna
 
@@ -236,7 +242,7 @@ def get_ch_transport_energy_balance(path_to_excel):
     return df.stack()
 
 
-def get_ch_industry_energy_balance(path_to_excel):
+def _get_ch_industry_energy_balance(path_to_excel):
     ch_subsectors = {
         "1 Nahrg.": "FC_IND_FBT_E",  # 'Food, beverages & tobacco',
         "2 Textil": "FC_IND_TL_E",  # 'Textile & leather',
@@ -248,8 +254,7 @@ def get_ch_industry_energy_balance(path_to_excel):
         "8 NE": "FC_IND_NFM_E",  # 'Non-ferrous metals',
         "9 Metall": "FC_IND_MAC_E",  # 'Machinery',
         "10 Masch": "FC_IND_MAC_E",  # 'Machinery',
-        "11 and.": "FC_IND_NSP_E",
-        # 'Not elsewhere specified (industry)', 'Wood & wood products, Mining & quarrying, Transport equipment
+        "11 and.": "FC_IND_NSP_E",  # 'Not elsewhere specified (industry)', 'Wood & wood products, Mining & quarrying, Transport equipment  # noqa: E501
         "12 Bau": "FC_IND_CON_E",  # 'Construction'
     }
 
@@ -281,7 +286,7 @@ def get_ch_industry_energy_balance(path_to_excel):
     return (
         pd.concat(
             [
-                read_industry_subsector(
+                _read_industry_subsector(
                     path_to_excel, first_row, column_names, carrier_name
                 )
                 for first_row, carrier_name in ch_carriers.items()
@@ -295,7 +300,7 @@ def get_ch_industry_energy_balance(path_to_excel):
     )
 
 
-def read_industry_subsector(
+def _read_industry_subsector(
     path: str, first_row: int, column_names: list[str], carrier_code: str
 ) -> pd.DataFrame:
     return (

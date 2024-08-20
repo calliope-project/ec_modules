@@ -12,7 +12,7 @@ GRIDBOX_SIZE = 25000  # MERRA-2 grid
 idx = pd.IndexSlice
 
 
-# TODO this will most likely be entirely replaced once a more generalised way to deal
+# FIXME this will most likely be entirely replaced once a more generalised way to deal
 # with spatial units is available
 def population_on_weather_grid(
     path_to_population: str,
@@ -22,6 +22,7 @@ def population_on_weather_grid(
     lon_name: str,
     out_path: str,
 ) -> None:
+    """Uses population as a proxy to regionalise heat demand."""
     # We need the coordinates. This can be any file with gridded data across Europe
     # with WGS84 projection which will be used to generate which the grid
     # At minimum, the dataset must contain the `site` coordinate and latitude and
@@ -48,7 +49,7 @@ def population_on_weather_grid(
         gridbox_points.index.to_frame(),
         geometry=gridbox_points.buffer(GRIDBOX_SIZE).envelope,
     )
-    # `Overlay` creates new shapes that are either complete gridboxes or partial ones that
+    # Create new shapes that are either complete gridboxes or partial ones that
     # sit inside a specific location.
     gridboxes_mapped_to_locations = gpd.overlay(
         gridbox.to_crs(WGS84), locations.to_crs(WGS84)
@@ -79,8 +80,8 @@ def population_on_weather_grid(
         )
         locations["population"] = [i["sum"] for i in population_per_zone]
 
-    # Confirm that the total population is valid (i.e. we haven't picked up or lost regions).
-    # This is a test that the gridboxes cover all land with population that we are interested in.
+    # Confirm that the total population is valid (haven't picked up or lost regions).
+    # The gridboxes cover all land with population that we are interested in.
     assert math.isclose(
         locations.population.sum(),
         gridboxes_mapped_to_locations.population.sum(),

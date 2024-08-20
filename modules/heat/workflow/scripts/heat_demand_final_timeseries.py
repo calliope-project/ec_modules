@@ -3,6 +3,8 @@ import pandas as pd
 import xarray as xr
 from eurocalliopelib import utils
 
+TWH_TO_MWH = 1e6
+
 
 def scale_heat_demand_profiles(
     annual_demand_twh: xr.Dataset,
@@ -10,24 +12,29 @@ def scale_heat_demand_profiles(
     sfh_mfh_shares: dict,
     model_scaling_factor: float,
 ) -> xr.DataArray:
-    """Create a timeseries of demands for space heat and hot water demands across all building types.
+    """Create demand timeseries for space heat and hot water across all building types.
 
-    ASSUME: if calculating historic electrical heating requirements, annual electricity demand is distributed using the demand profile.
+    ASSUME: if calculating historic electrical heating requirements, annual electricity
+    demand is distributed using the demand profile.
     It therefore ignores heat pump COP profiles and the possibility of a storage buffer.
 
     Args:
         annual_demand_twh (xr.Dataset):
-            Annual heat demand in TWh by year, resolution ID, end-use, and building category.
+            Annual heat demand in TWh by year, resolution ID, end-use, and building
+            category.
         unscaled_demand_profiles (xr.Dataset):
-            Hourly heat demand profiles per year by resolution ID, end-use, and building category.
-            Profiles will be normalised before scaling with annual demand, so their absolute magnitudes will be ignored.
+            Hourly heat demand profiles per year by resolution ID, end-use, and building
+            category. Profiles will be normalised before scaling with annual demand, so
+            their absolute magnitudes will be ignored.
         sfh_mfh_shares (dict):
-            Share of single- and multi-family households, used to combine respective unscaled demand profiles into one "household" profile.
+            Share of single- and multi-family households, used to combine respective
+            unscaled demand profiles into one "household" profile.
         model_scaling_factor (float):
-            Scaling factor to go from MWh to the units of energy used in the final Calliope model.
+            Scaling factor to go from MWh to the units of energy used in the final
+            Calliope model.
 
     Returns:
-        xr.DataArray: `unscaled_demand_profiles` merged across building types and end uses, and scaled to have an annual sum equal to `annual_demand`.
+        xr.DataArray: merged and scaled heat demand profiles.
     """
     assert np.isclose(
         sum(sfh_mfh_shares.values()), 1
@@ -49,8 +56,9 @@ def scale_heat_demand_profiles(
         _scale_demand, annual_demand=annual_demand_twh
     )
 
-    # * 1e6 for TWh -> MWh
-    return scaled_demand_profiles.to_array("end_use") * 1e6 * model_scaling_factor
+    return (
+        scaled_demand_profiles.to_array("end_use") * TWH_TO_MWH * model_scaling_factor
+    )
 
 
 def _scale_demand(
@@ -66,7 +74,8 @@ def _scale_demand(
 def prepare_annual_demand(annual_demand: pd.Series) -> xr.DataArray:
     """Restructure annual demand MultiIndex series into a multi-dimensional array.
 
-    Result sums over all building categories and only contains hot water and space heating demands (not cooking).
+    Result sums over all building categories and only contains hot water and space
+    heating demands (not cooking).
     """
     return (
         annual_demand.rename_axis(columns="id")
@@ -76,12 +85,14 @@ def prepare_annual_demand(annual_demand: pd.Series) -> xr.DataArray:
     )
 
 
+# FIXME: this probably should be removed. Models can just convert this if needed.
 def electrify_heat_demand_profiles(
     heat_demand: xr.DataArray, cop: xr.DataArray, electrification_shares: dict
 ) -> xr.DataArray:
+    """Convert heat demand to electricity demand."""
     normalised_heat_demand = heat_demand / heat_demand.sum("time")
 
-    # Weight COP based on _when_ it is demanded, A.K.A. the seasonal coefficient of performance (SCOP).
+    # Weight COP to SCOP (seasonal coefficient of performance).
     weighted_average_cop = (
         (normalised_heat_demand * cop).sum("time").expand_dims(tech=["heat-pump"])
     )

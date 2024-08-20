@@ -31,20 +31,21 @@ CARRIER_NAMES = {
 def process_jrc_heat_tertiary_sector_data(
     paths_to_national_data: list[str], out_path: str
 ):
+    """Process JRC-IDEES tertiary data to extract its heat demand."""
     dfs = []
     for file in paths_to_national_data:
         df_final_energy = pd.read_excel(file, sheet_name="SER_hh_fec", index_col=0)
         df_useful_energy = pd.read_excel(file, sheet_name="SER_hh_tes", index_col=0)
         df_summary = pd.read_excel(file, sheet_name="SER_summary", index_col=0)
 
-        df_final_energy = clean_df(df_final_energy, "final_energy")
-        df_useful_energy = clean_df(df_useful_energy, "useful_energy")
+        df_final_energy = _clean_df(df_final_energy, "final_energy")
+        df_useful_energy = _clean_df(df_useful_energy, "useful_energy")
 
         df = pd.concat([df_final_energy, df_useful_energy])
 
         df_elec = (
             df_summary.loc[
-                "Energy consumption by end-uses (ktoe)":"Shares of energy consumption in end-uses (in %)"
+                "Energy consumption by end-uses (ktoe)":"Shares of energy consumption in end-uses (in %)"  # noqa: E501 FIXME: process with ec_jrc_idees
             ]
             .loc["Specific electricity uses"]
             .rename_axis(index="year")
@@ -66,7 +67,7 @@ def process_jrc_heat_tertiary_sector_data(
     pd.concat(dfs).stack().to_csv(out_path)
 
 
-def clean_df(df: pd.DataFrame, energy_type: str):
+def _clean_df(df: pd.DataFrame, energy_type: str):
     country_code = df.index.names[0].split(" - ")[0]
     df = df.assign(end_use=np.nan)
     df.loc[df.index.isin(END_USES.keys()), "end_use"] = list(END_USES.keys())

@@ -7,7 +7,7 @@ import xarray as xr
 def group_gridcells(
     gridded_data: xr.Dataset, grid_weight: xr.DataArray, threads: int
 ) -> xr.DataArray:
-    """Group gridded heat data into resolution-specific units, taking a weighted average of grid values.
+    """Group gridded heat data into resolution-specific units.
 
     Args:
         gridded_data (xr.Dataset): Gridded timeseries space heat and hot water data.
@@ -15,7 +15,7 @@ def group_gridcells(
         threads (int): Number of threads over which to undertake multiprocessing.
 
     Returns:
-        xr.DataArray: `gridded_data` with `sites` dimension reduced to an `id` dimension, representing resolution-specific units.
+        xr.DataArray: data in resolution-specific units.
     """
     apply_weights = partial(
         _site_weighted_ave, gridded_data=gridded_data, grid_weight=grid_weight

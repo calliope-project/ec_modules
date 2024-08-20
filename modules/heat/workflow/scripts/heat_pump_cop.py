@@ -22,22 +22,37 @@ def cop(
 ):
     """Calculate heat pump Coefficient of Performance (COP) based on manufacturer data.
 
-    COP is calculated for air-source and ground-source heat pumps according to different source temperature data.
-
-    COP is aggregated from grid-cells to model resolution using a population-weighted sum.
+    COP is calculated for air-source and ground-source heat pumps according to different
+    source temperature data.
+    COP is aggregated from grid-cells to model resolution using a population-weighted
+    sum.
 
     Args:
-        path_to_temperature_air (str): Gridded air temperature timeseries data.
-        path_to_temperature_ground (str): Gridded ground/soil temperature timeseries data.
-        path_to_population (str):  Gridded population data with `id` dimension that defined model resolution unit IDs.
-        path_to_heat_pump_characteristics (str):  Manufacturer data on heat pump characteristics across a product range.
-        sink_temperature (dict[str, int]): Working temperature for different heating methods (the temperature 'sink' of a heat pump).
-        space_heat_sink_shares (dict[str, float]): Share of different space heating methods assumed for the building stock.
-        correction_factor (float): Factor with which to downrate heat pump performance to go from manufacturer data to "operational" performance.
-        heat_pump_shares (dict[str, float]): Share of air- vs ground-source heat pumps in the market.
-        first_year (Union[int, str]): First year of data to include in the profile (inclusive).
-        final_year (Union[int, str]): Final year of data to include in the profile (inclusive).
-        path_to_output (str): Output to which COP timeseries data will be saved.
+        path_to_temperature_air (str):
+            Gridded air temperature timeseries data.
+        path_to_temperature_ground (str):
+            Gridded ground/soil temperature timeseries data.
+        path_to_population (str):
+            Gridded population data with `id` dimension that defined model resolution
+            unit IDs.
+        path_to_heat_pump_characteristics (str):
+            Manufacturer data on heat pump characteristics across a product range.
+        sink_temperature (dict[str, int]):
+            Working temperature for different heating methods
+            ('sink' temp. of a heat pump).
+        space_heat_sink_shares (dict[str, float]):
+            Share of different space heating methods assumed for the building stock.
+        correction_factor (float):
+            Factor with which to downrate heat pump performance to go from manufacturer
+            data to "operational" performance.
+        heat_pump_shares (dict[str, float]):
+            Share of air- vs ground-source heat pumps in the market.
+        first_year (Union[int, str]):
+            First year of data to include in the profile (inclusive).
+        final_year (Union[int, str]):
+            Final year of data to include in the profile (inclusive).
+        path_to_output (str):
+            Output to which COP timeseries data will be saved.
     """
     # Initial fast-fail checks.
     assert math.isclose(
@@ -104,8 +119,9 @@ def temperature_to_cop(
     temperature_celsius: xr.DataArray,
     correction_factor: float,
 ) -> xr.DataArray:
-    """Interpolate heat pump temperature-COP relationship to the gridded weather temperature profiles."""
-    # The range of source temperatures covered in the characteristic data depends on the heat pump type
+    """Interpolate heat pump temperature-COP to the gridded temperature profiles."""
+    # The range of source temperatures covered in the characteristic data depends on
+    # the heat pump type
     source_cop = correction_factor * heat_pump_characteristics.dropna("source_temp")
 
     return source_cop.interp(
@@ -118,7 +134,7 @@ def _load_temperature_data(
     first_year: Union[int, str],
     final_year: Union[int, str],
 ) -> xr.Dataset:
-    """Load xarray dataset, subset to modelled geographic extent, and check that units are in the correct unit"""
+    """Subset to modelled geographic extent and that units are correct."""
     ds = xr.open_dataset(path_to_temperature_data).sel(
         time=slice(str(first_year), str(final_year))
     )
