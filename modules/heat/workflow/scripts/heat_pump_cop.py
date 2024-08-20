@@ -104,10 +104,7 @@ def temperature_to_cop(
     temperature_celsius: xr.DataArray,
     correction_factor: float,
 ) -> xr.DataArray:
-    """
-    Interpolate heat pump temperature-COP relationship to the gridded weather temperature profiles.
-    """
-
+    """Interpolate heat pump temperature-COP relationship to the gridded weather temperature profiles."""
     # The range of source temperatures covered in the characteristic data depends on the heat pump type
     source_cop = correction_factor * heat_pump_characteristics.dropna("source_temp")
 
@@ -121,7 +118,7 @@ def _load_temperature_data(
     first_year: Union[int, str],
     final_year: Union[int, str],
 ) -> xr.Dataset:
-    "Load xarray dataset, subset to modelled geographic extent, and check that units are in the correct unit"
+    """Load xarray dataset, subset to modelled geographic extent, and check that units are in the correct unit"""
     ds = xr.open_dataset(path_to_temperature_data).sel(
         time=slice(str(first_year), str(final_year))
     )

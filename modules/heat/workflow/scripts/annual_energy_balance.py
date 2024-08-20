@@ -22,8 +22,7 @@ def generate_annual_energy_balance_nc(
     path_to_result: str,
     first_year: int,
 ) -> None:
-    """
-    Open a TSV file and reprocess it into a xarray dataset, including long names for
+    """Open a TSV file and reprocess it into a xarray dataset, including long names for
     Eurostat codes.
     Switzerland is not included in Eurostat, so we splice in data from their govt.
     statistics.
@@ -39,12 +38,9 @@ def generate_annual_energy_balance_nc(
         na_values=[":", ": ", ": z"],
     )
     df.index = (
-        df.index.str.split(",", expand=True).rename([
-            "cat_code",
-            "carrier_code",
-            "unit",
-            "country",
-        ])  # comes as 'nrg_bal,siec,unit,geo\\time'
+        df.index.str.split(",", expand=True).rename(
+            ["cat_code", "carrier_code", "unit", "country"]
+        )  # comes as 'nrg_bal,siec,unit,geo\\time'
     )
     not_countries = [c for c in df.reset_index().country.unique() if len(c) > 2] + [
         "XK"
@@ -102,21 +98,23 @@ def add_ch_energy_balance(path_to_ch_excel, path_to_ch_industry_excel, index_lev
     )
     ch_transport_energy_use = get_ch_transport_energy_balance(path_to_ch_excel)
 
-    ch_energy_use_tdf = pd.concat([
-        df.reset_index("year")
-        .assign(country="CHE", unit="TJ")
-        .set_index(["year", "country", "unit"], append=True)
-        .squeeze()
-        .reorder_levels(index_levels)
-        for df in [
-            ch_hh_energy_use,
-            ch_ind_energy_use,
-            ch_ser_energy_use,
-            ch_waste_energy_use,
-            ch_industry_subsector_energy_use,
-            ch_transport_energy_use,
+    ch_energy_use_tdf = pd.concat(
+        [
+            df.reset_index("year")
+            .assign(country="CHE", unit="TJ")
+            .set_index(["year", "country", "unit"], append=True)
+            .squeeze()
+            .reorder_levels(index_levels)
+            for df in [
+                ch_hh_energy_use,
+                ch_ind_energy_use,
+                ch_ser_energy_use,
+                ch_waste_energy_use,
+                ch_industry_subsector_energy_use,
+                ch_transport_energy_use,
+            ]
         ]
-    ])
+    )
 
     return ch_energy_use_tdf
 
@@ -163,8 +161,7 @@ def get_ch_energy_balance_sheet(path_to_excel, sheet, skipfooter, cat_code):
 
 
 def get_ch_waste_consumption(path_to_excel):
-    """
-    In a different sheet in the CH GEST dataset, get data on the consumed quantity of
+    """In a different sheet in the CH GEST dataset, get data on the consumed quantity of
     waste burned in WtE plants, ignoring the small (~2-3%) quantity of fossil fuels
     also consumed in WtE plants to kickstart the process.
     ASSUME: Small quantity (~2-3%) of fossil fuels consumed in Swiss WtE plants can be ignored.

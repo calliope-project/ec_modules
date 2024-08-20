@@ -16,9 +16,7 @@ def national_to_national_resolution(
 
 
 def national_to_regional_resolution(
-    annual_demand: pd.DataFrame,
-    region_country_mapping: dict,
-    populations: pd.DataFrame,
+    annual_demand: pd.DataFrame, region_country_mapping: dict, populations: pd.DataFrame
 ) -> pd.DataFrame:
     # ASSUME national heat demand is spatially distributed by population.
     # TODO maybe we want to have it per GVA for commercial demand

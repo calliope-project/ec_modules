@@ -17,7 +17,6 @@ def group_gridcells(
     Returns:
         xr.DataArray: `gridded_data` with `sites` dimension reduced to an `id` dimension, representing resolution-specific units.
     """
-
     apply_weights = partial(
         _site_weighted_ave, gridded_data=gridded_data, grid_weight=grid_weight
     )

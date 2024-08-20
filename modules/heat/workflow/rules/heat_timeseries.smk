@@ -76,5 +76,3 @@ rule group_gridded_timeseries_heat_demand:
     threads: 4
     output: temp("results/{shapes}/hourly_unscaled_heat_demand.nc")
     script: "../scripts/group_gridded_timeseries.py"
-
-

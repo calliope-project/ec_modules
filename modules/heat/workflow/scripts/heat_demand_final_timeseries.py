@@ -25,6 +25,7 @@ def scale_heat_demand_profiles(
             Share of single- and multi-family households, used to combine respective unscaled demand profiles into one "household" profile.
         model_scaling_factor (float):
             Scaling factor to go from MWh to the units of energy used in the final Calliope model.
+
     Returns:
         xr.DataArray: `unscaled_demand_profiles` merged across building types and end uses, and scaled to have an annual sum equal to `annual_demand`.
     """
@@ -55,7 +56,7 @@ def scale_heat_demand_profiles(
 def _scale_demand(
     one_year_profile: xr.Dataset, annual_demand: xr.Dataset
 ) -> xr.Dataset:
-    "Scale demand in each year and sum different building types into one profile."
+    """Scale demand in each year and sum different building types into one profile."""
     year = one_year_profile.time.dt.year[0]
     normalised_profile = one_year_profile / one_year_profile.sum("time")
     demand = normalised_profile * annual_demand.sel(year=year).drop("year")
