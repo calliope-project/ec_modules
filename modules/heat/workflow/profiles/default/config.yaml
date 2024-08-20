@@ -1,0 +1,3 @@
+software-deployment-method: conda
+use-conda: True
+wrapper-prefix: https://github.com/calliope-project/ec_modules/raw/
