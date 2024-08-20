@@ -1,0 +1,12 @@
+name: module-heat
+channels:
+  - conda-forge
+  - nodefaults
+  - bioconda
+dependencies:
+    - python=3.11
+    - pycountry=18.12.8
+    - snakemake-minimal=8.10.7
+    - pip
+    - pip:
+      - "git+https://github.com/calliope-project/ec_utils.git@v0.1.0"
