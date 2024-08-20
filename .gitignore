@@ -4,7 +4,10 @@
 ### Editors
 *~
 \#*\#
-**/.vscode
+**/.vscode/
+!/.vscode/
+.vscode/*
+!.vscode/settings.json
 .$*
 
 ### Byte-compiled files
@@ -39,4 +42,5 @@ tmp/
 results/
 report/
 
+### repo specific exceptions
 !modules/_example_module/**
