@@ -1,0 +1,66 @@
+data-sources:
+  controlled-ev-profiles: https://zenodo.org/record/6579421/files/ramp-ev-{dataset}.csv.gz?download=1
+  uncontrolled-ev-profiles: https://sandbox.zenodo.org/records/45530/files/uncontrolled-charging-profiles.csv.gz?download=1
+  annual-energy-balances: https://surfdrive.surf.nl/files/index.php/s/5VUl2qZcThf2oL6/download
+  jrc-idees:
+    road-distance: https://surfdrive.surf.nl/files/index.php/s/8JCUB0oSDLsm4TA/download
+    road-energy: https://surfdrive.surf.nl/files/index.php/s/CTEMENWJBseI7g8/download
+    road-vehicles: https://surfdrive.surf.nl/files/index.php/s/RACqwmERzUDDUrv/download
+data-pre-processing:
+  fill-missing-values:
+    jrc-idees:
+      ALB: [BGR, HRV, HUN, ROU, GRC]
+      BIH: [BGR, HRV, HUN, ROU, GRC]
+      MNE: [BGR, HRV, HUN, ROU, GRC]
+      MKD: [BGR, HRV, HUN, ROU, GRC]
+      SRB: [BGR, HRV, HUN, ROU, GRC]
+      NOR: [SWE, DNK]
+      CHE: [DEU, AUT, FRA, ITA]
+    ramp:
+      ALB: [HRV]
+      MKD: [HRV]
+      GRC: [ROU]
+      BGR: [ROU]
+      BIH: [HRV, HUN]
+      MNE: [HRV]
+      SRB: [HUN]
+      CYP: [ROU]
+spatial:
+  countries:
+    - "Austria"
+    - "Belgium"
+    - "Bulgaria"
+    - "Croatia"
+    - "Cyprus"
+    - "Czech Republic"
+    - "Denmark"
+    - "Estonia"
+    - "Finland"
+    - "France"
+    - "Germany"
+    - "Greece"
+    - "Hungary"
+    - "Ireland"
+    - "Italy"
+    - "Latvia"
+    - "Lithuania"
+    - "Luxembourg"
+    - "Netherlands"
+    - "Poland"
+    - "Portugal"
+    - "Romania"
+    - "Slovakia"
+    - "Slovenia"
+    - "Spain"
+    - "Sweden"
+    - "United Kingdom"
+    - "Albania"
+    - "Bosnia and Herzegovina"
+    - "Macedonia, Republic of"
+    - "Montenegro"
+    - "Norway"
+    - "Serbia"
+    - "Switzerland"
+scaling-factors: # values are tuned for models with a few hours resolution and one year duration
+    power: 0.00001 # from MW(h) to 100 GW(h)
+    transport: 0.01  # from Mio km to 100 Mio km

@@ -1,0 +1,23 @@
+import yaml
+
+from pathlib import Path
+from snakemake.utils import min_version
+
+min_version("8.10")
+
+configfile: "config/default.yaml"
+with open(workflow.source_path("resources/internal.yaml"), "r") as f:
+    internal = yaml.safe_load(f)
+
+include: "rules/downloads.smk"
+include: "rules/transport.smk"
+include: "rules/resolution.smk"
+
+rule all:
+    message: "Generate controlled and uncontrolled vehicle timeseries."
+    localrule: True
+    default_target: True
+    input:
+        "results/timeseries/uncontrolled-electrified-road-transport.csv",
+        "results/timeseries/uncontrolled-road-transport-historic-electrification.csv",
+        "results/electrified-transport.csv"
