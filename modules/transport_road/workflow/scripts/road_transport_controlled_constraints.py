@@ -50,13 +50,13 @@ def get_national_ev_profiles(
     country_neighbour_dict: dict[str, list[str]],
     country_codes: list[str],
 ) -> pd.DataFrame:
+    """Get non-dimensional national plug-in and demand timeseries."""
     df_timeseries = (
         pd.read_csv(ev_profiles_path, index_col=[0, 1, 2], parse_dates=[0])
         .xs(slice(first_year, final_year), level="year")
         .unstack("country_code")
         .droplevel(level=0, axis="columns")
     )
-    """Get non-dimensional national plug-in and demand timeseries."""
     if "demand" in dataset_name:
         # Normalise demand and create min-max-equals timeseries
         df = (
