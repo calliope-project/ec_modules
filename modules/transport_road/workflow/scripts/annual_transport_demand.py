@@ -21,6 +21,7 @@ YEAR_RANGE = slice(2000, 2018)
 
 class FinalConsumption(str, Enum):
     """Eurostat codes for final consumption."""
+
     ROAD_TRANSPORT = "FC_TRA_ROAD_E"
     OTHER_SECTORS = "FC_OTH_NSP_E"
     AGRICULTURE_AND_FORESTRY = "FC_OTH_AF_E"
@@ -28,6 +29,7 @@ class FinalConsumption(str, Enum):
 
 class Carrier(str, Enum):
     """Eurostat codes for key carriers."""
+
     AVIATION_GASOLINE = "O4651"
     GASOLINE_JET_FUEL = "O4653"
     KEROSENE_JET_FUEL = "O4661XR5230B"
