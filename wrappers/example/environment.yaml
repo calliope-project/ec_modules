@@ -1,6 +1,0 @@
-channels:
-  - conda-forge
-  - nodefaults
-dependencies:
-  - pandas
-  - snakemake-wrapper-utils = v0.6.2

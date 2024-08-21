@@ -1,0 +1,13 @@
+rule test:
+    input:
+        cutout = "MNE_cutout.nc",
+        availability_matrix = "MNE_availability.nc"
+    output:
+        layout = "results/layout.nc",
+        plot_layout = "results/plot_layout.png"
+    params:
+        max_units_per_km2 = 5.1,
+        units = "MW",
+        layout_name = "test_layout",
+        layout_projected_crs = "3035"
+    wrapper: "file:../"

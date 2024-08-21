@@ -1,9 +1,0 @@
-
-rule appender:
-    input: workflow.source_path("foobar.txt"),
-    output: "output/bar.txt",
-    params:
-        append_text="Bad coffee!",
-        capitalize= True
-    threads: 1
-    wrapper: "file:../"

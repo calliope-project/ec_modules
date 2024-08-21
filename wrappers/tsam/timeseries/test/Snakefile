@@ -1,11 +1,11 @@
 rule tsam_timeseries:
     input:
-        "testdata1.csv",
-        "testdata2.csv"
+        "testdata_GHI.csv",
+        "testdata_T.csv"
     output:
-        typical_periods = "output/typical_periods.csv",
-        accuracy_indicators = "output/accuracy_indicators.csv",
-        index_matching = "output/index_matching.csv"
+        typical_periods = "results/typical_periods.csv",
+        accuracy_indicators = "results/accuracy_indicators.csv",
+        index_matching = "results/index_matching.csv"
     params:
         noTypicalPeriods = 8,
         hoursPerPeriod = 24,

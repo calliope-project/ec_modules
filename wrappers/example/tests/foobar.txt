@@ -1,1 +1,0 @@
-Text that should not be replaced.

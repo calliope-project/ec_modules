@@ -1,4 +1,4 @@
-name: ec-atlite-availability-matrix
+name: ec-atlite-availability
 channels:
   - conda-forge
   - nodefaults

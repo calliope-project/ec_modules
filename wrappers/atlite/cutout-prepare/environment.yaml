@@ -1,6 +1,0 @@
-name: ec-atlite-cutout
-channels:
-  - conda-forge
-  - nodefaults
-dependencies:
-  - atlite = 0.2.10  # FIXME: update once https://github.com/PyPSA/atlite/issues/371 is fixed!
