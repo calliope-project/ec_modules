@@ -1,13 +1,13 @@
 rule test:
     input:
-        cutout = "cutout.nc",
-        availability_matrix = "availability.nc"
+        cutout = "MNE_cutout.nc",
+        availability_matrix = "MNE_availability.nc"
     output:
-        layout = "output/layout.nc",
-        plot_layout = "output/plot_layout.png"
+        layout = "results/layout.nc",
+        plot_layout = "results/plot_layout.png"
     params:
-        max_capacity_per_km2 = 5.1,
+        max_units_per_km2 = 5.1,
+        units = "MW",
         layout_name = "test_layout",
-        layout_crs = "3035"
-    threads: 4
+        layout_projected_crs = "3035"
     wrapper: "file:../"

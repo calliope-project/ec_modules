@@ -1,13 +1,12 @@
-rule test:
+rule atlite_cutout:
     input:
-        shapefile = "montenegro.geojson"
+        shapefile = "MNE.geojson"
     output:
-        cutout = "output/cutout.nc",
-        plot_cutout = "output/plot_cutout.png"
+        cutout = "results/cutout.nc",
+        plot_cutout = "results/plot_cutout.png"
     params:
         time = "2019-05-02",
         features = ["height", "wind", "influx", "temperature", "runoff"],
-        offset_degrees = 1,
+        offset_degrees = 0,
         module = ["era5"],
-    threads: 1
     wrapper: "file:../"

@@ -11,8 +11,9 @@ output:
   # Optional
   - plot_layout: Figure showing the capacity layout.
 params:
-  - max_capacity_per_km2: Maximum capacity per km2.
+  - max_units_per_km2: Maximum capacity per km2.
+  - units: name of the units used in the calculation ("MW").
   - layout_name: xarray name for the layout.
-  - layout_crs: Projection CRS for area calculation.
+  - layout_projected_crs: Projection CRS for area calculation.
   # Optional
   - cutout_kwargs: dict. Additional `Cutout` parameters.

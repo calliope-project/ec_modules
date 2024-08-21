@@ -22,15 +22,15 @@ assert box(*cutout.bounds).covers(
     )
 )
 
-layout_crs = snakemake.params.layout_crs
+layout_crs = snakemake.params.layout_projected_crs
 assert CRS.from_user_input(layout_crs).is_projected
 layout = (
-    cutout.uniform_density_layout(snakemake.params.max_capacity_per_km2, crs=layout_crs)
+    cutout.uniform_density_layout(snakemake.params.max_units_per_km2, crs=layout_crs)
     * M2_TO_KM2
     * availability.sum(set(availability.dims) - {"x", "y"})
 )
 layout.name = snakemake.params.layout_name
-layout.attrs["units"] = "MW"
+layout.attrs["units"] = snakemake.params.units
 layout.to_netcdf(snakemake.output.layout)
 
 plot_layout = snakemake.output.get("plot_layout")

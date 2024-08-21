@@ -1,6 +1,6 @@
 # `atlite` capacity layout
 
-For the given cutout, use the availability matrix and the maximum capacity per km2 to calculate the maximum capacity layout for the region.
+For the given cutout, use the availability matrix to calculate the maximum unit-per-km2 (e.g, MW per km2).
 
 ```mermaid
 flowchart LR
