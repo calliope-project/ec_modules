@@ -17,18 +17,3 @@ flowchart LR
 >- The resulting data is not a perfect match with national statistics.
 >
 >Use with care!
-
-## Example
-
-```snakemake
-rule ppm_powerplants:
-    input:
-        config= "config.yaml"
-    output:
-        powerplants= "output/powerplants.csv",
-        stats_aggregated = "output/stats_aggregated.png",
-    params:
-        from_url= False
-    threads: 8
-    wrapper: github("calliope-project/ec_modules", path="wrappers/powerplantmatching/powerplants")
-```

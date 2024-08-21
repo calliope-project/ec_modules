@@ -1,8 +1,8 @@
 
 rule ppm_powerplants:
     output:
-        powerplants= "output/powerplants.csv",
-        stats_aggregated = "output/stats_aggregated.png",
+        powerplants= "results/powerplants.csv",
+        stats_aggregated = "results/stats_aggregated.png",
     params:
         from_url= False
     threads: 1

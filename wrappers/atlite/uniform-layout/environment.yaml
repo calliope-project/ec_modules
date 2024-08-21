@@ -1,4 +1,4 @@
-name: ec-atlite-capacity-layout
+name: ec-atlite-uniform-layout
 channels:
   - conda-forge
   - nodefaults

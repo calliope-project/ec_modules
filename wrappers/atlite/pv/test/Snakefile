@@ -1,0 +1,17 @@
+rule atlite_pv:
+    input:
+        cutout = "MNE_cutout.nc",
+        shapefile = "MNE.geojson",
+        layout = "MNE_layout.nc"
+    output:
+        dataset = "results/dataset.nc",
+        plot_profile = "results/profile.png",
+        plot_max_capacity = "results/max_cap.png"
+    params:
+        shapefile_index_column = "ADM0_A3",
+        panel = "CSi",
+        orientation = "latitude_optimal",
+        pv_kwargs = {
+            "per_unit": True
+        }
+    wrapper: "file:../"

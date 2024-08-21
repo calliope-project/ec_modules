@@ -1,7 +1,7 @@
 rule test:
     output:
-        shapefile = "output/global_regions.shp",
-        plot_shapefile = "output/global_regions.png"
+        shapefile = "results/global_regions.shp",
+        plot_shapefile = "results/global_regions.png"
     params:
         resolution = "10m",
         category = "cultural",

@@ -1,4 +1,4 @@
-name: ec-atlite-capacity-layout
+name: ec-atlite-uniform-layout
 description:
 url: https://github.com/calliope-project/ec_modules/wrappers/atlite/
 authors:
@@ -9,9 +9,9 @@ input:
 output:
   - layout: Layout netCDF file.
   # Optional
-  - plot_layout: Figure showing the capacity layout.
+  - plot_layout: Figure showing the layout.
 params:
-  - max_units_per_km2: Maximum capacity per km2.
+  - max_units_per_km2: Maximum unit per km2 relationship.
   - units: name of the units used in the calculation ("MW").
   - layout_name: xarray name for the layout.
   - layout_projected_crs: Projection CRS for area calculation.
