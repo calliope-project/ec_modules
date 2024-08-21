@@ -36,7 +36,7 @@ profile, capacity = cutout.pv(
     panel=snakemake.params.panel,
     orientation=snakemake.params.orientation,
     return_capacity=True,
-    **pv_kwargs
+    **pv_kwargs,
 )
 
 data = xr.Dataset()
