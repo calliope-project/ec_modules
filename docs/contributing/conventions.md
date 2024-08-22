@@ -1,4 +1,4 @@
-# Requirements and conventions
+# Conventions
 
 The tools in this project should focus on being easily re-used by others.
 To ensure compatibility without over-complicating things, here is a list of simple pragmatic rules to follow.
@@ -6,6 +6,19 @@ To ensure compatibility without over-complicating things, here is a list of simp
 ## File formats
 
 To ensure modules, wrappers and user workflows interact as seamlessly as possible, we recommend the following.
+
+### Configuration data
+
+- We recommend to use [`.yaml`](https://yaml.org/) in combination with schema validation.
+
+### Geospatial data
+
+- For processing geospatial data, we recommend using [`rasterio`](https://github.com/rasterio/rasterio) and [`gregor`](https://github.com/jnnr/gregor).
+- For **polygon** data:
+    - Save data in `.geojson` format when possible. For more complicated processing, use `.gpkg`.
+    - We recommend using the [`geopandas`](https://geopandas.org/en/stable/) library for processing shapes.
+- For **raster** data:
+    - Save data in geo-referenced formats when possible (e.g., `.geotiff`).
 
 ### Gridded data
 
@@ -23,10 +36,6 @@ We encourage developers to follow the [CF Metadata Conventions](https://cfconven
 - We recommend [`pandas`](https://pandas.pydata.org/docs/) for tabular data.
 - Always save tabular data in `.csv` (comma separated) format.
 - Always add a `units` column if applicable.
-
-### Configuration data
-
-- We recommend to use [`.yaml`](https://yaml.org/) in combination with schema validation.
 
 ## Metadata conventions
 

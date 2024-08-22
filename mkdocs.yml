@@ -58,6 +58,8 @@ markdown_extensions:
         - name: mermaid
           class: mermaid
           format: !!python/name:mermaid2.fence_mermaid_custom
+  - toc:
+      anchorlink: true
 plugins:
   - git-committers:
       enabled: true
