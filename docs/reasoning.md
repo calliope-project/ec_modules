@@ -1,4 +1,4 @@
-# Our goals
+# Reasoning
 
 In recent years, energy modelling researchers have made efforts to improve the transparency of how their models are created.
 Multiple open-source workflows have appeared, each delineating the many steps and tools employed to build specific models. These workflows usually aim to be compatible with a single modelling framework, and are composed of a series of "steps", usually taking the form of a direct acyclic graph (DAG).
