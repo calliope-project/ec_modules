@@ -4,6 +4,7 @@ site_name: Easy Energy Modules
 site_url: https://calliope-project.github.io/ec_modules/
 repo_name: ec_modules
 repo_url: https://github.com/calliope-project/ec_modules/
+edit_uri: edit/main/docs/
 theme:
   name: material
   features:

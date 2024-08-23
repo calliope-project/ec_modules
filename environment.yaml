@@ -11,4 +11,5 @@ dependencies:
   - ruff >= 0.6.2
   - snakefmt >= 0.10.2
   - pip:
+    - mkdocs-mermaid2-plugin >= 1.1.0
     - mkdocs-git-committers-plugin-2 >= 2.3.0
