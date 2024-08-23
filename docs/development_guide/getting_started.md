@@ -18,4 +18,4 @@ If you don't, We recommend following `mamba`'s [installation advice](https://git
     ```
 
 3. You are ready to go!
-Please look into our [code conventions](conventions.md#code-conventions) and our requirements for developing [modules](module.md) and [wrappers](wrapper.md) for more details.
+Please look into our [code conventions](conventions.md#code-conventions) and our requirements for developing [modules](modules.md) and [wrappers](wrappers.md) for more details.

@@ -2,7 +2,7 @@
 
 ## File structure
 
-We attempt to follow `snakemake`'s [recomended structure](https://snakemake.readthedocs.io/en/stable/snakefiles/deployment.html#distribution-and-reproducibility) to ensure our modules can be easily exported to other projects.
+We attempt to follow `snakemake`'s [recommended structure](https://snakemake.readthedocs.io/en/stable/snakefiles/deployment.html#distribution-and-reproducibility) to ensure our modules can be easily exported to other projects.
 Additionally, we extend it with a few quality of life improvements.
 
 ??? example "Example of a fully featured module"

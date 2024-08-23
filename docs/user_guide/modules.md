@@ -52,7 +52,7 @@ The databases used and the order of the processing steps may not change, but the
 
 ## Configuring a module
 
-Modules will generally have instrucitons on how to configure them in their documentation.
+Modules will generally have instructions on how to configure them in their documentation.
 Regardless, you can always find a default configuration in the following location:
 
 ```tree
@@ -122,7 +122,7 @@ use rule * from hydropower as module_hydropower_*
 
 ??? example "using `prefix:`"
 
-    `prefix:` enables you to avoid file name conflicts between modules by pre-pending all paths in the module with an additional folder.
+    `prefix:` enables you to avoid file name conflicts between modules by prepending all paths in the module with an additional folder.
     This also affects the paths in your configuration!
     In the [configuration example](#configuring-a-module) above, `"resources/shapes_spain.geojson"` will _also_ be affected!
 
