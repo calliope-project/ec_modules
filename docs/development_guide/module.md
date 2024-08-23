@@ -31,7 +31,7 @@ Additionally, we extend it with a few quality of life improvements.
         │   ├── geo.yaml
         │   └── shell.yaml
         ├── internal/
-        │   ├── settings.yaml
+        │   ├── internal_config.yaml
         │   └── mapping.csv
         ├── profiles/
         │   └── default/
@@ -57,12 +57,12 @@ Please ensure that your module has the following:
 - A `README.md` file. Here you describe the module's functionality (see [documentation](#documentation)).
 - A `config/default.yaml` file. This contains the module's default configuration.
 It serves only as an example: users will override it using `snakemake`'s [`module` functionality](https://snakemake.readthedocs.io/en/stable/snakefiles/modularization.html#modules).
-- A `resources/` folder.  All **downloaded data** used by your workflow should be deposited here.
+- A `resources/` folder.  All **downloaded data** and **user inputted data** used by your workflow should be deposited here.
 - A `results/` folder. All **rule outputs** of your workflow should be deposited here.
 
     ??? info
         There is no real difference between `resources/` and `results/` in terms of `snakemake` functionality.
-        This separation is mostly to enable easier bookkeeping and to help module users differentiate between the data you _downloaded_ and data you have _processed_.
+        This separation is mostly to enable easier bookkeeping and to help module users differentiate between the data your module _needs_ and data you have _processed_.
 
 - A `workflow/` folder with the following:
     - A `Snakefile`. This contains the module's main `snakemake` functionality (see [ensuring modularity](#ensuring-modularity)).
@@ -124,6 +124,70 @@ Modules are essentially workflows that can be exported to other projects. They o
 - The configuration in `config/default.yaml` will _always_ be overriden by users. This makes documentation quite important, as `default.yaml` configuration is just a suggestion!
 - Both module developers and users must use our standard profile in `workflow/profiles/default/config.yaml`. Otherwise, wrappers and `conda` won't work as intended.
 
+## Configuration
+
+We generally allow developers to setup their configuration file in the most intuitive way.
+However, we do have some important guidelines:
+
+1. **User configuration** are all settings that can be modified by users.
+    - A default example should be placed here:
+
+        `modules/your_module/config/default.yaml`.
+
+    - All user-defined file inputs should be under the `resources:` key.
+    - There should be an option to download "default" resources from a remote repository under the `resources["download"]` key.
+    Setting this to `false` should de-activate the download rule.
+
+        ??? example "`resources:` in a hydropower module:"
+
+            In this case, a module expects two files: a file with polygon shapes, and a dataset with powerplant data.
+            In order to use these files instead of the 'default' downloads, users must set `downloads: false`.
+            This should lead to a failure if users did not provide the expected file.
+
+            ```yaml
+            # Requested files should be placed under this key
+            resources:
+                download: false
+                shapes_file: "resources/shapes_spain.geojson"
+                powerplants_file: "resources/powerplants.csv"
+            # Any other configuration is up to the developer
+            first_year: 2016
+            final_year: 2016
+            hydro_power_database:
+                version: "v10"
+            HydroBASINS_database:
+                level: "07"
+            ```
+
+            The module should deactivate the download like so.
+
+            ```python
+            if config["resources"]["download"]:
+
+                rule download_shapes:
+                    message: "Download default spatial zones."
+                    params:
+                        url = internal["shapes_url"],
+                    output:
+                        shapefile = "resources/shapes.geojson"
+                    conda: "./envs/shell.yaml"
+                    shell: "curl -sSLo {output} '{params.url}'"
+            ```
+
+2. **Internal configuration** is for settings that should be protected to ensure your module works as intended.
+This could be databases, mappings, static parametrisation, etc.
+    - This type of configuration should be placed here:
+
+        `modules/your_module/workflow/internal/internal_config.yaml`
+
+    - To ensure this is loaded properly, you must follow our [modularity guidelines](#ensuring-modularity).
+
+        ??? example "Loading internal configuration"
+
+            ```python
+            with open(workflow.source_path("resources/internal_config.yaml"), "r") as f:
+            internal = yaml.safe_load(f)
+            ```
 
 ## Documentation
 
@@ -138,11 +202,11 @@ It should contain at least the following things:
 If additional context is needed, please place it in the `docs/` folder.
 
 ??? example "Example: Hydropower module"
-    **Euro-Calliope hydropower data**
+    # Euro-Calliope hydropower data
 
     Easily generate timeseries for hydropower plants for any region in Europe.
 
-    **_Input-output_**
+    ## Input-output
 
     ```mermaid
     flowchart LR
@@ -165,7 +229,7 @@ If additional context is needed, please place it in the `docs/` folder.
             ")
     ```
 
-    **_DAG_**
+    ## DAG
 
     ![DAG](images/rulegraph.png)
 
@@ -173,6 +237,6 @@ If additional context is needed, please place it in the `docs/` folder.
 
     Tröndle, T., & Pickering, B. (2021). Euro-Calliope Hydropower data [Computer software]. https://doi.org/10.5281/zenodo.3949793
 
-    **_References_**
+    ## References
 
     None

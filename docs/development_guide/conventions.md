@@ -13,12 +13,9 @@ To ensure modules, wrappers and user workflows interact as seamlessly as possibl
 
 ### Geospatial data
 
-- For processing geospatial data, we recommend using [`rasterio`](https://github.com/rasterio/rasterio) and [`gregor`](https://github.com/jnnr/gregor).
-- For **polygon** data:
-    - Save data in `.geojson` format when possible. For more complicated processing, use `.gpkg`.
-    - We recommend using the [`geopandas`](https://geopandas.org/en/stable/) library for processing shapes.
-- For **raster** data:
-    - Save data in geo-referenced formats when possible (e.g., `.geotiff`).
+- For processing geospatial data, we recommend using [`rasterio`](https://github.com/rasterio/rasterio), [`geopandas`](https://geopandas.org/en/stable/), and [`gregor`](https://github.com/jnnr/gregor) libraries.
+- For **polygon** data: use the `.geojson` format when possible.
+- For **raster** data: use the geo-referenced format `.geotiff`.
 
 ### Gridded data
 
@@ -27,8 +24,7 @@ To ensure modules, wrappers and user workflows interact as seamlessly as possibl
 - Add the following metadata to each variable. This will avoid ambiguity, and `xarray` will [automatically use them for plotting](https://docs.xarray.dev/en/stable/getting-started-guide/quick-overview.html#attributes).
     - `units` (e.g., `"W m-3"`, or `1` if unitless).
     - Optionally, `long_name` (e.g., `"Solar Irradiance"`)
-
-We encourage developers to follow the [CF Metadata Conventions](https://cfconventions.org/cf-conventions/cf-conventions.html), but this is not obligatory.
+- We encourage developers to follow the [CF Metadata Conventions](https://cfconventions.org/cf-conventions/cf-conventions.html), but this is not obligatory.
 
 ### Tabular data
 
@@ -43,15 +39,15 @@ To future proof our workflows we follow a few simple rules. In brief:
 
 ### All data
 
-- :white_check_mark: Use `snake_case` for metadata like column names or attributes names.
+- :white_check_mark: Use `snake_case` for metadata like column or attribute names.
 - :white_check_mark: Add a `units` column or attribute.
 - :ballot_box_with_check: Optionally, add a `long_name` column.
 
 ### National and subnational data
 
 - :white_check_mark: Add a `country_id` column or attribute in [alpha-3](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-3) format.
-- :white_check_mark: Add a `subregion_id` column with the subregion code.
-- :white_check_mark: Specify the version of the subregion standard (e.g., `NUTS2024`, `GADM v1.3`, `ISO 3166-2:2013`) in a separate column. This is necessary since subregion codes [change often](https://ec.europa.eu/eurostat/web/nuts/history).
+- :white_check_mark: Add a `subregion_id` column or attribute with the subregion code.
+- :white_check_mark: Add a `subregion_spec` column or attribute. This specifies the version of the subregion standard (e.g., `NUTS2024`, `GADM v1.3`, `ISO 3166-2:2013`), which is necessary since subregion codes [change quite often](https://ec.europa.eu/eurostat/web/nuts/history).
 
 ### Timeseries data
 
@@ -59,9 +55,9 @@ To future proof our workflows we follow a few simple rules. In brief:
 
 ### Geographic data
 
-- :white_check_mark: Use `x` | `y` instead of `longitude` | `latitude` (or similars).
+- :white_check_mark: Use `x` | `y` instead of `longitude` | `latitude` (or similars) if possible.
 - :white_check_mark: **Geographic data** (preserving *position* matters) should be in [EPSG:4326](https://epsg.io/4326).
-- :white_check_mark: **Projected data** (preserving *distance* or *area* matters) should use the representation that [best fits](https://learn.arcgis.com/en/projects/choose-the-right-projection/) the needs of the calculation. For European data, [EPSG:3035](https://epsg.io/3035) should fit most needs.
+- :white_check_mark: **Projected data** (preserving *distance* or *area* matters) should use the representation that best fits the needs of the calculation. For European data, [EPSG:3035](https://epsg.io/3035) should fit most needs. Otherwise, we recommend using the [EPSG Dataset](https://epsg.org/home.html) to choose the best fitting reference system.
 
 ## Code conventions
 
@@ -83,7 +79,7 @@ To make things easier, we leverage several tools that help 'clean up' the code a
         Please make sure to document your code!
         This can be easily achieved with the [autoDocstring extension for VSCode](https://github.com/NilsJPWerner/autoDocstring), if you use that IDE.
 
-- [`snakefmt`](https://github.com/snakemake/snakefmt) is our formatter for `snakemake` code and files. You can run it the following:
+- [`snakefmt`](https://github.com/snakemake/snakefmt) is our formatter for `snakemake` code and files. You can run it with the following:
 
     ```shell
     # Format all files in a folder
