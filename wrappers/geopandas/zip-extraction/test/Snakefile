@@ -2,8 +2,8 @@ rule test:
     input:
         zipfile = "test.zip"
     output:
-        shapefile = "output/regions.geojson",
-        plot_shapefile = "output/regions.png"
+        shapefile = "results/regions.geojson",
+        plot_shapefile = "results/regions.png"
     params:
         zip_filepath = "myshape/myshape.shp",
         to_file_kwargs = {

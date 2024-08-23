@@ -1,4 +1,4 @@
-name: ec-atlite-availability-matrix
+name: ec-atlite-availability
 description:
 url: https://github.com/calliope-project/ec_modules/wrappers/atlite/
 authors:
@@ -8,15 +8,15 @@ input:
   - shapefile: Shapefile to use for regions.
   - rasters: One or more raster files to use for filtering.
 output:
-  - availability: NetCDF file with post-filtering availability.
+  - availability_matrix: NetCDF file with post-filtering availability.
   # Optional
-  - plot_raster_result: Figure showing the filtered area and its position in the cutout.
-  - plot_availability: Figure showing resulting availability matrix.
+  - plot_availability_raster: Figure showing the filtered area and its position in the cutout.
+  - plot_availability_matrix: Figure showing resulting availability matrix.
 params:
   - availability_name: xarray name for the availability.
   - exclusion_crs: projected CRS to use for raster analysis.
   - exclusion_resolution: resolution to use for raster analysis.
-  - shapefile_name_column: Column with the names of regions in the shapefile.
+  - shapefile_index_column: Column with the names of regions in the shapefile.
   - raster_codes: Per raster, a list of codes to filter.
   - raster_kwargs: Per raster, kwargs for the `add_raster` function (use `{}` if empty).
   # Optional

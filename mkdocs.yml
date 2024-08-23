@@ -1,0 +1,70 @@
+# yaml-language-server: $schema=https://squidfunk.github.io/mkdocs-material/schema.json
+
+site_name: Easy Energy Modules
+site_url: https://calliope-project.github.io/ec_modules/
+repo_name: ec_modules
+repo_url: https://github.com/calliope-project/ec_modules/
+edit_uri: edit/main/docs/
+theme:
+  name: material
+  features:
+  - navigation.footer
+  - navigation.instant
+  - navigation.tabs
+  - navigation.tabs.sticky
+  - navigation.indexes
+  - search.suggest
+  - search.highlight
+  - toc.follow
+  palette:
+    # Palette toggle for automatic mode
+    - media: "(prefers-color-scheme)"
+      toggle:
+        icon: material/brightness-auto
+        name: Switch to light mode
+      primary: red
+      accent: pink
+    # Palette toggle for light mode
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      toggle:
+        icon: material/weather-sunny
+        name: Switch to dark mode
+      primary: red
+      accent: pink
+    # Palette toggle for dark mode
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      toggle:
+        icon: material/weather-night
+        name: Switch to system preference
+      primary: red
+      accent: pink
+markdown_extensions:
+  - admonition
+  - pymdownx.tasklist:
+      custom_checkbox: true
+  - pymdownx.arithmatex:
+      generic: true
+  - pymdownx.betterem:
+      smart_enable: all
+  - pymdownx.details
+  - pymdownx.emoji:
+      emoji_index: !!python/name:material.extensions.emoji.twemoji
+      emoji_generator: !!python/name:material.extensions.emoji.to_svg
+  - pymdownx.highlight:
+      anchor_linenums: true
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:mermaid2.fence_mermaid_custom
+  - toc:
+      anchorlink: true
+plugins:
+  - git-committers:
+      enabled: true
+      repository: calliope-project/ec_modules
+      branch: main
+  - search
+copyright: Copyright &copy; since 2024 <a href="https://github.com/calliope-project/ec_modules/blob/main/AUTHORS">ec_modules contributors</a> (MIT licensed)

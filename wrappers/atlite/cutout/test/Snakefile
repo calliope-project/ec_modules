@@ -1,0 +1,12 @@
+rule atlite_cutout:
+    input:
+        shapefile = "MNE.geojson"
+    output:
+        cutout = "results/cutout.nc",
+        plot_cutout = "results/plot_cutout.png"
+    params:
+        time = "2019-05-02",
+        features = ["height", "wind", "influx", "temperature", "runoff"],
+        offset_degrees = 0,
+        module = ["era5"],
+    wrapper: "file:../"

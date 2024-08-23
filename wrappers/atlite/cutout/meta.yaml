@@ -1,0 +1,24 @@
+name: ec-atlite-cutout
+description:
+url: https://github.com/calliope-project/ec_modules/wrappers/atlite/
+authors:
+  - Ivan Ruiz Manuel
+input:
+  - shapefile: Geographic shapefile.
+  # Optional
+  - gebco_path: Path to gebco netCDF.
+output:
+  - cutout: Cutout netCDF file.
+  # Optional
+  - plot_cutout: Image with cutout and shapefile position.
+params:
+  - module: datasets to parse in order of priority (e.g., ['era5', 'sarah']).
+  - time: "str. Time range for the cutout in the format YYYY | YYYY-MM | YYYY-MM-DD"
+  - features: str | list. Features to prepare (e.g., ['wind', 'influx', 'runoff']).
+  # Optional
+  - offset_degrees: extend cutout in all directions by the given amount (i.e., "enlarges" the cutout rectangle). Defaults 0.
+  - cutout_kwargs: dict. Additional `Cutout` parameters.
+  - prepare_kwargs: dict. Additional `prepare` parameters.
+notes: |
+  Optional arguments may be necessary for the 'gebco' and 'sarah' modules.
+  See atlite docs for more details.

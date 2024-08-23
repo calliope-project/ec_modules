@@ -3,5 +3,13 @@ channels:
   - conda-forge
   - bioconda
 dependencies:
-  - python = 13.12.4
-  - snakemake-minimal = 8.18.0
+  - python >= 3.12.4
+  - snakemake-minimal >= 8.18.0
+  - mkdocs-material >= 9.5.32
+  - copier >= 9.3.1
+  - pip >= 23.3.2
+  - ruff >= 0.6.2
+  - snakefmt >= 0.10.2
+  - pip:
+    - mkdocs-mermaid2-plugin >= 1.1.0
+    - mkdocs-git-committers-plugin-2 >= 2.3.0

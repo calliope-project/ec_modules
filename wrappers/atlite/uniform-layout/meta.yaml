@@ -1,0 +1,19 @@
+name: ec-atlite-uniform-layout
+description:
+url: https://github.com/calliope-project/ec_modules/wrappers/atlite/
+authors:
+  - Ivan Ruiz Manuel
+input:
+  - cutout: Cutout netCDF file.
+  - availability_matrix: Availability netCDF file.
+output:
+  - layout: Layout netCDF file.
+  # Optional
+  - plot_layout: Figure showing the layout.
+params:
+  - max_units_per_km2: Maximum unit per km2 relationship.
+  - units: name of the units used in the calculation ("MW").
+  - layout_name: xarray name for the layout.
+  - layout_projected_crs: Projection CRS for area calculation.
+  # Optional
+  - cutout_kwargs: dict. Additional `Cutout` parameters.

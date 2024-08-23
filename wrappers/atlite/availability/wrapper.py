@@ -8,16 +8,16 @@ from pyproj import CRS
 from shapely import box
 
 shapes = gpd.read_file(snakemake.input.shapefile)
-shapes = shapes.set_index(snakemake.params.shapefile_name_column)
+shapes = shapes.set_index(snakemake.params.shapefile_index_column)
 assert shapes.crs.is_geographic
+assert shapes.index.is_unique
 
 cutout = atlite.Cutout(path=snakemake.input.cutout)
 assert shapes.crs == cutout.crs
 assert box(*cutout.bounds).covers(box(*shapes.total_bounds))
 
-excluder = ExclusionContainer(
-    crs=snakemake.params.exclusion_crs, res=snakemake.params.exclusion_resolution
-)
+exclusion_container_kwargs = snakemake.input.get("exclusion_container_kwargs", {})
+excluder = ExclusionContainer(**exclusion_container_kwargs)
 assert CRS.from_user_input(excluder.crs).is_projected
 
 rasters = snakemake.input.rasters
@@ -33,9 +33,9 @@ availability = cutout.availabilitymatrix(
 )
 availability.name = snakemake.params.availability_name
 availability.attrs["units"] = "%"
-availability.to_netcdf(snakemake.output.availability)
+availability.to_netcdf(snakemake.output.availability_matrix)
 
-plot_raster = snakemake.output.get("plot_raster_result")
+plot_raster = snakemake.output.get("plot_availability_raster")
 if plot_raster:
     geometries = shapes.geometry.to_crs(excluder.crs)
     fig, ax = plt.subplots()
@@ -44,7 +44,7 @@ if plot_raster:
     ax.axis("off")
     plt.savefig(plot_raster)
 
-plot_availability = snakemake.output.get("plot_availability")
+plot_availability = snakemake.output.get("plot_availability_matrix")
 if plot_availability:
     fig, ax = plt.subplots()
     availability.sum(shapes.index.name, keep_attrs=True).plot(cmap="Greens")
