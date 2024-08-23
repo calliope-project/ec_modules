@@ -1,8 +1,9 @@
 # yaml-language-server: $schema=https://squidfunk.github.io/mkdocs-material/schema.json
 
 site_name: Easy Energy Modules
+site_url: https://calliope-project.github.io/ec_modules/
 repo_name: ec_modules
-repo_url: https://github.com/calliope-project/ec_modules
+repo_url: https://github.com/calliope-project/ec_modules/
 theme:
   name: material
   features:
@@ -53,7 +54,6 @@ markdown_extensions:
   - pymdownx.highlight:
       anchor_linenums: true
   - pymdownx.superfences:
-        # make exceptions to highlighting of code:
       custom_fences:
         - name: mermaid
           class: mermaid
@@ -65,6 +65,5 @@ plugins:
       enabled: true
       repository: calliope-project/ec_modules
       branch: main
-  # - mermaid2
   - search
 copyright: Copyright &copy; since 2024 <a href="https://github.com/calliope-project/ec_modules/blob/main/AUTHORS">ec_modules contributors</a> (MIT licensed)

@@ -121,7 +121,7 @@ Modules are essentially workflows that can be exported to other projects. They o
             shell: "unzip -p '{input}' 'JRC_1K_POP_2018.tif' > '{output}'"
         ```
 
-- The configuration in `config/default.yaml` will _always_ be overriden by users. This makes documentation quite important, as `default.yaml` configuration is just a suggestion!
+- The configuration in `config/default.yaml` will _always_ be overridden by users. This makes documentation quite important, as `default.yaml` configuration is just a suggestion!
 - Both module developers and users must use our standard profile in `workflow/profiles/default/config.yaml`. Otherwise, wrappers and `conda` won't work as intended.
 
 ## Configuration

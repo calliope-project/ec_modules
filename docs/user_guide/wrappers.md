@@ -1,10 +1,11 @@
-# [Wrappers](https://snakemake.readthedocs.io/en/stable/snakefiles/modularization.html#wrappers)
+# Using Wrappers
 
 These are **reusable `snakemake` rules to interface with applications**.
 They are useful for tools with broad use cases but generally stable interfacing.
 Any kind of software can be called by them as long as it can be executed from a python script (CLI, python libraries, R libraries, etc).
 
 Once you have a good wrapper in place, you do not have to re-write code for that operation again!
+You can find more about wrappers in the [`snakemake` documentation](https://snakemake.readthedocs.io/en/stable/snakefiles/modularization.html#wrappers).
 
 ## Visualising a wrapper
 

@@ -1,15 +1,16 @@
-# [Modules](https://snakemake.readthedocs.io/en/stable/snakefiles/modularization.html#modules)
+# Using Modules
 
 Think of them as **workflows that can be exported to other projects**.
-Their settings can be **re-configured**, allowing you to reproduce data with different parametric assumptions.
-They have one disadvantage: their **inputs are static**, meaning that you cannot pass results from other snakemake rules.
-Modules are best for stable workflows whose inputs are not expected to change.
+Their settings can be **re-configured**, allowing you to reprocess data with different parametric assumptions.
+Modules are best for stable workflows whose inputs are not expected to change much.
 Some use cases:
 
 - Converting transmission line data into nodes / regions.
 - Calculating renewable potentials for a given set of regions.
 - Combining datasets of existing power production facilities.
 - And many more!
+
+You can read more about modules in the [`snakemake` documentation](https://snakemake.readthedocs.io/en/stable/snakefiles/modularization.html#modules).
 
 ## Visualising a module
 
