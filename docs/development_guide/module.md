@@ -87,6 +87,44 @@ You can additionally compliment your module with the following:
     - A `reports/` folder. Automatic `snakemake` [reports](https://snakemake.readthedocs.io/en/stable/snakefiles/reporting.html) can be placed here. This will allow users to easily follow your workflow, evaluate runtimes and even visualise plots!
     - A `schemas/` folder. Schemas used [validate](https://snakemake.readthedocs.io/en/stable/snakefiles/configuration.html#validation) user configuration should be placed here.
 
+## Ensuring modularity
+
+Modules are essentially workflows that can be exported to other projects. They operate largely in the same way, with some key differences:
+
+- Plain string references to files _outside_ of `rules` will not work. This happens because `snakemake` will use the path of the importing workflow as the base path. To ensure this does not cause issues, always use `workflow.source_path()` when requesting files in folders like `internal/`, `schema/` etc.
+
+    ??? example "Example: loading a schema"
+        :cross_mark: This will fail...
+
+        ```python
+        validate(config, "schema/config.schema.yaml")
+        ```
+        :white_check_mark: And this will work!
+
+        ```python
+        validate(config, workflow.source_path("schema/config.schema.yaml"))
+        ```
+
+- References to files _within_ rules will work the same way they do in regular workflows as long as you avoid direct paths. No need to use special functions here!
+
+    ??? example "Example: defining a rule"
+        :white_check_mark: This will work just fine!
+        Even `shadow`, which uses a temporary directory.
+
+        ```smk
+        rule raw_population_unzipped:
+            message: "Extract the population data TIF."
+            input: rules.download_raw_population_zipped.output
+            shadow: "minimal"
+            output: "results/population.tif"
+            conda: "../envs/shell.yaml"
+            shell: "unzip -p '{input}' 'JRC_1K_POP_2018.tif' > '{output}'"
+        ```
+
+- The configuration in `config/default.yaml` will _always_ be overriden by users. This makes documentation quite important, as `default.yaml` configuration is just a suggestion!
+- Both module developers and users must use our standard profile in `workflow/profiles/default/config.yaml`. Otherwise, wrappers and `conda` won't work as intended.
+
+
 ## Documentation
 
 The `README.md` file should be a pragmatic quick example of what your module needs to function.
@@ -138,40 +176,3 @@ If additional context is needed, please place it in the `docs/` folder.
     **_References_**
 
     None
-
-## Ensuring modularity
-
-Modules are essentially workflows that can be exported to other projects. They operate largelly the same way, with some key differences:
-
-- Plain string references to files _outside_ of `rules` will not work. This happens because `snakemake` will use the path of the importing workflow as the base path. To ensure this does not cause issues, always use `workflow.source_path()` when requesting files in folders like `internal/`, `schema/` etc.
-
-    ??? example "Example: loading a schema"
-        :cross_mark: This will fail...
-
-        ```python
-        validate(config, "schema/config.schema.yaml")
-        ```
-        :white_check_mark: And this will work!
-
-        ```python
-        validate(config, workflow.source_path("schema/config.schema.yaml"))
-        ```
-
-- References to files _within_ rules will work the same way they do in regular workflows as long as you avoid direct paths. No need to use special functions here!
-
-    ??? example "Example: defining a rule"
-        :white_check_mark: This will work just fine!
-        Even `shadow`, which uses a temporary directory.
-
-        ```smk
-        rule raw_population_unzipped:
-            message: "Extract the population data TIF."
-            input: rules.download_raw_population_zipped.output
-            shadow: "minimal"
-            output: "results/population.tif"
-            conda: "../envs/shell.yaml"
-            shell: "unzip -p '{input}' 'JRC_1K_POP_2018.tif' > '{output}'"
-        ```
-
-- The configuration in `config/default.yaml` will _always_ be overriden by users. This makes documentation quite important, as `default.yaml` configuration is just a suggestion!
-- Both module developers and users must use our standard profile in `workflow/profiles/default/config.yaml`. Otherwise, wrappers and `conda` won't work as intended.

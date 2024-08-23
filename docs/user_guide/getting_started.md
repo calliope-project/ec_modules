@@ -50,4 +50,4 @@ Just follow these two steps.
     ```
 
 That's it!
-You're ready to use reproducible energy model workflows.
+You're ready to use our reproducible energy model workflows.

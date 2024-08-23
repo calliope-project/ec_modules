@@ -55,6 +55,16 @@ rule tsam:
         representationMethod = "distributionAndMinMaxRepresentation",
         distributionPeriodWise = False
         clusterMethod = 'hierarchical'
-    wrapper:
-        github("calliope-project/ec_modules", path="wrappers/tsam", tag="v0.2")
+    wrapper: "v0.0.2/wrappers/tsam/timeseries"
 ```
+
+## Using our wrappers
+
+All you have to do is add a `wrapper:` directive to your rule in the form of `"{tag}/wrappers/{wrapper location}"`. In the example above: `"v0.0.2/wrappers/tsam/timeseries"` has `v0.0.2` as the tag and `tsam/timeseries` as the wrapper location.
+
+By pinning the wrappers to a specific repository tag, you ensure your workflow remains stable against future changes to the wrapper.
+Later, if you wish to use a more updated version of that wrapper, you can update the tag to the latest version.
+
+You can find all our current wrappers here:
+
+- <https://github.com/calliope-project/ec_modules/tree/main/wrappers/>.

@@ -8,5 +8,7 @@ dependencies:
   - mkdocs-material >= 9.5.32
   - copier >= 9.3.1
   - pip >= 23.3.2
+  - ruff >= 0.6.2
+  - snakefmt >= 0.10.2
   - pip:
     - mkdocs-git-committers-plugin-2 >= 2.3.0

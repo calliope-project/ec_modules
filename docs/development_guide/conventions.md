@@ -1,7 +1,7 @@
 # Conventions
 
 The tools in this project should focus on being easily re-used by others.
-To ensure compatibility without over-complicating things, here is a list of simple pragmatic rules to follow.
+We want to increase compatibility without over-complicating things, so here is a list of simple pragmatic rules to follow.
 
 ## File formats
 
@@ -9,7 +9,7 @@ To ensure modules, wrappers and user workflows interact as seamlessly as possibl
 
 ### Configuration data
 
-- We recommend to use [`.yaml`](https://yaml.org/) in combination with schema validation.
+- We recommend to use [`.yaml`](https://yaml.org/) in combination with `snakemake`'s [schema validation](https://snakemake.readthedocs.io/en/stable/snakefiles/configuration.html#validation).
 
 ### Geospatial data
 
@@ -62,3 +62,32 @@ To future proof our workflows we follow a few simple rules. In brief:
 - :white_check_mark: Use `x` | `y` instead of `longitude` | `latitude` (or similars).
 - :white_check_mark: **Geographic data** (preserving *position* matters) should be in [EPSG:4326](https://epsg.io/4326).
 - :white_check_mark: **Projected data** (preserving *distance* or *area* matters) should use the representation that [best fits](https://learn.arcgis.com/en/projects/choose-the-right-projection/) the needs of the calculation. For European data, [EPSG:3035](https://epsg.io/3035) should fit most needs.
+
+## Code conventions
+
+We mostly follow python's [PEP 8 style](https://peps.python.org/pep-0008/).
+To make things easier, we leverage several tools that help 'clean up' the code automatically.
+
+- [`ruff`](https://docs.astral.sh/ruff/) is our main `python` linter and formatter. The tool should automatically follow our configuration in the `pyproject.toml` file. You can run it with the following:
+
+    ```shell
+    # Check the code for smells and antipatterns
+    ruff check --fix
+    # Automatically format the code to fit our style
+    ruff format
+    ```
+
+    !!! warning "Docstrings"
+        We have setup `ruff` to enforce ['Google style`](https://google.github.io/styleguide/pyguide.html#38-comments-and-docstrings) docstrings.
+        This is to ensure our code remains understandable over time.
+        Please make sure to document your code!
+        This can be easily achieved with the [autoDocstring extension for VSCode](https://github.com/NilsJPWerner/autoDocstring), if you use that IDE.
+
+- [`snakefmt`](https://github.com/snakemake/snakefmt) is our formatter for `snakemake` code and files. You can run it the following:
+
+    ```shell
+    # Format all files in a folder
+    snakefmt modules/my-module/
+    ```
+
+- We leverage [pre-commit ci](https://pre-commit.ci/) for continuous integration. This will execute before each PR and automatically run `ruff`, `snakefmt`, fix trailing spaces and other things. Nevertheless, we recommend you to check your code with `ruff` regularly!

@@ -33,6 +33,11 @@ We follow the same file structure guidelines as the [`snakemake-wrappers`](https
 - A `README.md` file with a simple [`mermaid`](https://mermaid.js.org/) diagram showing the wrapper's Input-Output structure.
 
     ??? example "Wrapper IO diagram"
+        # `tsam` - timeseries aggregation
+
+        Runs `tsam` timeseries aggregation methods for a list of files.
+        Optionally, outputs accuracy indicator data and index matching data.
+
         ```mermaid
             flowchart LR
             I1(data1.csv) --> W((timeseries))
