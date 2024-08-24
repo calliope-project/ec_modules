@@ -27,7 +27,7 @@ If you don't, We recommend following `mamba`'s [installation advice](https://git
         copier copy modules/_template/ modules/
         ```
 
-        You'll be promted with some questions. After answering them, `copier` will auto-generate the module for you!
+        You'll be prompted with some questions. After answering them, `copier` will auto-generate the module for you!
 
         ```html
         🎤 What is your module's name?
