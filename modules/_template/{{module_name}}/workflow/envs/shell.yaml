@@ -3,6 +3,5 @@ channels:
   - conda-forge
   - nodefaults
 dependencies:
-  - curl=8.6.0
+  - curl=8.9.1
   - unzip=6.0
-  - rsync=3.2.3

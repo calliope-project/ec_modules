@@ -1,0 +1,11 @@
+# `{{tool_name}}` - {{wrapper_name}}
+
+{{wrapper_description}}
+
+```mermaid
+flowchart LR
+    I1(some_file.csv) --> W(({{wrapper_name}}))
+    I2(some_optional_file.nc) --> |Optional| W
+    W --> O1(some_output.csv)
+    W --> |Optional| O2(optional_output.png)
+```
