@@ -23,6 +23,6 @@ author_email:
   help: We auto-generate an MIT license for you. Please provide an email address.
   placeholder: yourname@university.edu
   validator: >-
-    {% if not (email | regex_search('^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$')) %}
+    {% if not (author_email | regex_search('^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$')) %}
     "This email does not seem valid... did you forget to add a dot?"
     {% endif %}
