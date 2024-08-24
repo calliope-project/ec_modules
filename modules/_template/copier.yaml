@@ -30,4 +30,3 @@ year:
   type: str
   help: We auto-generate an MIT license for you. What year is this?
   placeholder: "2024"
-
