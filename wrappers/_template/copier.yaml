@@ -4,7 +4,7 @@ tool_name:
   placeholder: tsam
   validator: >-
     {% if not (tool_name | regex_search('^[a-z][a-z0-9_]+$')) %}
-    "'tool_name' must be a single word in lowercase. Letters, digits, dashes and underscores are valid characters."
+    "Must be a single word in lowercase. Letters, digits and underscores are valid characters."
     {% endif %}
 tool_url:
   type: str
@@ -12,7 +12,7 @@ tool_url:
   placeholder: https://github.com/FZJ-IEK3-VSA/tsam
   validator: >-
     {% if not (tool_url | regex_search('^(https?|http?):\/\/.+$')) %}
-    "'tool_name' must be a single word in lowercase. Letters, digits, dashes and underscores are valid characters."
+    "Must be a valid URL."
     {% endif %}
 wrapper_name:
   type: str
@@ -20,7 +20,7 @@ wrapper_name:
   placeholder: timeseries
   validator: >-
     {% if not (wrapper_name | regex_search('^[a-z][a-z0-9_]+$')) %}
-    "'wrapper_name' must be a single word in lowercase. Letters, digits, dashes and underscores are valid characters."
+    "Must be a single word in lowercase. Letters, digits and underscores are valid characters."
     {% endif %}
 wrapper_description:
   type: str
@@ -43,6 +43,6 @@ author_email:
     "This email does not seem valid... did you forget to add a dot?"
     {% endif %}
 year:
-  type: int
+  type: str
   help: We auto-generate an MIT license for you. What year is this?
-  placeholder: 2024
+  placeholder: "2024"

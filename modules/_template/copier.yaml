@@ -4,7 +4,7 @@ module_name:
   placeholder: transport_road
   validator: >-
     {% if not (module_name | regex_search('^[a-z][a-z0-9\-_]+$')) %}
-    "'module_name' must be a single word in lowercase. Letters, digits, dashes and underscores are valid characters."
+    "Must be a single word in lowercase. Letters, digits, dashes and underscores are valid characters."
     {% endif %}
 module_description:
   type: str
