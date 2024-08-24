@@ -1,0 +1,9 @@
+rule {{tool_name}}_{{wrapper_name}}:
+    input:
+        some_file = "somefile.csv",
+        some_optional_file = "some_optional_file.nc"
+    output:
+        some_output = "results/some_output.csv",
+        optional_output = "results/optional_output.png"
+    params:
+    wrapper: "file:../"
