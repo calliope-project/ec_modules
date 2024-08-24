@@ -1,0 +1,10 @@
+# Authors
+
+This is the list of contributors to the '{{module_name}}' module for copyright purposes.
+
+- {{author_name}}, {{author_institution}} <{{author_email}}>
+
+This does not necessarily list everyone who has contributed to the '{{module_name}}' module code or documentation.
+For a full contributor list, see:
+
+<https://github.com/calliope-project/ec_modules/commits/main/modules/{{module_name}}>

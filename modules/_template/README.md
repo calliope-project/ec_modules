@@ -1,4 +1,4 @@
-# Module template
+# Easy Energy Modules - {{module_name}}
 
 <!-- Please follow this file structure when developing modules.
 It is based on `snakemake`'s [recommended structure to ensure reproducibility](https://snakemake.readthedocs.io/en/v8.18.0/snakefiles/deployment.html), and will save you a lot of trouble. -->
