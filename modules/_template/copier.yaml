@@ -3,8 +3,8 @@ module_name:
   help: What is your module's name?
   placeholder: transport_road
   validator: >-
-    {% if not (module_name | regex_search('^[a-z][a-z0-9\-_]+$')) %}
-    "Must be a single word in lowercase. Letters, digits, dashes and underscores are valid characters."
+    {% if not (module_name | regex_search('^[a-z][a-z0-9_]+$')) %}
+    "Must be a single word in lowercase. Letters, digits and underscores are valid characters."
     {% endif %}
 module_description:
   type: str
@@ -26,3 +26,8 @@ author_email:
     {% if not (author_email | regex_search('^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$')) %}
     "This email does not seem valid... did you forget to add a dot?"
     {% endif %}
+year:
+  type: str
+  help: We auto-generate an MIT license for you. What year is this?
+  placeholder: "2024"
+

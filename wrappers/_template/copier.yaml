@@ -8,7 +8,7 @@ tool_name:
     {% endif %}
 tool_url:
   type: str
-  help: Please provide a valid to the tool's official website.
+  help: Please provide a valid link to the tool's official website.
   placeholder: https://github.com/FZJ-IEK3-VSA/tsam
   validator: >-
     {% if not (tool_url | regex_search('^(https?|http?):\/\/.+$')) %}
