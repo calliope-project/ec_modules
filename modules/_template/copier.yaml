@@ -16,7 +16,7 @@ author_name:
   placeholder: Laura Patricia Orellana
 author_institution:
   type: str
-  help: We auto-generate an MIT license for you. Please provide the name of your instutition."
+  help: We auto-generate an MIT license for you. Please provide the name of your institution.
   placeholder: TU Delft
 author_email:
   type: str
