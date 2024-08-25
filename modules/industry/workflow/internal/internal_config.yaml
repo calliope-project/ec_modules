@@ -1,0 +1,15 @@
+# This file contains configuration that users should not modify.
+resources:
+  user_input:
+    shapefile_url:
+  eurostat_energy_balances_url: https://raw.githubusercontent.com/calliope-project/euro-calliope-datasets/feature-sector-coupling/eurostat/nrg_bal_c.tsv.gz
+  jrc_idees:
+    dataset_url: https://jeodpp.jrc.ec.europa.eu/ftp/jrc-opendata/JRC-IDEES/JRC-IDEES-2015_v1/
+    spatial_scope: [
+      "AT", "BE", "BG", "CY", "CZ", "DE", "DK", "EE", "EL", "ES", "FI", "FR",
+      "HR", "HU", "IE", "IT", "LT", "LU", "LV", "MT", "NL", "PL", "PT", "RO",
+      "SE", "SI", "SK", "UK"
+    ]
+  che:
+    energy_balances_url: https://www.bfe.admin.ch/bfe/en/home/versorgung/statistik-und-geodaten/energiestatistiken/gesamtenergiestatistik.exturl.html/aHR0cHM6Ly9wdWJkYi5iZmUuYWRtaW4uY2gvZGUvcHVibGljYX/Rpb24vZG93bmxvYWQvNzUxOQ==.html
+    industry_energy_balances_url: https://www.bfe.admin.ch/bfe/en/home/versorgung/statistik-und-geodaten/energiestatistiken/teilstatistiken.exturl.html/aHR0cHM6Ly9wdWJkYi5iZmUuYWRtaW4uY2gvZGUvcHVibGljYX/Rpb24vZG93bmxvYWQvODc4OA==.html

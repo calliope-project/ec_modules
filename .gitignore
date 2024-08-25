@@ -36,6 +36,7 @@ gurobi.log
 out/
 output/
 tmp/
+resources/
 results/
 
 !modules/_example_module/**
