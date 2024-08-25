@@ -1,0 +1,48 @@
+tool_name:
+  type: str
+  help: What is the name of the tool you are designing a wrapper for?
+  placeholder: tsam
+  validator: >-
+    {% if not (tool_name | regex_search('^[a-z][a-z0-9_]+$')) %}
+    "Must be a single word in lowercase. Letters, digits and underscores are valid characters."
+    {% endif %}
+tool_url:
+  type: str
+  help: Please provide a valid link to the tool's official website.
+  placeholder: https://github.com/FZJ-IEK3-VSA/tsam
+  validator: >-
+    {% if not (tool_url | regex_search('^(https?|http?):\/\/.+$')) %}
+    "Must be a valid URL."
+    {% endif %}
+wrapper_name:
+  type: str
+  help: What is the name of the wrapper?
+  placeholder: timeseries
+  validator: >-
+    {% if not (wrapper_name | regex_search('^[a-z][a-z0-9_]+$')) %}
+    "Must be a single word in lowercase. Letters, digits and underscores are valid characters."
+    {% endif %}
+wrapper_description:
+  type: str
+  help: Please give a brief sentence describing your wrapper.
+  placeholder: Runs timeseries aggregation functions for any number of files.
+author_name:
+  type: str
+  help: We auto-generate an MIT license for you. Please provide your full name.
+  placeholder: A. Donda
+author_institution:
+  type: str
+  help: We auto-generate an MIT license for you. Please provide the name of your institution.
+  placeholder: Solaris University
+author_email:
+  type: str
+  help: We auto-generate an MIT license for you. Please provide an email address.
+  placeholder: a.donda@solaris.uni.edu
+  validator: >-
+    {% if not (author_email | regex_search('^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$')) %}
+    "This email does not seem valid... did you forget to add a dot?"
+    {% endif %}
+year:
+  type: str
+  help: We auto-generate an MIT license for you. What year is this?
+  placeholder: "2024"
