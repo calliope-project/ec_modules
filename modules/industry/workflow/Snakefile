@@ -17,7 +17,8 @@ with open(workflow.source_path("internal/internal_config.yaml"), "r") as f:
 # Add all your includes here.
 include: "rules/downloads.smk"
 include: "rules/energy_balances.smk"
-include: "rules/jrc_industry.smk"
+include: "rules/jrc_idees_process.smk"
+include: "rules/industry.smk"
 
 rule all:
     message: "Generate all outputs for 'industry'."

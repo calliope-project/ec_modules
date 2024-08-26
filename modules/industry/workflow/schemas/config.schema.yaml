@@ -16,3 +16,49 @@ properties:
         description: |
           A file with the shapes you wish to process.
           Must have the following columns: 'country_id', 'subregion_id' and 'subregion_spec'.
+  specific-categories:
+    type: array
+    description: |
+      Specifies which JRC industry categories will be processed through category-specific rules.
+      Omitted categories will instead be processed through the "combined" category rule.
+    uniqueItems: true
+    items:
+      type: string
+      enum: ["Iron and steel", "Chemicals Industry"]
+  config-combined-categories:
+    type: object
+    additionalProperties: false
+    description: "Parameters for default/generic category processing."
+    properties:
+      final-energy-method:
+        description: |
+          Processing method for final-demand.
+          - "by priority": will take the carriers specified in "final-energy-carriers" in order of importance (first subtracts from second, etc.).
+          - "keep everything": will keep all the final carrier demands with no assumptions.
+        type: string
+        enum: ["by priority", "keep everything"]
+      final-energy-carriers:
+        type: array
+        description: "Final energy carriers to take, if relevant."
+        uniqueItems: true
+        items:
+          type: string
+      useful-demands:
+        type: array
+        description: |
+          Demands to select from 'useful' rather than 'final' energy consumption data.
+          Accepts any pre-processed JRC IDEES 'subsection' names.
+          Always subtracted from 'final' energy demand to avoid double-counting.
+        uniqueItems: true
+        items:
+          type: string
+  config-iron-and-steel:
+    type: object
+    additionalProperties: false
+    description: "Parameters specific to the 'Iron and steel' industry category."
+    properties:
+      recycled-steel-share:
+        type: number
+        description: "Share of recycled metal in the H-DRI steel process."
+        minimum: 0
+        maximum: 1

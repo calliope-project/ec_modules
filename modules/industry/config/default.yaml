@@ -3,3 +3,11 @@ resources:
   download: True
   shapefile: "resources/shapefile.geojson"
 # Any other user configuration goes below
+
+specific-categories: ["Iron and steel", "Chemicals Industry"]
+config-combined-categories:
+  final-energy-method: "by priority"
+  final-energy-carriers: ["Electricity", "Natural gas (incl. biogas)", "Diesel oil (incl. biofuels)"]
+  useful-demands: ["Low enthalpy heat"]
+config-iron-and-steel:
+  recycled-steel-share: 0.5  # % of recycled scrap steel for H-DRI
