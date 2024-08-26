@@ -262,13 +262,13 @@ def _get_ch_industry_energy_balance(path_to_excel):
 
     ch_carriers = {  # first row in which carriers are defined in the file
         25: "E7000",  # 'electricity',
-        52: "O4000XBIO",  # 'oil',
-        79: "G3000",  # 'gas',
-        105: "C0000X0350-0370",  # 'solid_fuel',
-        128: "W6100_6220",  # 'waste',
-        151: "O4000XBIO",  # 'oil',
-        191: "H8000",  # 'heat',  # purchased
-        228: "R5110-5150_W6000RI",  # 'biofuel'
+        53: "O4000XBIO",  # 'oil',
+        81: "G3000",  # 'gas',
+        108: "C0000X0350-0370",  # 'solid_fuel',
+        132: "W6100_6220",  # 'waste',
+        156: "O4000XBIO",  # 'oil',
+        198: "H8000",  # 'heat',  # purchased
+        237: "R5110-5150_W6000RI",  # 'biofuel'
     }
 
     column_names = (
@@ -311,7 +311,7 @@ def _read_industry_subsector(
             sheet_name="Überblick_tot",
             skiprows=first_row - 1,
             usecols="A,E:P",
-            nrows=10,
+            nrows=11,
             header=None,
             names=column_names,
             index_col=0,
