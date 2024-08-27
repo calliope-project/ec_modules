@@ -1,0 +1,7 @@
+name: shell
+channels:
+  - conda-forge
+  - nodefaults
+dependencies:
+  - curl=8.9.1
+  - unzip=6.0

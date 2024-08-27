@@ -1,0 +1,22 @@
+import yaml
+
+from snakemake.utils import min_version, validate
+
+# Limit the snakemake version to a modern one.
+min_version("8.10")
+
+# Load the default configuration. This will be overridden by users.
+configfile: "config/default.yaml"
+# Validate the configuration using the schema file.
+validate(config, workflow.source_path("schemas/config.schema.yaml"))
+
+# Load internal settings separately so users cannot modify them.
+with open(workflow.source_path("resources/internal_config.yaml"), "r") as f:
+    internal = yaml.safe_load(f)
+
+# Add all your includes here.
+include: "rules/downloads.smk"
+
+rule all:
+    message: "Generate all outputs for 'demand_electricity'."
+    input:
