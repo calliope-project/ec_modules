@@ -21,6 +21,8 @@ def fill_missing_countries_years(
     """
     # Ensure countries follow our standard alpha3 convention.
     jrc_countries = jrc_subsector_demand["country_code"].values
+    jrc_units = jrc_subsector_demand.attrs["units"]
+    jrc_name = jrc_subsector_demand.name
 
     # Build eurostat annual industry balances
     eurostat_industry_balances = (
@@ -84,7 +86,7 @@ def fill_missing_countries_years(
     # ASSUME: remaining empty category combinations have no demand
     all_filled = all_filled.fillna(0)
 
-    all_filled = jrc.standardize(all_filled, "twh")
+    all_filled = jrc.standardize(all_filled, jrc_units, name=jrc_name)
 
     assert not all_filled.isnull().any(), "Filling failed (nan values)."
     assert not np.isinf(all_filled).any(), "Filling failed (inf values)."

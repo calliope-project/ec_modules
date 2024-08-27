@@ -37,7 +37,8 @@ def get_steel_demand_df(
     """
     # Load data
     energy_balances_df = pd.read_csv(
-        energy_balances, index_col=[0, 1, 2, 3, 4]
+        energy_balances,
+        index_col=["cat_code", "carrier_code", "unit", "country", "year"],
     ).squeeze("columns")
     cat_names_df = pd.read_csv(cat_names, header=0, index_col=0)
     carrier_names_df = pd.read_csv(carrier_names, header=0, index_col=0)
@@ -179,15 +180,13 @@ def transform_jrc_subsector_demand(
 
     h2_intensity = electric_intensity.where(sintering_intensity > 0).fillna(0)
     h2_intensity = h2_intensity.where(h2_intensity == 0, h_dri_h2_intensity)
-    h2_intensity = h2_intensity.assign_coords(carrier_name="Hydrogen")
+    h2_intensity["carrier_name"] = ["Hydrogen"]
 
     # Low heat
     low_heat_intensity = jrc.get_section_subsection_useful_intensity(
         "Electric arc", "Low enthalpy heat", "Electric arc", jrc_energy, jrc_prod
     )
-    low_heat_intensity = low_heat_intensity.assign_coords(
-        carrier_name="Low enthalpy heat"
-    )
+    low_heat_intensity["carrier_name"] = ["Low enthalpy heat"]
 
     # Combine and transform to energy demand
     total_intensity = xr.concat(
@@ -196,9 +195,7 @@ def transform_jrc_subsector_demand(
     steel_energy_demand = total_intensity * jrc_prod.sum("produced_material")
 
     # Prettify
-    steel_energy_demand = steel_energy_demand.assign_attrs(units="twh")
-    steel_energy_demand.name = "demand"
-    steel_energy_demand = jrc.standardize(steel_energy_demand, "twh", "demand")
+    steel_energy_demand = jrc.standardize(steel_energy_demand, "twh", "energy_demand")
 
     return steel_energy_demand
 

@@ -33,7 +33,8 @@ def get_generic_demand(
     """
     # Load data
     energy_balances_df = pd.read_csv(
-        energy_balances, index_col=[0, 1, 2, 3, 4]
+        energy_balances,
+        index_col=["cat_code", "carrier_code", "unit", "country", "year"],
     ).squeeze("columns")
     cat_names_df = pd.read_csv(cat_names, header=0, index_col=0)
     carrier_names_df = pd.read_csv(carrier_names, header=0, index_col=0)
@@ -66,18 +67,17 @@ def get_generic_demand(
             other_final_demand = jrc.standardize(other_final_demand, "twh")
         case _:
             raise ValueError(f"Unsupported final energy method: {final_method}.")
-    # Combine and fill missing countries
+
+    assert other_final_demand.sum() <= jrc_energy["final"].sum(), "Double counting."
+
     other_demand = xr.concat(
         [other_useful_demand, other_final_demand], dim="carrier_name"
     )
-
-    assert other_demand.sum() <= jrc_energy["final"].sum(), "Potential double counting!"
-
     other_demand = filling.fill_missing_countries_years(
         energy_balances_df, cat_names_df, carrier_names_df, other_demand
     )
 
-    other_demand = jrc.standardize(other_demand, "twh", "demand")
+    other_demand = jrc.standardize(other_demand, "twh", "energy_demand")
     other_demand.to_netcdf(output_path)
 
 
