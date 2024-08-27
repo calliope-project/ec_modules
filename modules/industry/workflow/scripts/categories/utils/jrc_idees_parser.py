@@ -164,8 +164,7 @@ def replace_carrier_final_demand(
     carrier_final_demand = carrier_final_demand.assign_attrs(units="twh")
     carrier_final_demand.name = "final"
 
-    # FIXME: look into why this part breaks for chemicals industry
-    # assert useful_dem_tot.sum() < carrier_final_demand.sum(), "Creating energy!"
+    assert carrier_tot["useful"].sum() < carrier_final_demand.sum(), "Creating energy!"
 
     return carrier_final_demand
 

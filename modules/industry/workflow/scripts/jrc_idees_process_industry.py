@@ -6,7 +6,7 @@ from typing import Callable, Literal, Union
 import numpy as np
 import pandas as pd
 import xarray as xr
-from eurocalliopelib import utils
+from eurocalliopelib import utils as ec_utils
 from styleframe import StyleFrame
 
 idx = pd.IndexSlice
@@ -67,10 +67,10 @@ def df_to_xr(df: pd.DataFrame, unit: str) -> Union[xr.Dataset, xr.DataArray]:
 
     xr_data = df.stack().unstack("variable").to_xarray()
 
-    country_code_mapping = utils.convert_valid_countries(
+    country_code_mapping = ec_utils.convert_valid_countries(
         xr_data.country_code.values, errors="ignore"
     )
-    xr_data = utils.rename_and_groupby(
+    xr_data = ec_utils.rename_and_groupby(
         xr_data, country_code_mapping, dim_name="country_code"
     )
 
@@ -153,7 +153,7 @@ def _get_jrc_idees_energy_sheet(sheet_name: str, xls: str) -> pd.DataFrame:
         total_to_check.reindex(df.columns).astype(float), df.sum().astype(float)
     )
 
-    return df.apply(utils.ktoe_to_twh)
+    return df.apply(ec_utils.ktoe_to_twh)
 
 
 def _assign_section_level_based_on_colour(

@@ -110,7 +110,7 @@ def transform_jrc_subsector_demand(
         "Propylene": 1.4,  # MTO process
         "BTX": 1.4,  # MTA process
         "Ammonia": 2.05,  # inc. 0.35t_urea/t_ammonia
-        "Methanol": 1.5,  # auxiliary demand, could just be assumed as already included in existing electricity demand
+        "Methanol": 1.5,  # auxiliary demand, could just be assumed as already included in existing electricity demand  # noqa: E501
     }
 
     mass = {  # Bazzanella and Ausfelder, 2017

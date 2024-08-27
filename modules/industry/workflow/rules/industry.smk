@@ -49,3 +49,14 @@ rule combined_categories:
         jrc_industry_production = "results/processed_industry_production.nc",
     output: "results/categories/annual_demand_combined_categories.nc"
     script: "../scripts/categories/combined_categories.py"
+
+
+rule business_as_usual_electricity:
+    message: "Obtain current electricity consumption."
+    conda: "../envs/industry.yaml"
+    input:
+        energy_balances = "results/annual_energy_balances.csv",
+        cat_names = workflow.source_path("../internal/energy_balance_category_names.csv"),
+    output: "results/annual_bau_electricity_demand.nc"
+    script: "../scripts/bau_electricity.py"
+
