@@ -1,0 +1,5 @@
+# Module input files by users go here.
+resources:
+  download: True
+  shapefile: "resources/shapefile.geojson"
+# Any other user configuration goes below
