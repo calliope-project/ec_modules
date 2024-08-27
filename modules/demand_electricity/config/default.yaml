@@ -1,5 +1,67 @@
 # Module input files by users go here.
-resources:
-  download: True
-  shapefile: "resources/shapefile.geojson"
+data_sources:
+  spatial_zones: https://www.dropbox.com/scl/fi/sjjisuqnzck2mhxs9jca7/units-ehighways.geojson?rlkey=rv0q1exsytxws3gfvankbt9p7&e=1&dl=0
+
 # Any other user configuration goes below
+scaling_factors: # values are tuned for models with a few hours resolution and one year duration
+    power: 0.00001 # from MW(h) to 100 GW(h)
+    area: 0.0001 # from km2 to 10,000 km2
+    monetary: 0.000000001 # from EUR to 1 billion EUR
+    transport: 0.01  # from Mio km to 100 Mio km
+    co2: 0.0001  # from t to 10 kt
+scope:
+    spatial:
+        countries:
+            - "Austria"
+            - "Belgium"
+            - "Bulgaria"
+            - "Croatia"
+            - "Cyprus"
+            - "Czech Republic"
+            - "Denmark"
+            - "Estonia"
+            - "Finland"
+            - "France"
+            - "Germany"
+            - "Greece"
+            - "Hungary"
+            - "Ireland"
+            - "Italy"
+            - "Latvia"
+            - "Lithuania"
+            - "Luxembourg"
+            - "Netherlands"
+            - "Poland"
+            - "Portugal"
+            - "Romania"
+            - "Slovakia"
+            - "Slovenia"
+            - "Spain"
+            - "Sweden"
+            - "United Kingdom"
+            - "Albania"
+            - "Bosnia and Herzegovina"
+            - "Macedonia, Republic of"
+            - "Montenegro"
+            - "Norway"
+            - "Serbia"
+            - "Switzerland"
+        bounds:
+            x_min: -15.8
+            x_max: 37
+            y_min: 30
+            y_max: 75
+    temporal:
+        first-year: 2016
+        final-year: 2016
+quality-control:
+  load:
+      outlier-data-thresholds:
+          relative-to-mean-min: 0.25
+          relative-to-mean-max: 2
+      max-interpolate-timesteps: 3
+      acceptable-year-diff-for-gap-filling: 5
+      fill-29th-feb-from-28th: true
+      data-source-priority-order:
+          - actual_entsoe_transparency
+          - actual_entsoe_power_statistics

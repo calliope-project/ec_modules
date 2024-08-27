@@ -1,3 +1,4 @@
 # This file contains configuration that users should not modify.
-resources:
-  shapefile_url:
+data_sources:
+  load: https://data.open-power-system-data.org/time_series/2019-06-05/time_series_60min_stacked.csv
+  potentials: https://zenodo.org/records/6600619/files/raw-potentials.zip?download=1
