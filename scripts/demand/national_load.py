@@ -1,5 +1,4 @@
-"""
-Preprocess national electricity load time series.
+"""Preprocess national electricity load time series.
 
 Data is loaded and (optionally) gap filled as follows:
 
@@ -30,7 +29,6 @@ def national_load(
     countries,
 ):
     """Extracts national load time series for all countries in a specified year."""
-
     load = clean_load_data(
         path_to_raw_load, first_year, final_year, data_quality_config, countries
     )
@@ -251,12 +249,10 @@ def _countries_with_missing_data_in_model_year(data):
 
 
 def get_source_choice_per_country(raw_load, gap_filled_load, entsoe_priority):
-    """
-    OPSD collects load data from different data sources.
+    """OPSD collects load data from different data sources.
     The hourly data can vary between these countries, with some proving more reliable than others.
     See https://nbviewer.jupyter.org/github/Open-Power-System-Data/datapackage_timeseries/blob/2020-10-06/main.ipynb
     """
-
     source_choice = (
         gap_filled_load.notnull()
         .groupby(level="attribute")
