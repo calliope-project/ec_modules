@@ -1,5 +1,4 @@
-"""
-Module to Determine share of shared coast between eez and administrative units.
+"""Module to Determine share of shared coast between eez and administrative units.
 
 Based on `scripts/shared_coast.py` from  https://github.com/calliope-project/solar-and-wind-potentials
 """
@@ -21,8 +20,7 @@ def allocate_eezs(
     resolution: str,
     path_to_output: str,
 ):
-    """
-    Allocate Exclusive Economic Zones (EEZs) to Euro-Calliope units.
+    """Allocate Exclusive Economic Zones (EEZs) to Euro-Calliope units.
     If "continental" or "national" resolution, the EEZs will be applied directly to units.
     If any subnational resolution exists, the national EEZs will be shared between those
     units which have a coast, based on the length of coast.
@@ -108,8 +106,7 @@ def _get_coastal_units_as_linestrings(
     merged_units: gpd.GeoDataFrame,
     polygon_area_share_threshold: float,
 ) -> gpd.GeoDataFrame:
-    """
-    Get the outline of all Euro-Calliope units which sit on the coast
+    """Get the outline of all Euro-Calliope units which sit on the coast
     (i.e., will have some share of the EEZ assigned to them)
     """
     # slightly increase the sub-continental polygon size so that those on the coast
@@ -134,8 +131,7 @@ def _get_coastal_units_as_linestrings(
 def _simplify_geometries(
     units: gpd.GeoDataFrame, polygon_area_share_threshold: float
 ) -> gpd.GeoDataFrame:
-    """
-    Remove tiny islands from units to speed up the later intersection.
+    """Remove tiny islands from units to speed up the later intersection.
     Any polygons in a multipolygon A with an area below
     (polygon_area_share_threshold * area(A)) will be removed.
     """
@@ -159,8 +155,7 @@ def _share_of_coast_length(
     merged_units: gpd.GeoDataFrame,
     polygon_area_share_threshold: float,
 ):
-    """
-    Parallelisable sub-function which allocates a share of EEZ units ("MRGID") connected
+    """Parallelisable sub-function which allocates a share of EEZ units ("MRGID") connected
     to a specific country ("iso_ter1") to Euro-Calliope units ("id") in that same country
     ("country_code").
     """
