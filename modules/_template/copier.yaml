@@ -1,0 +1,32 @@
+module_name:
+  type: str
+  help: What is your module's name?
+  placeholder: transport_road
+  validator: >-
+    {% if not (module_name | regex_search('^[a-z][a-z0-9_]+$')) %}
+    "Must be a single word in lowercase. Letters, digits and underscores are valid characters."
+    {% endif %}
+module_description:
+  type: str
+  help: Please give a brief sentence describing your module.
+  placeholder: A module to estimate energy demand of road vehicles at a subnational level.
+author_name:
+  type: str
+  help: We auto-generate an MIT license for you. Please provide your full name.
+  placeholder: Laura Patricia Orellana
+author_institution:
+  type: str
+  help: We auto-generate an MIT license for you. Please provide the name of your institution.
+  placeholder: TU Delft
+author_email:
+  type: str
+  help: We auto-generate an MIT license for you. Please provide an email address.
+  placeholder: yourname@university.edu
+  validator: >-
+    {% if not (author_email | regex_search('^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$')) %}
+    "This email does not seem valid... did you forget to add a dot?"
+    {% endif %}
+year:
+  type: str
+  help: We auto-generate an MIT license for you. What year is this?
+  placeholder: "2024"

@@ -37,6 +37,5 @@ out/
 output/
 tmp/
 results/
-report/
 
 !modules/_example_module/**
