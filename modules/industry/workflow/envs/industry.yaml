@@ -3,15 +3,14 @@ channels:
   - conda-forge
   - nodefaults
 dependencies:
-  - python=3.11
-  - ipdb=0.13.13
-  - numpy=1.23
-  - pandas=1.5.3
-  - pycountry=18.12.8
-  - netcdf4=1.6.5
-  - xarray=2022.9.0
-  - bottleneck=1.3.8
-  - pip=21.0.1
+  - ipdb = 0.13.13
+  - numpy = 2.1.0
+  - pandas = 2.2.2
+  - pycountry = 18.12.8
+  - netcdf4 = 1.7.1
+  - xarray = 2024.7.0
+  - bottleneck = 1.4.0
+  - geopandas = 1.0.1
+  - pip = 24.2
   - pip:
-    - styleframe==4.2
     - "git+https://github.com/calliope-project/ec_utils.git@v0.1.0"

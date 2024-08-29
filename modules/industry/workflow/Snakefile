@@ -23,6 +23,4 @@ include: "rules/industry.smk"
 rule all:
     message: "Generate all outputs for 'industry'."
     input:
-        rules.annual_energy_balances.output,
-        "results/processed_industry_energy.nc",
-        "results/processed_industry_production.nc",
+        rules.combine_and_scale.output

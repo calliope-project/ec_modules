@@ -1,15 +1,20 @@
 # This file contains configuration that users should not modify.
 resources:
   user_input:
-    shapefile_url:
-  eurostat_energy_balances_url: https://raw.githubusercontent.com/calliope-project/euro-calliope-datasets/feature-sector-coupling/eurostat/nrg_bal_c.tsv.gz
+    shapefile:
   jrc_idees:
-    dataset_url: https://jeodpp.jrc.ec.europa.eu/ftp/jrc-opendata/JRC-IDEES/JRC-IDEES-2015_v1/
+    dataset: https://jeodpp.jrc.ec.europa.eu/ftp/jrc-opendata/JRC-IDEES/JRC-IDEES-2015_v1/
     spatial_scope: [
       "AT", "BE", "BG", "CY", "CZ", "DE", "DK", "EE", "EL", "ES", "FI", "FR",
       "HR", "HU", "IE", "IT", "LT", "LU", "LV", "MT", "NL", "PL", "PT", "RO",
       "SE", "SI", "SK", "UK"
     ]
   che:
-    energy_balances_url: https://www.bfe.admin.ch/bfe/en/home/versorgung/statistik-und-geodaten/energiestatistiken/gesamtenergiestatistik.exturl.html/aHR0cHM6Ly9wdWJkYi5iZmUuYWRtaW4uY2gvZGUvcHVibGljYX/Rpb24vZG93bmxvYWQvNzUxOQ==.html
-    industry_energy_balances_url: https://www.bfe.admin.ch/bfe/en/home/versorgung/statistik-und-geodaten/energiestatistiken/teilstatistiken.exturl.html/aHR0cHM6Ly9wdWJkYi5iZmUuYWRtaW4uY2gvZGUvcHVibGljYX/Rpb24vZG93bmxvYWQvODc4OA==.html
+    energy_balances: https://www.bfe.admin.ch/bfe/en/home/versorgung/statistik-und-geodaten/energiestatistiken/gesamtenergiestatistik.exturl.html/aHR0cHM6Ly9wdWJkYi5iZmUuYWRtaW4uY2gvZGUvcHVibGljYX/Rpb24vZG93bmxvYWQvNzUxOQ==.html
+    industry_energy_balances: https://www.bfe.admin.ch/bfe/en/home/versorgung/statistik-und-geodaten/energiestatistiken/teilstatistiken.exturl.html/aHR0cHM6Ly9wdWJkYi5iZmUuYWRtaW4uY2gvZGUvcHVibGljYX/Rpb24vZG93bmxvYWQvODc4OA==.html
+  energy_intensive_facilities_ETS_E-PTR: "https://raw.githubusercontent.com/calliope-project/sector-coupled-euro-calliope/main/data/industry/all_industrial_ets_eprtr_sites.geojson"
+  eurostat:
+    energy_balances: https://raw.githubusercontent.com/calliope-project/euro-calliope-datasets/feature-sector-coupling/eurostat/nrg_bal_c.tsv.gz
+    freight: "https://raw.githubusercontent.com/calliope-project/euro-calliope-datasets/feature-sector-coupling/eurostat/road_go_na_rl3g.tsv.gz"
+    employees: "https://raw.githubusercontent.com/calliope-project/euro-calliope-datasets/feature-sector-coupling/eurostat/sbs_r_nuts06_r2.tsv.gz"
+    nuts_2006: https://gisco-services.ec.europa.eu/distribution/v2/nuts/geojson/NUTS_RG_01M_2006_4326.geojson
