@@ -3,5 +3,5 @@ channels:
   - conda-forge
   - nodefaults
 dependencies:
-  - atlite = 0.2.13
-  - numpy = 1.23
+  - atlite = 0.2.14
+  - numpy = 1.23 # keep until https://github.com/PyPSA/atlite/issues/363 is fixed
