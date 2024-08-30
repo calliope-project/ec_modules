@@ -12,8 +12,7 @@ def determine_water_inflow(
     path_to_cutout,
     path_to_stations,
     path_to_basins,
-    first_year,
-    final_year,
+    year,
     path_to_output,
 ):
     """Determine water inflow timeseries for all plants."""
@@ -23,7 +22,7 @@ def determine_water_inflow(
     (
         xr.merge([plants.to_xarray(), inflow_m3])
         .drop("geometry")
-        .sel(time=slice(first_year, final_year))
+        .sel(time=slice(year, year))
         .to_netcdf(path_to_output)
     )
 
@@ -50,7 +49,6 @@ if __name__ == "__main__":
         path_to_cutout=snakemake.input.runoff,
         path_to_stations=snakemake.input.stations,
         path_to_basins=snakemake.input.basins,
-        first_year=str(snakemake.wildcards.first_year),
-        final_year=str(snakemake.wildcards.final_year),
+        year=str(snakemake.wildcards.year),
         path_to_output=snakemake.output[0],
     )

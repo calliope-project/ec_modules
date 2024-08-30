@@ -2,7 +2,7 @@
 
 {{module_description}}
 
-## Input-Ouput
+## Input-Output
 
 Here is a brief IO diagram of the module's operation.
 
@@ -18,13 +18,13 @@ flowchart LR
     C1[/"`**User input**
         shapefile.geojson
         ...
-    `"/] --> |Resources| M(({{module_name}}))
-    M --> O1("
+    `"/] --> M(({{module_name}}))
+    M --> O1("`**File type (e.g. Timeseries)**
         output1.csv
-        ")
-    M --> O2("
+        `")
+    M --> O2("`**File type (e.g. Energy potential)**
         output2.nc
-        ")
+        `")
 ```
 
 ## DAG
@@ -32,3 +32,7 @@ flowchart LR
 Here is a brief example of the module's steps.
 
 ![DAG](rulegraph.png)
+
+## Citation
+
+## References

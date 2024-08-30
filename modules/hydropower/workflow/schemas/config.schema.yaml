@@ -1,0 +1,49 @@
+$schema: https://json-schema.org/draft/2020-12/schema
+description: "Configuration schema for 'hydropower'."
+type: object
+additionalProperties: false
+properties:
+  use_default_user_input:
+    type: boolean
+    description: "If enabled, user inputs needed for a national-level model are downloaded."
+  JRC_hydropower_plants_version:
+    type: string
+    description: Version (tag) of the JRC hydropower plants dataset.
+  HydroBASINS_level:
+    type: string
+    description: Resolution level to use for HydroBASIN processing.
+    pattern: "^[0-1][0-9]$"
+  scope:
+    type: object
+    additionalProperties: false
+    properties:
+      years:
+        type: array
+        description: List of years to process individually.
+        items:
+          type: integer
+      year_shift:
+        type: integer
+        minimum: 1
+        description: |
+          Time extension to apply to the ERA5 runoff cutout requested.
+
+          Necessary because atlite shifts runoff backwards in time depending on
+          the distance to the powerplant and the water's flow speed.
+
+          Example, for years=[2015, 2020] and year_shift=2:
+            - Cutout 1: 2013-01-01 to 2015-12-31
+            - Cutout 2: 2018-01-01 to 2020-12-31
+  powerplant_processing:
+    type: object
+    additionalProperties: false
+    properties:
+      scale_phs_according_to_Geth_et_al:
+        type: boolean
+        description: >
+          Whether or not to use pumped hydro capacities derived from Geth et al. (2015)
+          to scale pumped hydro capacities given by the JRC hydro database.
+      station_nearest_basin_max_km:
+        type: number
+        minimum: 0
+        description: Move stations outside of hydrobasins into closes basin by max this amount (fails otherwise).

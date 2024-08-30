@@ -202,41 +202,54 @@ It should contain at least the following things:
 If additional context is needed, please place it in the `docs/` folder.
 
 ??? example "Example: Hydropower module"
-    # Euro-Calliope hydropower data
+    # Euro-Calliope hydropower
 
-    Easily generate timeseries for hydropower plants for any region in Europe.
+    A module to produce hourly timeseries of hydropower plants in Europe.
 
-    ## Input-output
+    ## Input-Output
+
+    Here is a brief IO diagram of the module's operation.
 
     ```mermaid
+    ---
+    title: hydropower
+    ---
     flowchart LR
-        id1[("
-            ERA5
+        D1[("`**Databases**
             HydroBASINS
-        ")] --> |Download| M
-        C[/"
-            config.yaml
-            - shapefile.geojson
-            - powerplants.csv
-        "/] -->M((hydropower))
-        M --> O1("
-            capacity-factors-RoR.csv
-            capacity-factors-basins.csv
+            JRC-hydropower
+            IRENA energy generation
+            ERA5
+            Geth et al 2015
+        `")] --> |Download| M
+
+        C1[/"`**User input**
+            shapes.geojson
+        `"/] --> M((hydropower))
+
+        M --> O1("Timeseries
+            capacity_factors_RoR.csv
+            capacity_factors_reservoir.csv
             ")
-        M --> O2("
-            region-power-capacity.csv
-            region-storage-capacity.csv
+
+        M --> O2("Capacity
+            hydropower_supply.csv
+            hydropower_storage.csv
             ")
     ```
 
     ## DAG
 
-    ![DAG](images/rulegraph.png)
+    Here is a brief example of the module's steps.
 
-    **_Citation_**
+    ![DAG](./images/rulegraph.png)
 
-    Tröndle, T., & Pickering, B. (2021). Euro-Calliope Hydropower data [Computer software]. https://doi.org/10.5281/zenodo.3949793
+    ## Citation
+
+    Tröndle, T., & Pickering, B. (2021). Euro-Calliope Hydropower [Computer software]. https://doi.org/10.5281/zenodo.3949793
 
     ## References
 
-    None
+    - Lehner, B. and Grill, G. (2013), Global river hydrography and network routing: baseline data and new approaches to study the world's large river systems. Hydrol. Process., 27: 2171-2186. https://doi.org/10.1002/hyp.9740
+    - Geth, F., Brijs, T., Kathan, J., Driesen, J., & Belmans, R. (2015). An overview of large-scale stationary electricity storage plants in Europe: Current status and new developments. Renewable and Sustainable Energy Reviews, 52, 1212-1227.
+    - Hofmann, F., Hampp, J., Neumann, F., Brown, T., & Hörsch, J. (2021). atlite: A Lightweight Python Package for Calculating Renewable Power Potentials and Time Series (Version 0.2.5) [Computer software]. https://doi.org/10.21105/joss.03294

@@ -37,5 +37,6 @@ out/
 output/
 tmp/
 results/
+resources/
 
 !modules/_example_module/**
