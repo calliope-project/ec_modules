@@ -9,11 +9,7 @@ from shapely.geometry import Point
 
 
 def determine_water_inflow(
-    path_to_cutout,
-    path_to_stations,
-    path_to_basins,
-    year,
-    path_to_output,
+    path_to_cutout, path_to_stations, path_to_basins, year, path_to_output
 ):
     """Determine water inflow timeseries for all plants."""
     plants = _read_plants(path_to_stations)

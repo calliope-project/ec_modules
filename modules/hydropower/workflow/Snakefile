@@ -25,5 +25,3 @@ if config["use_default_user_input"]:
         input:
             expand("results/shapes/national/{year}/capacity_factors_RoR.csv", year=config["scope"]["years"]),
             expand("results/shapes/national/{year}/capacity_factors_reservoir.csv", year=config["scope"]["years"])
-
-
