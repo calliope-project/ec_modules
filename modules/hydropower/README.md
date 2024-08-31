@@ -19,7 +19,7 @@ flowchart LR
         Geth et al 2015
     `")] --> |Download| M
     C1[/"`**User input**
-        shapes.geojson
+        {shapes}.geojson
     `"/] --> M((hydropower))
     M --> O1("`**Timeseries**
         capacity_factors_RoR.csv
@@ -30,6 +30,21 @@ flowchart LR
         hydropower_storage.csv
         `")
 ```
+
+### User input
+
+- **{shapes}.geojson**: a file with poligons of the desired regional aggregation, with at least:
+    - An _id_ column with an unique identifier.
+    - A _geometry_ column with multi-polygon shapes.
+    - CRS in EPSG:4326
+
+    | id  | geometry   |
+    |-----|--------------|
+    | AUT | MULTIPOLYGON |
+    | BEL | MULTIPOLYGON |
+    | ... | ...          |
+
+
 
 ## DAG
 
