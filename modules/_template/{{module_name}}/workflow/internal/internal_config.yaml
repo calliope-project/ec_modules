@@ -1,3 +1,4 @@
-# This file contains configuration that users should not modify.
+# This file contains configuration that users cannot modify.
 resources:
-  shapefile_url:
+  default_user_input:
+    # Add default example URLs here (if your module requires user input files)
