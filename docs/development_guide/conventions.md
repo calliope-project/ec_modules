@@ -39,7 +39,7 @@ To future proof our workflows we follow a few simple rules. In brief:
 
 ### All data
 
-- :white_check_mark: Use `snake_case` for metadata like column or attribute names.
+- :white_check_mark: Use `snake_case` for filenames, configuration keys, columns or data attributes.
 - :white_check_mark: Add a `units` column or attribute.
 - :ballot_box_with_check: Optionally, add a `long_name` column.
 
