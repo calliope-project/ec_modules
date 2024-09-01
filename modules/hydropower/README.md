@@ -22,7 +22,7 @@ flowchart LR
         {shapes}.geojson
     `"/] --> M((hydropower))
     M --> O1("`**Timeseries**
-        capacity_factors_RoR.csv
+        capacity_factors_ror.csv
         capacity_factors_reservoir.csv
         `")
     M --> O2("`**Capacity**
@@ -33,16 +33,35 @@ flowchart LR
 
 ### User input
 
-- **{shapes}.geojson**: a file with polygons of the desired regional aggregation, with at least:
-    - An _id_ column with an unique identifier.
-    - A _geometry_ column with multi-polygon shapes.
-    - CRS in EPSG:4326
+- **resources/user_input/{shapes}.geojson**: a file with the desired regional aggregation. CRS must be EPSG:4326.
 
     | id  | geometry   |
     |-----|--------------|
     | AUT | MULTIPOLYGON |
-    | BEL | MULTIPOLYGON |
     | ... | ...          |
+
+### Output
+
+- **results/shapes/{shapes}/hydropower_storage_capacity.csv**: storage capacity per region.
+
+    | id | installed_capacity_hphs_MW | storage_capacity_hphs_MWh |
+    |-----|--------|----|
+    | AUT | 3589.3 | 701017.4418604651 |
+    | ... | ... | ... |
+
+- **results/shapes/{shapes}/hydropower_supply_capacity.csv**: capacity per region.
+
+    | id  | installed_capacity_hror_MW | storage_capacity_hror_MWh | installed_capacity_hdam_MW | storage_capacity_hdam_MWh |
+    |-----|----------------------------|---------------------------|----------------------------|---------------------------|
+    | AUT | 4413.616868258108          | 0.0                       | 5239.92                    | 3183615.7366070515        |
+    | ... | ...          | ...                       | ...                    | ...        |
+
+- **results/shapes/{shapes}/{year}/capacity_factors_reservoir.csv**: normalised capacity factor timeseries for reservoirs.
+- **results/shapes/{shapes}/{year}/capacity_factors_ror.csv**: normalised capacity factor timeseries for run-of-river.
+
+    | time                | AUT                 | BEL                 |
+    |---------------------|---------------------|---------------------|
+    | 2016-01-01 00:00:00 | 0.15846144406741275 | 0.17258542702063673 |
 
 ## DAG
 

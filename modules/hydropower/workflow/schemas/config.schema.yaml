@@ -13,27 +13,18 @@ properties:
     type: string
     description: Resolution level to use for HydroBASIN processing.
     pattern: "^[0-1][0-9]$"
-  scope:
-    type: object
-    additionalProperties: false
-    properties:
-      years:
-        type: array
-        description: List of years to process individually.
-        items:
-          type: integer
-      year_shift:
-        type: integer
-        minimum: 1
-        description: |
-          Time extension to apply to the ERA5 runoff cutout requested.
+  year_shift:
+    type: integer
+    minimum: 1
+    description: |
+      Time extension to apply to the ERA5 runoff cutout requested.
 
-          Necessary because atlite shifts runoff backwards in time depending on
-          the distance to the powerplant and the water's flow speed.
+      Necessary because atlite shifts runoff backwards in time depending on
+      the distance to the powerplant and the water's flow speed.
 
-          Example, for years=[2015, 2020] and year_shift=2:
-            - Cutout 1: 2013-01-01 to 2015-12-31
-            - Cutout 2: 2018-01-01 to 2020-12-31
+      Example, for years=[2015, 2020] and year_shift=2:
+        - Cutout 1: 2013-01-01 to 2015-12-31
+        - Cutout 2: 2018-01-01 to 2020-12-31
   powerplant_processing:
     type: object
     additionalProperties: false

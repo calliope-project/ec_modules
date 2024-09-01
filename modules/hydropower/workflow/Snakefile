@@ -23,5 +23,5 @@ if config["use_default_user_input"]:
     rule all:
         message: "Generate default output for 'hydropower'."
         input:
-            expand("results/shapes/national/{year}/capacity_factors_RoR.csv", year=config["scope"]["years"]),
-            expand("results/shapes/national/{year}/capacity_factors_reservoir.csv", year=config["scope"]["years"])
+            expand("results/shapes/{resolution}/{year}/capacity_factors_ror.csv", resolution=["national"], year=[2016]),
+            expand("results/shapes/{resolution}/{year}/capacity_factors_reservoir.csv", resolution=["national"], year=[2016])

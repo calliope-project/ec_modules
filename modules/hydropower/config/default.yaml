@@ -1,9 +1,7 @@
 use_default_user_input: True
 JRC_hydropower_plants_version: "v10"
 HydroBASINS_level: "07"
-scope:
-  years: [2016]
-  year_shift: 1
+year_shift: 1
 powerplant_processing:
   scale_phs_according_to_Geth_et_al: false
   station_nearest_basin_max_km: 1

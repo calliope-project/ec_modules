@@ -36,7 +36,7 @@ rule prepare_ERA5_runoff_cutout:
         cutout = "results/shapes/{resolution}/{year}/cutout.nc",
         plot_cutout = "results/plots/{resolution}/{year}/plot_cutout.png"
     params:
-        time = lambda wc: slice(f"{int(wc.year)- config["scope"]["year_shift"]}-01", f"{wc.year}-12"),
+        time = lambda wc: slice(f"{int(wc.year)- config["year_shift"]}-01", f"{wc.year}-12"),
         features = ["runoff"],
         offset_degrees = 0,
         module = ["era5"],
@@ -81,7 +81,7 @@ rule capacity_factors:
     params:
         threshold = internal["capacity_factors"]["min"]
     output:
-        ror = "results/shapes/{resolution}/{year}/capacity_factors_RoR.csv",
+        ror = "results/shapes/{resolution}/{year}/capacity_factors_ror.csv",
         reservoir = "results/shapes/{resolution}/{year}/capacity_factors_reservoir.csv"
     resources:
         runtime = 100
