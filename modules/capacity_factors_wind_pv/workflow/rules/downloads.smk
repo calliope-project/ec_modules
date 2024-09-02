@@ -1,26 +1,45 @@
 # We recommend adding rules that download necessary files here.
 
+
 rule download_units:
-    message: "Download spatial zones."
+    message:
+        "Download spatial zones."
     params:
-        url = config["resources"]["spatial_units"],
-    output: "results/downloads/units_{resolution}.geojson"
-    conda: "../envs/shell.yaml"
+        url=config["resources"]["spatial_units"],
+    output:
+        "results/downloads/units_{resolution}.geojson",
+    conda:
+        "../envs/shell.yaml"
     localrule: True
-    shell: "curl -sSLo {output} '{params.url}'"
+    shell:
+        "curl -sSLo {output} '{params.url}'"
+
 
 rule download_eez:
-    message: "Download Exclusive Economic Zones as zip"
-    output: protected("data/automatic/eez.gpkg.zip")
-    params: url = config["data-sources"]["eez"]
-    conda: "../envs/shell.yaml"
+    message:
+        "Download Exclusive Economic Zones as zip"
+    output:
+        protected("data/automatic/eez.gpkg.zip"),
+    params:
+        url=config["data-sources"]["eez"],
+    conda:
+        "../envs/shell.yaml"
     localrule: True
-    shell: "curl -sSLo {output} '{params.url}'"
+    shell:
+        "curl -sSLo {output} '{params.url}'"
+
 
 rule download_capacity_factors_wind_and_solar:
-    message: "Download data/automatic/capacityfactors/{wildcards.filename}."
-    params: url = lambda wildcards: config["data-sources"]["capacity-factors"].format(filename=wildcards.filename)
-    output: protected("data/automatic/capacityfactors/{filename}")
-    conda: "../envs/shell.yaml"
+    message:
+        "Download data/automatic/capacityfactors/{wildcards.filename}."
+    params:
+        url=lambda wildcards: config["data-sources"]["capacity-factors"].format(
+            filename=wildcards.filename
+        ),
+    output:
+        protected("data/automatic/capacityfactors/{filename}"),
+    conda:
+        "../envs/shell.yaml"
     localrule: True
-    shell: "curl -sSLo {output} '{params.url}'"
+    shell:
+        "curl -sSLo {output} '{params.url}'"
