@@ -21,17 +21,20 @@ def allocate_eezs(
     path_to_output: str,
 ):
     """Allocate Exclusive Economic Zones (EEZs) to Euro-Calliope units.
-    If "continental" or "national" resolution, the EEZs will be applied directly to units.
-    If any subnational resolution exists, the national EEZs will be shared between those
-    units which have a coast, based on the length of coast.
+
+    If "continental" or "national" resolution, the EEZs will be applied directly
+    to units. If any subnational resolution exists, the national EEZs will be shared
+    between those units which have a coast, based on the length of coast.
     This is a rough estimate and is impacted by the number of small islands just off the
     coast (which increase a unit's share of the coast artificially). We mitigate this
-    effect slightly by ignoring all islands below a certain size (using `polygon_area_share_threshold`).
+    effect slightly by ignoring all islands below a certain size
+    (using `polygon_area_share_threshold`).
 
     Args:
         path_to_eez (str):
             Path to shapefile containing Exclusive Economic Zones. Must include the
-            columns "POL_TYPE" (polygon types), "ISO_TER1" (country IDs), "MRGID" (EEZ IDs), and "geometry".
+            columns "POL_TYPE" (polygon types), "ISO_TER1" (country IDs),
+            "MRGID" (EEZ IDs), and "geometry".
         path_to_units (str):
             Path to shapefile containing Euro-Calliope units at specified "resolution".
         threads (int):
@@ -53,7 +56,8 @@ def allocate_eezs(
     eez = eez[eez.POL_TYPE.str.lower() != "joint regime"]
 
     if resolution == "continental":
-        # All coastal areas are linked to the one "EUR" region at the continental resolution
+        # All coastal areas are linked to the one "EUR" region
+        # at the continental resolution
         share = pd.Series(
             index=pd.MultiIndex.from_product(
                 (["EUR"], eez.MRGID.unique()), names=["id", "MRGID"]
@@ -61,7 +65,8 @@ def allocate_eezs(
             data=1,
         )
     elif resolution == "national":
-        # Each EEZ area has one explicit country that it is linked to (since we removed "joint regimes")
+        # Each EEZ area has one explicit country
+        # that it is linked to (since we removed "joint regimes")
         share = pd.Series(
             index=eez.set_index(["ISO_TER1", "MRGID"]).index.rename(["id", "MRGID"]),
             data=1,
@@ -106,8 +111,9 @@ def _get_coastal_units_as_linestrings(
     merged_units: gpd.GeoDataFrame,
     polygon_area_share_threshold: float,
 ) -> gpd.GeoDataFrame:
-    """Get the outline of all Euro-Calliope units which sit on the coast
-    (i.e., will have some share of the EEZ assigned to them)
+    """Get the outline of all Euro-Calliope units which sit on the coast.
+
+    I.e., these units will have some share of the EEZ assigned to them.
     """
     # slightly increase the sub-continental polygon size so that those on the coast
     # slightly overlap the continent polygon boundary.
@@ -132,6 +138,7 @@ def _simplify_geometries(
     units: gpd.GeoDataFrame, polygon_area_share_threshold: float
 ) -> gpd.GeoDataFrame:
     """Remove tiny islands from units to speed up the later intersection.
+
     Any polygons in a multipolygon A with an area below
     (polygon_area_share_threshold * area(A)) will be removed.
     """
@@ -155,9 +162,12 @@ def _share_of_coast_length(
     merged_units: gpd.GeoDataFrame,
     polygon_area_share_threshold: float,
 ):
-    """Parallelisable sub-function which allocates a share of EEZ units ("MRGID") connected
-    to a specific country ("iso_ter1") to Euro-Calliope units ("id") in that same country
-    ("country_code").
+    """Parallelisable sub-function allocating a share of eez to calliope units.
+
+    Allocates a share of EEZ units ("MRGID")
+    connected to a specific country ("iso_ter1")
+    to Euro-Calliope units ("id")
+    in that same country ("country_code").
     """
     coastal_unit_boundaries = _get_coastal_units_as_linestrings(
         units[units.country_code == country].copy(),
