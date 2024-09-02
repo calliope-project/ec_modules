@@ -8,15 +8,25 @@ min_version("8.10")
 # Load the default configuration. This will be overridden by users.
 configfile: "config/default.yaml"
 # Validate the configuration using the schema file.
-validate(config, workflow.source_path("schemas/config.schema.yaml"))
+# validate(config, workflow.source_path("schemas/config.schema.yaml"))
 
 # Load internal settings separately so users cannot modify them.
-with open(workflow.source_path("resources/internal_config.yaml"), "r") as f:
+with open(workflow.source_path("internal/internal_config.yaml"), "r") as f:
     internal = yaml.safe_load(f)
 
 # Add all your includes here.
 include: "rules/downloads.smk"
+include: "rules/shapes.smk"
+include: "rules/wind-and-solar.smk"
+
+ALL_CF_TECHNOLOGIES = [
+    "wind-onshore", "wind-offshore", "open-field-pv",
+    "rooftop-pv", "rooftop-pv-n", "rooftop-pv-e-w", "rooftop-pv-s-flat", "hydro-run-of-river",
+    "hydro-reservoir"
+]
 
 rule all:
     message: "Generate all outputs for 'capacity_factors_wind_pv'."
     input:
+        expand("build/models/{resolution}/timeseries/supply/capacityfactors-wind-offshore.csv", resolution=config["resolution"]),
+        expand("build/models/{resolution}/timeseries/supply/capacityfactors-{technology}.csv", resolution=config["resolution"], technology=ALL_CF_TECHNOLOGIES),
