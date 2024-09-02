@@ -4,7 +4,7 @@ rule capacity_factors_onshore_wind_and_solar:
     message: "Generate capacityfactor time series disaggregated by location on "
              "{wildcards.resolution} resolution for {wildcards.technology}."
     input:
-        locations = rules.units.output[0],
+        locations = rules.download_units.output[0],
         timeseries = ancient("data/automatic/capacityfactors/{technology}-timeseries.nc"),
         coordinates = ancient("data/automatic/capacityfactors/wind-onshore-timeseries.nc")
     params:
@@ -25,7 +25,7 @@ rule capacity_factors_onshore_wind_and_solar:
 rule shared_coast:
     message: "Determine share of coast length between EEZ and {wildcards.resolution} units using {threads} threads."
     input:
-        units = rules.units.output[0],
+        units = rules.download_units.output[0],
         eez = rules.eez.output[0],
     params:
         polygon_area_share_threshold = config["quality-control"]["shared-coast-polygon-area-share-threshold"]

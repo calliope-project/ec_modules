@@ -1,5 +1,14 @@
 # We recommend adding rules that download necessary files here.
 
+rule download_units:
+    message: "Download spatial zones."
+    params:
+        url = config["resources"]["spatial_units"],
+    output: "results/downloads/units_{resolution}.geojson"
+    conda: "../envs/shell.yaml"
+    localrule: True
+    shell: "curl -sSLo {output} '{params.url}'"
+
 rule download_eez:
     message: "Download Exclusive Economic Zones as zip"
     output: protected("data/automatic/eez.gpkg.zip")
