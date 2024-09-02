@@ -3,4 +3,4 @@ channels:
   - conda-forge
   - nodefaults
 dependencies:
-  - atlite = 0.2.13
+  - atlite = 0.2.14
