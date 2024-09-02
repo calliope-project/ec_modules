@@ -1,5 +1,67 @@
 # Module input files by users go here.
 resources:
   download: True
-  shapefile: "resources/shapefile.geojson"
+  spatial_units: https://www.dropbox.com/scl/fi/sjjisuqnzck2mhxs9jca7/units-{resolution}.geojson?rlkey=rv0q1exsytxws3gfvankbt9p7&e=1&dl=0
+
 # Any other user configuration goes below
+data-sources:
+    eez: https://sandbox.zenodo.org/records/45135/files/eez_v11.gpkg.zip?download=1  # FIXME: update to actual zenodo record before next Euro-Calliope release.
+    capacity-factors: https://zenodo.org/record/3899687/files/{filename}?download=1
+resolution: "ehighways"
+scope:
+  spatial:
+      countries:
+          - "Austria"
+          - "Belgium"
+          - "Bulgaria"
+          - "Croatia"
+          - "Cyprus"
+          - "Czech Republic"
+          - "Denmark"
+          - "Estonia"
+          - "Finland"
+          - "France"
+          - "Germany"
+          - "Greece"
+          - "Hungary"
+          - "Ireland"
+          - "Italy"
+          - "Latvia"
+          - "Lithuania"
+          - "Luxembourg"
+          - "Netherlands"
+          - "Poland"
+          - "Portugal"
+          - "Romania"
+          - "Slovakia"
+          - "Slovenia"
+          - "Spain"
+          - "Sweden"
+          - "United Kingdom"
+          - "Albania"
+          - "Bosnia and Herzegovina"
+          - "Macedonia, Republic of"
+          - "Montenegro"
+          - "Norway"
+          - "Serbia"
+          - "Switzerland"
+      bounds:
+          x_min: -15.8
+          x_max: 37
+          y_min: 30
+          y_max: 75
+  temporal:
+      first-year: 2016
+      final-year: 2016
+capacity-factors:
+    min: 0.001
+    max: 10 # 0.001 -> 10 leads to a numerical range of 1e5 (hourly resolution)
+    average:
+        pv: 0.139 # median of average 2016 open-field factors for ~2700 points in Europe
+        onshore: 0.3021 # median of average 2016 factors for ~2700 points in Europe
+        offshore: 0.4223 # median of average 2016 factors for ~2800 points in Europe
+        ror: 0.536781 # median of average 2016 factors for 1889 hydro stations in Europe
+    trim-ninja-timeseries: True
+quality-control:
+    capacity-factor-gridcell-overlap-threshold: 0.97 # Ceuta y Melilla has smallest overlap
+    shared-coast-polygon-area-share-threshold: 0.01
