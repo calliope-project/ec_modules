@@ -7,7 +7,7 @@ rule eez:
     input:
         rules.download_eez.output[0],
     output:
-        "build/data/eez.geojson",
+        "results/eez.geojson",
     params:
         bounds="{x_min},{y_min},{x_max},{y_max}".format(
             **config["scope"]["spatial"]["bounds"]

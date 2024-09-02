@@ -7,7 +7,7 @@ rule download_units:
     params:
         url=config["resources"]["spatial_units"],
     output:
-        "results/downloads/units_{resolution}.geojson",
+        "resources/units_{resolution}.geojson",
     conda:
         "../envs/shell.yaml"
     localrule: True
@@ -19,7 +19,7 @@ rule download_eez:
     message:
         "Download Exclusive Economic Zones as zip"
     output:
-        protected("data/automatic/eez.gpkg.zip"),
+        protected("resources/eez.gpkg.zip"),
     params:
         url=config["data-sources"]["eez"],
     conda:
@@ -31,13 +31,13 @@ rule download_eez:
 
 rule download_capacity_factors_wind_and_solar:
     message:
-        "Download data/automatic/capacityfactors/{wildcards.filename}."
+        "Download resources/capacityfactors/{wildcards.filename}."
     params:
         url=lambda wildcards: config["data-sources"]["capacity-factors"].format(
             filename=wildcards.filename
         ),
     output:
-        protected("data/automatic/capacityfactors/{filename}"),
+        protected("resources/capacityfactors/{filename}"),
     conda:
         "../envs/shell.yaml"
     localrule: True

@@ -7,8 +7,8 @@ rule capacity_factors_onshore_wind_and_solar:
         "{wildcards.resolution} resolution for {wildcards.technology}."
     input:
         locations=rules.download_units.output[0],
-        timeseries=ancient("data/automatic/capacityfactors/{technology}-timeseries.nc"),
-        coordinates=ancient("data/automatic/capacityfactors/wind-onshore-timeseries.nc"),
+        timeseries=ancient("resources/capacityfactors/{technology}-timeseries.nc"),
+        coordinates=ancient("resources/capacityfactors/wind-onshore-timeseries.nc"),
     params:
         cf_threshold=config["capacity-factors"]["min"],
         gridcell_overlap_threshold=config["quality-control"][
@@ -20,7 +20,7 @@ rule capacity_factors_onshore_wind_and_solar:
     wildcard_constraints:
         technology="wind-onshore|rooftop-pv|open-field-pv|rooftop-pv-n|rooftop-pv-e-w|rooftop-pv-s-flat",
     output:
-        "build/models/{resolution}/timeseries/supply/capacityfactors-{technology}.csv",
+        "results/{resolution}/capacityfactors-{technology}.csv",
     conda:
         "../envs/geo.yaml"
     resources:
@@ -40,7 +40,7 @@ rule shared_coast:
             "shared-coast-polygon-area-share-threshold"
         ],
     output:
-        "build/data/{resolution}/shared-coast.csv",
+        "results/{resolution}/shared-coast.csv",
     threads: 4
     conda:
         "../envs/geo.yaml"
@@ -55,7 +55,7 @@ rule capacity_factors_offshore:
     input:
         eez=rules.eez.output[0],
         shared_coast=rules.shared_coast.output[0],
-        timeseries=ancient("data/automatic/capacityfactors/wind-offshore-timeseries.nc"),
+        timeseries=ancient("resources/capacityfactors/wind-offshore-timeseries.nc"),
     params:
         cf_threshold=config["capacity-factors"]["min"],
         gridcell_overlap_threshold=config["quality-control"][
@@ -65,7 +65,7 @@ rule capacity_factors_offshore:
         final_year=config["scope"]["temporal"]["final-year"],
         trim_ts=config["capacity-factors"]["trim-ninja-timeseries"],
     output:
-        "build/models/{resolution}/timeseries/supply/capacityfactors-wind-offshore.csv",
+        "results/{resolution}/capacityfactors-wind-offshore.csv",
     conda:
         "../envs/geo.yaml"
     resources:

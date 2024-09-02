@@ -40,11 +40,11 @@ rule all:
         "Generate all outputs for 'capacity_factors_wind_pv'."
     input:
         expand(
-            "build/models/{resolution}/timeseries/supply/capacityfactors-wind-offshore.csv",
+            "results/{resolution}/capacityfactors-wind-offshore.csv",
             resolution=config["resolution"],
         ),
         expand(
-            "build/models/{resolution}/timeseries/supply/capacityfactors-{technology}.csv",
+            "results/{resolution}/capacityfactors-{technology}.csv",
             resolution=config["resolution"],
             technology=ALL_CF_TECHNOLOGIES,
         ),
