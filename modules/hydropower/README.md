@@ -42,19 +42,19 @@ flowchart LR
 
 ### Output
 
-- **results/shapes/{shapes}/hydropower_storage_capacity.csv**: storage capacity per region.
-
-    | id | installed_capacity_hphs_MW | storage_capacity_hphs_MWh |
-    |-----|--------|----|
-    | AUT | 3589.3 | 701017.4418604651 |
-    | ... | ... | ... |
-
-- **results/shapes/{shapes}/hydropower_supply_capacity.csv**: capacity per region.
+- **results/shapes/{shapes}/supply_capacity.csv**: generation capacity per region.
 
     | id  | installed_capacity_hror_MW | storage_capacity_hror_MWh | installed_capacity_hdam_MW | storage_capacity_hdam_MWh |
     |-----|----------------------------|---------------------------|----------------------------|---------------------------|
     | AUT | 4413.616868258108          | 0.0                       | 5239.92                    | 3183615.7366070515        |
     | ... | ...          | ...                       | ...                    | ...        |
+
+- **results/shapes/{shapes}/storage_capacity.csv**: storage capacity per region.
+
+    | id | installed_capacity_hphs_MW | storage_capacity_hphs_MWh |
+    |-----|--------|----|
+    | AUT | 3589.3 | 701017.4418604651 |
+    | ... | ... | ... |
 
 - **results/shapes/{shapes}/{year}/capacity_factors_reservoir.csv**: normalised capacity factor timeseries for reservoirs.
 - **results/shapes/{shapes}/{year}/capacity_factors_ror.csv**: normalised capacity factor timeseries for run-of-river.

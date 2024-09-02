@@ -22,8 +22,8 @@ rule capacities_per_shape:
         locations = "resources/user_input/{resolution}.geojson",
         plants = "results/jrc_hydropower_plant_database_preprocessed.csv"
     output:
-        supply = "results/shapes/{resolution}/hydropower_supply_capacity.csv",
-        storage = "results/shapes/{resolution}/hydropower_storage_capacity.csv"
+        supply = "results/shapes/{resolution}/supply_capacity.csv",
+        storage = "results/shapes/{resolution}/storage_capacity.csv"
     conda: "../envs/hydro.yaml"
     script: "../scripts/hydro_capacities.py"
 
@@ -75,7 +75,7 @@ rule inflow_mwh:
 rule capacity_factors:
     message: "Generate capacityfactor time series for hydro electricity on {wildcards.resolution} resolution."
     input:
-        capacities = "results/shapes/{resolution}/hydropower_supply_capacity.csv",
+        capacities = "results/shapes/{resolution}/supply_capacity.csv",
         stations = "results/shapes/{resolution}/{year}/hydropower_inflow_energy.nc",
         locations = "resources/user_input/{resolution}.geojson"
     params:
