@@ -7,7 +7,7 @@ if config["use_default_resources"]:
         params:
             url=internal["default_resources"]["spatial_units"],
         output:
-            "resources/user_input/units_{resolution}.geojson",
+            "resources/customizable_resources/units_{resolution}.geojson",
         conda:
             "../envs/shell.yaml"
         localrule: True
