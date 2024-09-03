@@ -30,6 +30,7 @@ REPLACEMENT_POTENTIAL_VALUE = (2010, "high", "BIH", "sludge")  # 0 PJ
 
 
 def extract_biofuels(path_to_raw_data, feedstocks, paths_to_outputs):
+    """Extract biofuels potential and cost from raw data."""
     potentials = read_and_filter_and_map_names(
         path_to_raw_data, SHEET_NAME_POTENTIALS, feedstocks
     )
@@ -48,6 +49,7 @@ def extract_biofuels(path_to_raw_data, feedstocks, paths_to_outputs):
 
 
 def read_and_filter_and_map_names(path_to_raw_data, sheet_name, feedstocks):
+    """Function for specific data wrangling."""
     # Ignores scenarios other than high/med/low.
     # Removes "KS" NUTS0 from costs, as this is an unknown abbreviation.
     # Renames scenarios and feedstocks.
@@ -66,7 +68,7 @@ def read_and_filter_and_map_names(path_to_raw_data, sheet_name, feedstocks):
 
 
 def replace(df, index_to_replace, index_replace_from):
-    # Replace one missing entry with another entry.
+    """Replace one missing entry with another entry."""
     df = df.set_index(["year", "scenario", "country_code", "feedstock"])
     assert pd.isna(df.loc[index_to_replace, "value"])
     df.loc[index_to_replace, "value"] = df.loc[index_replace_from, "value"]

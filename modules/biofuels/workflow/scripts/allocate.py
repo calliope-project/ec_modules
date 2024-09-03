@@ -1,4 +1,4 @@
-"""Take national potentials, allocate to regions based on feedstocks and proxies, and sum over feedstocks."""
+"""Take national potentials, allocate to regions based on feedstocks and proxies, and sum over feedstocks."""  # noqa: E501
 
 from enum import Enum
 
@@ -71,7 +71,7 @@ def biofuel_potential(
     proxies,
     paths_to_output,
 ):
-    """Take national potentials from JRC report and allocate to regions based on proxies."""
+    """Allocate national potentials from JRC report to regions based on proxies."""
     national_potentials = (
         pd.read_csv(
             path_to_national_potentials,
@@ -124,6 +124,7 @@ def biofuel_potential(
 
 
 def allocate_potentials(national_potentials, units, population, land_cover, proxies):
+    """Allocate potential to units."""
     regional_potentials = pd.merge(
         national_potentials.reset_index(),
         units["country_code"].reset_index(),
