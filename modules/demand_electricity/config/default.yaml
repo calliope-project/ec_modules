@@ -1,6 +1,5 @@
 # Module input files by users go here.
-data_sources:
-  spatial_zones: https://www.dropbox.com/scl/fi/sjjisuqnzck2mhxs9jca7/units-ehighways.geojson?rlkey=rv0q1exsytxws3gfvankbt9p7&e=1&dl=0
+use_default_customisable_resources: true
 
 # Any other user configuration goes below
 scaling_factors: # values are tuned for models with a few hours resolution and one year duration

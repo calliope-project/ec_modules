@@ -18,6 +18,7 @@ with open(workflow.source_path("internal/internal_config.yaml"), "r") as f:
 include: "rules/downloads.smk"
 include: "rules/demand.smk"
 
-rule all:
-    message: "Generate all outputs for 'demand_electricity'."
-    input: expand("results/demand-electricity-{resolution}.csv", resolution=["national", "ehighways", "regional"])
+if config["use_default_customisable_resources"]:
+    rule all:
+        message: "Generate all outputs for 'demand_electricity'."
+        input: expand("results/demand-electricity-{resolution}.csv", resolution=["national", "ehighways", "regional"])
