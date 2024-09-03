@@ -12,7 +12,8 @@ title: capacity_factors_wind_pv
 ---
 flowchart LR
     D1[("`**Databases**
-        database1
+        capacityfactors (.nc)
+        eez (.gpkg)
         ...
     `")] --> |Download| M
     C1[/"`**User input**
