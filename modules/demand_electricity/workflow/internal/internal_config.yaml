@@ -1,6 +1,6 @@
 # This file contains configuration that users should not modify.
 default_customisable_resources:
-  spatial_zones: https://www.dropbox.com/scl/fi/sjjisuqnzck2mhxs9jca7/units-ehighways.geojson?rlkey=rv0q1exsytxws3gfvankbt9p7&e=1&dl=0
+  spatial_zones: https://www.dropbox.com/scl/fi/ijfihaqy5eki13nplvrn4/units-ehighways.geojson?rlkey=q0agmofhaklt1pytzef59o1xq&e=1&dl=0
 data_sources:
   load: https://data.open-power-system-data.org/time_series/2019-06-05/time_series_60min_stacked.csv
   potentials: https://zenodo.org/records/6600619/files/raw-potentials.zip?download=1
