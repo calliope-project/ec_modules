@@ -2,6 +2,12 @@
 resources:
   eez: https://sandbox.zenodo.org/records/45135/files/eez_v11.gpkg.zip?download=1  # FIXME: update to actual zenodo record before next Euro-Calliope release.
   capacity-factors: https://zenodo.org/record/3899687/files/{filename}?download=1
+capacity-factors:
+    min: 0.001
+    trim-ninja-timeseries: True
+quality-control:
+    capacity-factor-gridcell-overlap-threshold: 0.97 # Ceuta y Melilla has smallest overlap
+    shared-coast-polygon-area-share-threshold: 0.01
 scope:
   spatial:
       countries:
@@ -44,6 +50,3 @@ scope:
           x_max: 37
           y_min: 30
           y_max: 75
-quality-control:
-    capacity-factor-gridcell-overlap-threshold: 0.97 # Ceuta y Melilla has smallest overlap
-    shared-coast-polygon-area-share-threshold: 0.01

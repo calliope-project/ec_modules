@@ -9,6 +9,3 @@ scope:
   temporal:
       first-year: 2016
       final-year: 2016
-capacity-factors:
-    min: 0.001
-    trim-ninja-timeseries: True

@@ -10,13 +10,13 @@ rule capacity_factors_onshore_wind_and_solar:
         timeseries=ancient("resources/capacityfactors/{technology}-timeseries.nc"),
         coordinates=ancient("resources/capacityfactors/wind-onshore-timeseries.nc"),
     params:
-        cf_threshold=config["capacity-factors"]["min"],
-        gridcell_overlap_threshold=config["quality-control"][
+        cf_threshold=internal["capacity-factors"]["min"],
+        gridcell_overlap_threshold=internal["quality-control"][
             "capacity-factor-gridcell-overlap-threshold"
         ],
         first_year=config["scope"]["temporal"]["first-year"],
         final_year=config["scope"]["temporal"]["final-year"],
-        trim_ts=config["capacity-factors"]["trim-ninja-timeseries"],
+        trim_ts=internal["capacity-factors"]["trim-ninja-timeseries"],
     wildcard_constraints:
         technology="wind-onshore|rooftop-pv|open-field-pv|rooftop-pv-n|rooftop-pv-e-w|rooftop-pv-s-flat",
     output:
@@ -57,13 +57,13 @@ rule capacity_factors_offshore:
         shared_coast=rules.shared_coast.output[0],
         timeseries=ancient("resources/capacityfactors/wind-offshore-timeseries.nc"),
     params:
-        cf_threshold=config["capacity-factors"]["min"],
+        cf_threshold=internal["capacity-factors"]["min"],
         gridcell_overlap_threshold=internal["quality-control"][
             "capacity-factor-gridcell-overlap-threshold"
         ],
         first_year=config["scope"]["temporal"]["first-year"],
         final_year=config["scope"]["temporal"]["final-year"],
-        trim_ts=config["capacity-factors"]["trim-ninja-timeseries"],
+        trim_ts=internal["capacity-factors"]["trim-ninja-timeseries"],
     output:
         "results/{resolution}/capacityfactors-wind-offshore.csv",
     conda:
