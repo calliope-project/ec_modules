@@ -32,4 +32,4 @@ rule unzip_potentials:
     output:
         demand = "resources/{resolution}/demand.csv",
     conda: "../envs/shell.yaml"
-    shell: "unzip {input} '{wildcards.resolution}/*' -d resources"
+    shell: "unzip {input} '{wildcards.resolution}/demand.csv' -d resources"
