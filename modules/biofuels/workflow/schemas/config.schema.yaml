@@ -1,0 +1,18 @@
+$schema: https://json-schema.org/draft/2020-12/schema
+description: "Configuration schema for 'biofuels'."
+type: object
+additionalProperties: false
+properties:
+  resources:
+    type: object
+    additionalProperties: false
+    description: Resources are paths to files that the module expects users to provide.
+    properties:
+      download:
+        type: boolean
+        description: If True, the module will attempt to download resource files instead of relying on user inputs.
+      shapefile:
+        type: string
+        description: |
+          A file with the shapes you wish to process.
+          Must have the following columns: 'country_id', 'subregion_id' and 'subregion_spec'.
