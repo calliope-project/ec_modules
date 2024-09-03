@@ -11,14 +11,14 @@ Here is a brief IO diagram of the module's operation.
 title: hydropower
 ---
 flowchart LR
-    D1[("`**Databases**
+    D1[("`**Automatic**
         HydroBASINS
         JRC-hydropower
         IRENA energy generation
         ERA5
         Geth et al 2015
     `")] --> |Download| M
-    C1[/"`**User input**
+    C1[/"`**User**
         {shapes}.geojson
     `"/] --> M((hydropower))
     M --> O1("`**Timeseries**
@@ -31,37 +31,18 @@ flowchart LR
         `")
 ```
 
-### User input
+### User
 
-- **resources/user_input/{shapes}.geojson**: a file with the desired regional aggregation. CRS must be EPSG:4326.
-
-    | id  | geometry   |
-    |-----|--------------|
-    | AUT | MULTIPOLYGON |
-    | ... | ...          |
+- **resources/user/{shapes}.geojson**: a file with the desired regional aggregation. CRS must be EPSG:4326.
 
 ### Output
 
 - **results/shapes/{shapes}/supply_capacity.csv**: generation capacity per region.
 
-    | id  | installed_capacity_hror_MW | storage_capacity_hror_MWh | installed_capacity_hdam_MW | storage_capacity_hdam_MWh |
-    |-----|----------------------------|---------------------------|----------------------------|---------------------------|
-    | AUT | 4413.616868258108          | 0.0                       | 5239.92                    | 3183615.7366070515        |
-    | ... | ...          | ...                       | ...                    | ...        |
-
 - **results/shapes/{shapes}/storage_capacity.csv**: storage capacity per region.
-
-    | id | installed_capacity_hphs_MW | storage_capacity_hphs_MWh |
-    |-----|--------|----|
-    | AUT | 3589.3 | 701017.4418604651 |
-    | ... | ... | ... |
 
 - **results/shapes/{shapes}/{year}/capacity_factors_reservoir.csv**: normalised capacity factor timeseries for reservoirs.
 - **results/shapes/{shapes}/{year}/capacity_factors_ror.csv**: normalised capacity factor timeseries for run-of-river.
-
-    | time                | AUT                 | BEL                 |
-    |---------------------|---------------------|---------------------|
-    | 2016-01-01 00:00:00 | 0.15846144406741275 | 0.17258542702063673 |
 
 ## DAG
 

@@ -3,7 +3,7 @@ description: "Configuration schema for 'hydropower'."
 type: object
 additionalProperties: false
 properties:
-  use_default_user_input:
+  use_default_user_resources:
     type: boolean
     description: "If enabled, user inputs needed for a national-level model are downloaded."
   JRC_hydropower_plants_version:

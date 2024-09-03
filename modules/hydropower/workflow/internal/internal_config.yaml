@@ -1,6 +1,6 @@
 # This file contains configuration that users should not modify.
 resources:
-  default_user_input:
+  default_user_resources:
     shapes: https://www.dropbox.com/scl/fi/sjjisuqnzck2mhxs9jca7/units-national.geojson?rlkey=rv0q1exsytxws3gfvankbt9p7&dl=0
   HydroBASINS: https://data.hydrosheds.org/file/hydrobasins/standard/hybas_{continent}_lev01-12_v1c.zip
   IRENA_hydro_generation: https://zenodo.org/record/5797549/files/hydro-generation.csv?download=1

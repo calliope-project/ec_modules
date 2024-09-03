@@ -18,7 +18,7 @@ with open(workflow.source_path("internal/internal_config.yaml"), "r") as f:
 include: "rules/downloads.smk"
 
 # Only activates if users request the default example in their configuration.
-if config["use_default_user_input"]:
+if config["use_default_user_resources"]:
     rule all:
         message: "Generate default user input example output for '{{module_name}}'."
         input:

@@ -19,7 +19,7 @@ include: "rules/downloads.smk"
 include: "rules/basins.smk"
 include: "rules/hydro.smk"
 
-if config["use_default_user_input"]:
+if config["use_default_user_resources"]:
     rule all:
         message: "Generate default output for 'hydropower'."
         input:

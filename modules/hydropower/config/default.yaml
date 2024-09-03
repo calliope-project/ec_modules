@@ -1,4 +1,4 @@
-use_default_user_input: True
+use_default_user_resources: True
 JRC_hydropower_plants_version: "v10"
 HydroBASINS_level: "07"
 year_shift: 1

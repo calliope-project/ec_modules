@@ -19,7 +19,7 @@ rule preprocess_powerplants:
 rule capacities_per_shape:
     message: "Determine hydro capacities on {wildcards.resolution} resolution."
     input:
-        locations = "resources/user_input/{resolution}.geojson",
+        locations = "resources/user/{resolution}.geojson",
         plants = "results/jrc_hydropower_plant_database_preprocessed.csv"
     output:
         supply = "results/shapes/{resolution}/supply_capacity.csv",
@@ -31,7 +31,7 @@ rule capacities_per_shape:
 rule prepare_ERA5_runoff_cutout:
     message: "Prepare atlite cutout with runoff data for {params.time}."
     input:
-        shapefile = "resources/user_input/{resolution}.geojson"
+        shapefile = "resources/user/{resolution}.geojson"
     output:
         cutout = "results/shapes/{resolution}/{year}/cutout.nc",
         plot_cutout = "results/plots/{resolution}/{year}/plot_cutout.png"
@@ -61,7 +61,7 @@ rule inflow_mwh:
     message: "Determine energy inflow time series for hydropower for {wildcards.year}."
     input:
         stations = "results/shapes/{resolution}/{year}/hydropower_inflow_m3.nc",
-        generation = "resources/IRENA_hydro_generation.csv"
+        generation = "resources/automatic/IRENA_hydro_generation.csv"
     params:
         max_capacity_factor = internal["capacity_factors"]["max"]
     output: "results/shapes/{resolution}/{year}/hydropower_inflow_energy.nc"
@@ -77,7 +77,7 @@ rule capacity_factors:
     input:
         capacities = "results/shapes/{resolution}/supply_capacity.csv",
         stations = "results/shapes/{resolution}/{year}/hydropower_inflow_energy.nc",
-        locations = "resources/user_input/{resolution}.geojson"
+        locations = "resources/user/{resolution}.geojson"
     params:
         threshold = internal["capacity_factors"]["min"]
     output:

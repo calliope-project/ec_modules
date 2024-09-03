@@ -149,32 +149,32 @@ This could be databases, mappings, static parametrisation, etc.
 
         `modules/your_module/config/default.yaml`.
 
-    - If the module requires user inputs, add a `use_default_user_input` key:
+    - If the module requires user-provided files, add a `use_default_user_resources` key:
         - If `True`, the module should download "default" files to emulate user inputs and request them via the `all` rule.
-        This serves both as an example of how to use the module, and makes testing it easier.
+        This serves both as an example of how to use the module, and makes testing easier.
         - If `False`, these download rules and the `all` rule are deactivated.
         This avoids name conflicts when someone uses your module.
 
-        ??? example "Example: `use_default_user_input` in a hydropower module"
+        ??? example "Example: `use_default_user_resources` in a hydropower module"
 
             Our example hydropower module expects two files: a file with polygon shapes, and a dataset with powerplant data.
             An example of each is downloaded if requested.
 
             ```python
-            if config["use_default_user_input"]:
+            if config["use_default_user_resources"]:
                 rule user_input_shapes:
                     message: "Download national resolution shapes of EU27 countries."
                     params:
-                        url = internal["resources"]["default_user_input"]["shapes"],
-                    output: "resources/user_input/national_shapes.geojson"
+                        url = internal["resources"]["default_user_resources"]["shapes"],
+                    output: "resources/user/default_shapes.geojson"
                     conda: "../envs/shell.yaml"
                     shell: "curl -sSLo {output} '{params.url}'"
 
                 rule user_input_powerplants:
                     message: "Download hydropower plant statistics for EU27 countries."
                     params:
-                        url = internal["resources"]["default_user_input"]["powerplants"],
-                    output: "resources/user_input/national_powerplants.csv"
+                        url = internal["resources"]["default_user_resources"]["powerplants"],
+                    output: "resources/user/default_powerplants.csv"
                     conda: "../envs/shell.yaml"
                     shell: "curl -sSLo {output} '{params.url}'"
             ```
@@ -183,21 +183,20 @@ This could be databases, mappings, static parametrisation, etc.
             Notice that the requested output names match those of the default user inputs, meaning relevant `wildcards` will be triggered.
 
             ```python
-            if config["use_default_user_input"]:
+            if config["use_default_user_resources"]:
                 rule all:
                     message: "Generate default output for 'hydropower'."
                     input:
-                        expand("results/shapes/national/{year}/capacity_factors_RoR.csv", year=config["scope"]["years"]),
-                        expand("results/shapes/national/{year}/capacity_factors_reservoir.csv", year=config["scope"]["years"])
+                        expand("results/shapes/default/{year}/capacity_factors_ror.csv", year=config["scope"]["years"]),
+                        expand("results/shapes/default/{year}/capacity_factors_reservoir.csv", year=config["scope"]["years"])
             ```
 
 
             To deactivate the default, all users have to do is set the default to `False` in their configuration, preventing conflicts between the default files and their setup.
 
             ```yaml
-            use_default_user_input: False
-            scope:
-                years: [2020]
+            use_default_user_resources: False
+
             ```
 
 3. Both **user configuration** and **user input files** should be validated.
