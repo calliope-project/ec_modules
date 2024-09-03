@@ -2,6 +2,7 @@
 
 from enum import Enum
 
+import geopandas as gpd
 import pandas as pd
 
 PJ_TO_MWH = 1 / 3600 * 1e9
@@ -87,7 +88,7 @@ def biofuel_potential(
         .div(GJ_TO_MWH)
         .xs((cost_year, scenario), level=("year", "scenario"))
     )
-    units = pd.read_csv(path_to_units).set_index("id")
+    units = gpd.read_file(path_to_units).set_index("id").drop(columns="geometry")
     if (len(units.index) == 1) and (
         units.index[0] == "EUR"
     ):  # special case for continental level
