@@ -16,15 +16,33 @@ flowchart LR
         ...
     `")] --> |Download| M
     C1[/"`**User input**
-        shapefile.geojson
+        units.geojson
         ...
     `"/] --> |Resources| M((capacity_factors_wind_pv))
     M --> O1("
-        output1.csv
+        capacityfactors-wind-offshore.csv
         ")
     M --> O2("
-        output2.nc
+        capacityfactors-wind-onshore.csv
         ")
+    M --> O3("
+        capacityfactors-wind-offshore.csv
+    ")
+    M --> O4("
+        capacityfactors-open-field-pv.csv
+    ")
+    M --> O5("
+        capacityfactors-rooftop-pv.csv
+    ")
+    M --> O6("
+        capacityfactors-rooftop-pv-n.csv
+    ")
+    M --> O7("
+        capacityfactors-rooftop-pv-e-w.csv
+    ")
+    M --> O8("
+        capacityfactors-rooftop-pv-s-flat.csv
+    ")
 ```
 
 ## DAG
