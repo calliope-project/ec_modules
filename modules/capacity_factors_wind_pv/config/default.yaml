@@ -11,10 +11,4 @@ scope:
       final-year: 2016
 capacity-factors:
     min: 0.001
-    max: 10 # 0.001 -> 10 leads to a numerical range of 1e5 (hourly resolution)
-    average:
-        pv: 0.139 # median of average 2016 open-field factors for ~2700 points in Europe
-        onshore: 0.3021 # median of average 2016 factors for ~2700 points in Europe
-        offshore: 0.4223 # median of average 2016 factors for ~2800 points in Europe
-        ror: 0.536781 # median of average 2016 factors for 1889 hydro stations in Europe
     trim-ninja-timeseries: True
