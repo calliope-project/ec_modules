@@ -34,7 +34,7 @@ ALL_CF_TECHNOLOGIES = [
     "rooftop-pv-s-flat",
 ]
 
-if config["use_default_resources"]:
+if config["use_default_customisable_resources"]:
     rule all:
         message:
             "Generate all outputs for 'capacity_factors_wind_pv'."
