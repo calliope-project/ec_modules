@@ -12,18 +12,19 @@ title: demand_electricity
 ---
 flowchart LR
     D1[("`**Databases**
-        database1
+        raw-potentials/demand.csv
+        raw-load-data.csv
         ...
     `")] --> |Download| M
     C1[/"`**User input**
-        shapefile.geojson
+        units.geojson
         ...
     `"/] --> |Resources| M((demand_electricity))
     M --> O1("
-        output1.csv
+        demand-electricity-ehighways.csv
         ")
     M --> O2("
-        output2.nc
+        electricity-demand-national.csv
         ")
 ```
 
