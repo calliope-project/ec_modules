@@ -1,18 +1,18 @@
 # We recommend adding rules that download necessary files here.
 
-
-rule download_units:
-    message:
-        "Download spatial zones."
-    params:
-        url=config["resources"]["spatial_units"],
-    output:
-        "resources/units_{resolution}.geojson",
-    conda:
-        "../envs/shell.yaml"
-    localrule: True
-    shell:
-        "curl -sSLo {output} '{params.url}'"
+if config["use_default_resources"]:
+    rule download_units:
+        message:
+            "Download spatial zones."
+        params:
+            url=internal["default_resources"]["spatial_units"],
+        output:
+            "resources/user_input/units_{resolution}.geojson",
+        conda:
+            "../envs/shell.yaml"
+        localrule: True
+        shell:
+            "curl -sSLo {output} '{params.url}'"
 
 
 rule download_eez:

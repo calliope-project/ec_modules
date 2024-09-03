@@ -1,7 +1,6 @@
 # Module input files by users go here.
-resources:
-  download: True
-  spatial_units: https://www.dropbox.com/scl/fi/sjjisuqnzck2mhxs9jca7/units-{resolution}.geojson?rlkey=rv0q1exsytxws3gfvankbt9p7&e=1&dl=0
+use_default_resources: True
+
 
 # Any other user configuration goes below
 resolution: "ehighways"

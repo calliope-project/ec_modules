@@ -34,17 +34,17 @@ ALL_CF_TECHNOLOGIES = [
     "rooftop-pv-s-flat",
 ]
 
-
-rule all:
-    message:
-        "Generate all outputs for 'capacity_factors_wind_pv'."
-    input:
-        expand(
-            "results/{resolution}/capacityfactors-wind-offshore.csv",
-            resolution=config["resolution"],
-        ),
-        expand(
-            "results/{resolution}/capacityfactors-{technology}.csv",
-            resolution=config["resolution"],
-            technology=ALL_CF_TECHNOLOGIES,
-        ),
+if config["use_default_resources"]:
+    rule all:
+        message:
+            "Generate all outputs for 'capacity_factors_wind_pv'."
+        input:
+            expand(
+                "results/{resolution}/capacityfactors-wind-offshore.csv",
+                resolution=config["resolution"],
+            ),
+            expand(
+                "results/{resolution}/capacityfactors-{technology}.csv",
+                resolution=config["resolution"],
+                technology=ALL_CF_TECHNOLOGIES,
+            ),
