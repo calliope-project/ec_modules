@@ -22,7 +22,7 @@ rule preprocess_biofuel_potentials_and_cost:
 rule biofuels:
     message: "Determine biofuels potential on {wildcards.resolution} resolution for scenario {wildcards.scenario}."
     input:
-        units = "resources/customisable/units.geojson",
+        units = "resources/customisable/spatial_units.geojson",
         land_cover = rules.unzip_potentials.output.land_cover,
         population = rules.unzip_potentials.output.population,
         national_potentials = rules.preprocess_biofuel_potentials_and_cost.output.potentials,

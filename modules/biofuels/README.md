@@ -11,21 +11,34 @@ Here is a brief IO diagram of the module's operation.
 title: biofuels
 ---
 flowchart LR
-    D1[("`**Databases**
+    D1[("`**automatic**
         database1
         ...
     `")] --> |Download| M
-    C1[/"`**User input**
-        shapefile.geojson
+    C1[/"`**user**
+        spatial_units.geojson
         ...
-    `"/] --> |Resources| M((biofuels))
+    `"/] --> M((biofuels))
     M --> O1("
-        output1.csv
+        results/{resolution}/{scenario}/potential-mwh-per-year.csv
         ")
     M --> O2("
-        output2.nc
+        results/{resolution}/{scenario}/costs-eur-per-mwh.csv
         ")
 ```
+
+User
+----
+- resources/user/spatial_units.geojson
+
+Output
+------
+- results/ehighways/high/potential-mwh-per-year.csv
+- results/ehighways/high/costs-eur-per-mwh.csv
+- results/ehighways/low/potential-mwh-per-year.csv
+- results/ehighways/low/costs-eur-per-mwh.csv
+- results/ehighways/medium/potential-mwh-per-year.csv
+- results/ehighways/medium/costs-eur-per-mwh.csv
 
 ## DAG
 
