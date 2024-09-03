@@ -3,61 +3,14 @@ description: "Configuration schema for 'demand_electricity'."
 type: object
 additionalProperties: false
 properties:
-  data_sources:
-    type: object
-    additionalProperties: false
-    description: Data sources for the module.
-    properties:
-      spatial_zones:
-        type: string
-        description: URL of the spatial zones file.
-  scaling_factors:
-    type: object
-    additionalProperties: false
-    description: Scale quantities
-    properties:
-      power:
-        type: number
-      area:
-        type: number
-      monetary:
-        type: number
-      transport:
-        type: number
-      co2:
-        type: number
+  use_default_customisable_resources:
+    type: boolean
+    description: "If True, the module will attempt to download default resource files instead of relying on custom user inputs."
   scope:
     type: object
     additionalProperties: false
     description: Scope defines the spatial and temporal boundaries of the analysis.
     properties:
-      spatial:
-        type: object
-        additionalProperties: false
-        description: Spatial scope.
-        properties:
-          countries:
-            type: array
-            items:
-              type: string
-            description: List of countries to include in the analysis.
-          bounds:
-            type: object
-            additionalProperties: false
-            description: Bounds of the analysis.
-            properties:
-              x_min:
-                type: number
-                description: Minimum x-coordinate.
-              x_max:
-                type: number
-                description: Maximum x-coordinate.
-              y_min:
-                type: number
-                description: Minimum y-coordinate.
-              y_max:
-                type: number
-                description: Maximum y-coordinate.
       temporal:
         type: object
         additionalProperties: false
@@ -69,43 +22,3 @@ properties:
           final-year:
             type: integer
             description: Final year of the analysis.
-  quality-control:
-    type: object
-    additionalProperties: false
-    description: Quality control settings.
-    properties:
-      load:
-        type: object
-        additionalProperties: false
-        properties:
-          outlier-data-thresholds:
-            type: object
-            additionalProperties: false
-            properties:
-              relative-to-mean-min:
-                type: number
-              relative-to-mean-max:
-                type: number
-          max-interpolate-timesteps:
-            type: integer
-          acceptable-year-diff-for-gap-filling:
-            type: integer
-          fill-29th-feb-from-28th:
-            type: boolean
-          data-source-priority-order:
-            type: array
-            items:
-              type: string
-  resources:
-    type: object
-    additionalProperties: false
-    description: Resources are paths to files that the module expects users to provide.
-    properties:
-      download:
-        type: boolean
-        description: If True, the module will attempt to download resource files instead of relying on user inputs.
-      shapefile:
-        type: string
-        description: |
-          A file with the shapes you wish to process.
-          Must have the following columns: 'country_id', 'subregion_id' and 'subregion_spec'.
