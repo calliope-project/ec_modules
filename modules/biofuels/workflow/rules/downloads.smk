@@ -1,5 +1,5 @@
 # We recommend adding rules that download necessary files here.
-if config["use_default_customisable_resources"]:
+if config["use_default_user_resources"]:
     rule download_units:
         message: "Download spatial units."
         params:
