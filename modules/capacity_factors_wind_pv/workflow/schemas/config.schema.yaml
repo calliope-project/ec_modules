@@ -3,16 +3,19 @@ description: "Configuration schema for 'capacity_factors_wind_pv'."
 type: object
 additionalProperties: false
 properties:
-  resources:
-    type: object
-    additionalProperties: false
-    description: Resources are paths to files that the module expects users to provide.
-    properties:
-      download:
-        type: boolean
-        description: If True, the module will attempt to download resource files instead of relying on user inputs.
-      shapefile:
-        type: string
-        description: |
-          A file with the shapes you wish to process.
-          Must have the following columns: 'country_id', 'subregion_id' and 'subregion_spec'.
+  use_default_resources:
+    type: boolean
+    description: If True, the module will attempt to download default resource files instead of relying on custom user inputs.
+  resolution:
+    type: string
+    description: The resolution of the data to be used. Options are 'ehighways' or 'ninja'.
+  scope:
+    temporal:
+      type: object
+      properties:
+        first-year:
+          type: integer
+          description: The first year of the simulation.
+        final-year:
+          type: integer
+          description: The final year of the simulation.
