@@ -11,7 +11,7 @@ rule electricity_load_national:
         countries = config["scope"]["spatial"]["countries"]
     output: "results/electricity-demand-national.csv"
     conda: "../envs/default.yaml"
-    script: "../scripts/demand/national_load.py"
+    script: "../scripts/national_load.py"
 
 
 rule electricity_load:
@@ -24,4 +24,4 @@ rule electricity_load:
         scaling_factor = config["scaling_factors"]["power"]
     output: "results/demand-electricity-{resolution}.csv"
     conda: "../envs/geo.yaml"
-    script: "../scripts/demand/load.py"
+    script: "../scripts/load.py"
