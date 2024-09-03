@@ -26,7 +26,7 @@ rule capacity_factors_onshore_wind_and_solar:
     resources:
         runtime=30,
     script:
-        "../scripts/wind-and-solar/capacityfactors.py"
+        "../scripts/capacityfactors.py"
 
 
 rule shared_coast:
@@ -45,7 +45,7 @@ rule shared_coast:
     conda:
         "../envs/geo.yaml"
     script:
-        "../scripts/wind-and-solar/shared_coast.py"
+        "../scripts/shared_coast.py"
 
 
 rule capacity_factors_offshore:
@@ -71,4 +71,4 @@ rule capacity_factors_offshore:
     resources:
         runtime=30,
     script:
-        "../scripts/wind-and-solar/capacityfactors_offshore.py"
+        "../scripts/capacityfactors_offshore.py"
