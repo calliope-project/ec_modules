@@ -36,7 +36,7 @@ rule shared_coast:
         units=rules.download_units.output[0],
         eez=rules.eez.output[0],
     params:
-        polygon_area_share_threshold=config["quality-control"][
+        polygon_area_share_threshold=internal["quality-control"][
             "shared-coast-polygon-area-share-threshold"
         ],
     output:
@@ -58,7 +58,7 @@ rule capacity_factors_offshore:
         timeseries=ancient("resources/capacityfactors/wind-offshore-timeseries.nc"),
     params:
         cf_threshold=config["capacity-factors"]["min"],
-        gridcell_overlap_threshold=config["quality-control"][
+        gridcell_overlap_threshold=internal["quality-control"][
             "capacity-factor-gridcell-overlap-threshold"
         ],
         first_year=config["scope"]["temporal"]["first-year"],

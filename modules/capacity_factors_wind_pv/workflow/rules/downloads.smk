@@ -21,7 +21,7 @@ rule download_eez:
     output:
         protected("resources/eez.gpkg.zip"),
     params:
-        url=config["data-sources"]["eez"],
+        url=internal["resources"]["eez"],
     conda:
         "../envs/shell.yaml"
     localrule: True
@@ -33,7 +33,7 @@ rule download_capacity_factors_wind_and_solar:
     message:
         "Download resources/capacityfactors/{wildcards.filename}."
     params:
-        url=lambda wildcards: config["data-sources"]["capacity-factors"].format(
+        url=lambda wildcards: internal["resources"]["capacity-factors"].format(
             filename=wildcards.filename
         ),
     output:
