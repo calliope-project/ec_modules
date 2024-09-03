@@ -7,10 +7,13 @@ Data is loaded and (optionally) gap filled as follows:
 - select only data for year of interest
 - interpolate empty data when the data gap is small
 - fill larger data gaps with data from nearby years
-- If 29th of February is empty and couldn't previously be filled, use data from the 28th of February
-- select most complete dataset for each country from list of data sources, based on a priority order
+- If 29th of February is empty and couldn't previously be filled, use data from
+  the 28th of February
+- select most complete dataset for each country from list of data sources, based
+  on a priority order
 
-This process will fail if the 'most complete dataset' for any country has any remaining gaps.
+This process will fail if the 'most complete dataset' for any country has any
+remaining gaps.
 
 """
 
@@ -38,6 +41,10 @@ def national_load(
 def clean_load_data(
     path_to_raw_load, first_year, final_year, data_quality_config, countries
 ):
+    """Cleans load data.
+
+    TODO: Extend docstring.
+    """
     data_sources = data_quality_config["data-source-priority-order"]
     raw_load = read_load_profiles(path_to_raw_load, data_sources)
     filtered_load = filter_countries(raw_load, countries)
@@ -76,9 +83,10 @@ def read_load_profiles(path_to_raw_load, entsoe_priority):
 
 
 def filter_countries(load, countries):
-    """Filters data to configured workflow spatial scope and renames country codes to ISO3."""
+    """Filters data to spatial scope and renames country codes to ISO3."""
     # UKM == United Kingdom of Great Britain and Northern Ireland.
-    # Other subsets of the UK exist in the data, with UKM being the only one to cover the whole country.
+    # Other subsets of the UK exist in the data, with UKM being
+    # the only one to cover the whole country.
     load.rename(columns={"GB_UKM": "GB"}, inplace=True)
     country_codes = {
         pycountry.countries.lookup(country).alpha_2: pycountry.countries.lookup(
@@ -97,6 +105,7 @@ def filter_countries(load, countries):
 
 
 def filter_outliers(load, data_quality_config):
+    """Filters outliers."""
     normed_load = load / load.mean()
     cleaned_load = load.where(
         (
@@ -112,7 +121,10 @@ def filter_outliers(load, data_quality_config):
 
 
 def fill_gaps_per_source(all_load, model_year, data_quality_config, source):
-    """For each valid data source, fills in all NaNs by interpolation or with data from other years"""
+    """For each valid data source, fills in all NaNs.
+
+    Fills gaps using interpolation or data from other years.
+    """
     source_specific_load = all_load.xs(source, level="attribute")
     source_specific_load = _interpolate_gaps(
         source_specific_load, data_quality_config["max-interpolate-timesteps"]
@@ -158,7 +170,8 @@ def _fill_gaps_from_other_years(
 
         model_year_load.loc[:, country] = updated_country_series
         print(
-            f"Using data source `{source}`, {country} has {N_missing_timesteps} missing load value(s) in {model_year}. "
+            f"Using data source `{source}`, {country} has {N_missing_timesteps} "
+            f"missing load value(s) in {model_year}. "
             f"A working dataset was constructed from year(s) {', '.join(fill_years)} "
             f"with {updated_country_series.isnull().sum()} remaining empty data points."
         )
@@ -250,7 +263,9 @@ def _countries_with_missing_data_in_model_year(data):
 
 def get_source_choice_per_country(raw_load, gap_filled_load, entsoe_priority):
     """OPSD collects load data from different data sources.
-    The hourly data can vary between these countries, with some proving more reliable than others.
+
+    The hourly data can vary between these countries, with some proving more reliable
+    than others.
     See https://nbviewer.jupyter.org/github/Open-Power-System-Data/datapackage_timeseries/blob/2020-10-06/main.ipynb
     """
     source_choice = (
@@ -273,17 +288,21 @@ def get_source_choice_per_country(raw_load, gap_filled_load, entsoe_priority):
 
     if new_load.isnull().any().any():
         bad_index_values = new_load.isnull().stack()
-        error_msg = "Gap filling thresholds do not allow for a complete load dataset to be produced. "
+        error_msg = "Gap filling thresholds do not allow for " \
+        "a complete load dataset to be produced."
         if bad_index_values[bad_index_values].size < 100:
             error_msg = (
                 error_msg
-                + f"Remaining empty data: {bad_index_values[bad_index_values].index.to_list()}"
+                + f"Remaining empty data: {
+                    bad_index_values[bad_index_values].index.to_list()
+                }"
             )
         raise AssertionError(error_msg)
 
     else:
         print(
-            "Gap filling methods lead to the following relative increase in output load compared to input data\n"
+            "Gap filling methods lead to the following relative increase in output load"
+            "compared to input data\n"
             f"{new_load.sum() / raw_load_for_comparison.sum()}"
         )
     return new_load

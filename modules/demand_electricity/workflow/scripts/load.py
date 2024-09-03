@@ -64,6 +64,7 @@ def load(
 
 
 def split_national_load(national_load, units):
+    """Split national load into industrial and residential load."""
     national_industrial_demand = (
         units.groupby("country_code").industrial_demand.sum() * 1e6
     )  # from TWh to MWh
@@ -81,6 +82,7 @@ def split_national_load(national_load, units):
 def unit_time_series(
     unit, unit_name, national_industrial_load, national_residential_load, scaling_factor
 ):
+    """Generate time series for a single unit."""
     country_code = unit.country_code
     multiplier = unit.fraction_of_national_industrial_load
     unit_industrial_ts = (
