@@ -294,8 +294,7 @@ def get_source_choice_per_country(raw_load, gap_filled_load, entsoe_priority):
         )
         if bad_index_values[bad_index_values].size < 100:
             error_msg = (
-                error_msg
-                + "Remaining empty data: "  \
+                error_msg + "Remaining empty data: "
                 f"{bad_index_values[bad_index_values].index.to_list()}"
             )
         raise AssertionError(error_msg)
