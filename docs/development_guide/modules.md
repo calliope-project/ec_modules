@@ -18,10 +18,11 @@ Additionally, we extend it with a few quality of life improvements.
     ├── docs/
     │   └── extra_docs.md
     ├── resources/
-    │   ├── user_input/
-    │   │   └── user_shapes.geojson
-    │   ├── download1.nc
-    │   └── download2.csv
+    │   ├── automatic/
+    │   │   ├── download1.nc
+    │   │   └── download2.csv
+    │   └── user/
+    │       └── user_shapes.geojson
     ├── results/
     │   ├── plots/
     │   │   └── graph.png
@@ -54,23 +55,23 @@ Additionally, we extend it with a few quality of life improvements.
 
 Please ensure that your module has the following:
 
-- An `AUTHORS` file. This lists all the people who have contributed to a module.
-- A `LICENSE` file. This should refer to the `AUTHORS` file above. We recommend to use the [MIT license](https://opensource.org/license/mit).
-- A `README.md` file. Here you describe the module's functionality (see [documentation](#documentation)).
+- An `AUTHORS` file. This lists all the people who have contributed to the module.
+- A `LICENSE` file. This should refer to the `AUTHORS` file above. To ensure license compatibility, we only permit permissive licenses like [MIT](https://opensource.org/license/mit).
+- A `README.md` file. Here you describe the module's functionality using our standard template (see [documentation](#documentation)).
 - A `config/default.yaml` file. This contains the module's default configuration.
 It serves only as an example: users will override it using `snakemake`'s [`module` functionality](https://snakemake.readthedocs.io/en/stable/snakefiles/modularization.html#modules).
-- A `resources/` folder.  All **downloaded data** and **user inputted data** used by your workflow should be deposited here.
-User inputted data should always be placed inside `resources/user_inputs/`.
+- A `resources/` folder.  All **automatically downloaded data** and **user inputted data** used by your workflow should be deposited in `automatic/` and `user/`, respectively.
 
-    ??? tip "The importance of `resources/user_inputs/`"
-        This folder is a convention across all modules to avoid ambiguity in where users and module developers should expect user modifiable files to be.
+    ??? tip "The importance of `resources/user/` and `resources/automatic`"
+        This convention allows us to avoid ambiguity in where  user modifiable files will be.
 
         ```tree
         resources/
-        ├── user_input/
-        │   └── user_shapes.geojson
-        ├── download1.nc
-        └── download2.csv
+        ├── automatic/
+        │   ├── download1.nc
+        │   └── download2.csv
+        └── user/
+            └── user_shapes.geojson
         ```
 
 - A `results/` folder. All **rule outputs** of your workflow should be deposited here.
@@ -165,7 +166,7 @@ This could be databases, mappings, static parametrisation, etc.
                 rule user_input_shapes:
                     message: "Download national resolution shapes of EU27 countries."
                     params:
-                        url = internal["resources"]["default_user_resources"]["shapes"],
+                        url = internal["resources"]["default_user_shapes"],
                     output: "resources/user/default_shapes.geojson"
                     conda: "../envs/shell.yaml"
                     shell: "curl -sSLo {output} '{params.url}'"
@@ -173,7 +174,7 @@ This could be databases, mappings, static parametrisation, etc.
                 rule user_input_powerplants:
                     message: "Download hydropower plant statistics for EU27 countries."
                     params:
-                        url = internal["resources"]["default_user_resources"]["powerplants"],
+                        url = internal["resources"]["default_user_powerplants"],
                     output: "resources/user/default_powerplants.csv"
                     conda: "../envs/shell.yaml"
                     shell: "curl -sSLo {output} '{params.url}'"
@@ -187,8 +188,14 @@ This could be databases, mappings, static parametrisation, etc.
                 rule all:
                     message: "Generate default output for 'hydropower'."
                     input:
-                        expand("results/shapes/default/{year}/capacity_factors_ror.csv", year=config["scope"]["years"]),
-                        expand("results/shapes/default/{year}/capacity_factors_reservoir.csv", year=config["scope"]["years"])
+                        expand(
+                            "results/shapes/{resolution}/{year}/capacity_factors_ror.csv",
+                            resolution=['default'], year=[2018]
+                        ),
+                        expand(
+                            "results/shapes/{resolution}/{year}/capacity_factors_reservoir.csv",
+                            resolution=['default'], year=[2018]
+                        )
             ```
 
 
@@ -199,7 +206,7 @@ This could be databases, mappings, static parametrisation, etc.
 
             ```
 
-3. Both **user configuration** and **user input files** should be validated.
+3. User inputs should be validated.
     - **user configuration** should be validated using the configuration schema.
     - **user input files** should be checked for relevant data within your rules (e.g., comparing country ISO codes to those supported by the module, checking column names, compatible units, etc).
 
@@ -208,7 +215,7 @@ This could be databases, mappings, static parametrisation, etc.
 The `README.md` file should be a pragmatic quick example of what your module needs to function.
 It should contain at least the following things:
 
-- [X] A mermaid diagram briefly showing its downloaded resources, user inputs, and outputs.
+- [X] A mermaid diagram briefly showing its automatically downloaded resources, user inputs, and outputs.
 - [X] A DAG showing the rule order.
 - [X] A citation text.
 - [X] A references section (if your workflow is based on the work of others).
@@ -229,7 +236,7 @@ If additional context is needed, please place it in the `docs/` folder.
     title: hydropower
     ---
     flowchart LR
-        D1[("`**Databases**
+        D1[("`**Automatic**
             HydroBASINS
             JRC-hydropower
             IRENA energy generation
@@ -237,7 +244,7 @@ If additional context is needed, please place it in the `docs/` folder.
             Geth et al 2015
         `")] --> |Download| M
 
-        C1[/"`**User input**
+        C1[/"`**User**
             shapes.geojson
         `"/] --> M((hydropower))
 

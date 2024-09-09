@@ -4,7 +4,7 @@ if config["use_default_user_resources"]:
     rule user_input_shapes:
         message: "Download default national resolution shapes."
         params:
-            url = internal["resources"]["default_user_resources"]["shapes"],
+            url = internal["resources"]["default_user_shapes"],
         output: "resources/user/national.geojson"
         conda: "../envs/shell.yaml"
         shell: "curl -sSLo {output} '{params.url}'"

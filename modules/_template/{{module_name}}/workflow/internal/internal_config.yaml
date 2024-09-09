@@ -1,4 +1,3 @@
 # This file contains configuration that users cannot modify.
 resources:
-  default_user_resources:
-    # Add default example URLs here (if your module requires user input files)
+  # Links to automatic and default user resources
