@@ -11,12 +11,14 @@ configfile: "config/default.yaml"
 validate(config, workflow.source_path("schemas/config.schema.yaml"))
 
 # Load internal settings separately so users cannot modify them.
-with open(workflow.source_path("resources/internal_config.yaml"), "r") as f:
+with open(workflow.source_path("internal/internal_config.yaml"), "r") as f:
     internal = yaml.safe_load(f)
 
 # Add all your includes here.
 include: "rules/downloads.smk"
 
-rule all:
-    message: "Generate all outputs for '{{module_name}}'."
-    input:
+# Only activates if users request the default example in their configuration.
+if config["use_default_user_resources"]:
+    rule all:
+        message: "Generate default user input example output for '{{module_name}}'."
+        input:

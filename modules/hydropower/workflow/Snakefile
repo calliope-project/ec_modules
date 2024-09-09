@@ -1,44 +1,27 @@
-import glob
-from pathlib import Path
-
 import yaml
 
-from snakemake.utils import min_version
+from snakemake.utils import min_version, validate
 
+# Limit the snakemake version to a modern one.
 min_version("8.10")
 
-configfile: "./config/default.yaml"
-with open(workflow.source_path("resources/internal.yaml"), "r") as f:
+# Load the default configuration. This will be overridden by users.
+configfile: "config/default.yaml"
+# Validate the configuration using the schema file.
+validate(config, workflow.source_path("schemas/config.schema.yaml"))
+
+# Load internal settings separately so users cannot modify them.
+with open(workflow.source_path("internal/internal_config.yaml"), "r") as f:
     internal = yaml.safe_load(f)
 
-wildcard_constraints:
-    resolution = "[a-zA-Z]+"
+# Add all your includes here.
+include: "rules/downloads.smk"
+include: "rules/basins.smk"
+include: "rules/hydro.smk"
 
-rule download_shapes:
-    message: "Download spatial zones for {wildcards.resolution}."
-    params:
-        url = config["resolution_file"],
-    output:
-        shapefile = "results/{resolution}/shapes.geojson"
-    conda: "./envs/shell.yaml"
-    shell: "curl -sSLo {output} '{params.url}'"
-
-include: "./rules/hydro.smk"
-include: "./rules/basins.smk"
-
-rule all:
-    localrule: True
-    default_target: True
-    input:
-        expand("results/{resolution}/{first_year}-{final_year}/capacity-factors-run-of-river.csv",
-            zip,
-            resolution=config["resolution_name"],
-            first_year=config["first_year"],
-            final_year=config["final_year"]),
-        expand("results/{resolution}/{first_year}-{final_year}/capacity-factors-reservoir.csv",
-            zip,
-            resolution=config["resolution_name"],
-            first_year=config["first_year"],
-            final_year=config["final_year"]),
-        expand("results/{resolution}/supply-hydro.csv", resolution=config["resolution_name"]),
-        expand("results/{resolution}/storage-hydro.csv", resolution=config["resolution_name"]),
+if config["use_default_user_resources"]:
+    rule all:
+        message: "Generate default output for 'hydropower'."
+        input:
+            expand("results/shapes/{resolution}/{year}/capacity_factors_ror.csv", resolution=["national"], year=[2016]),
+            expand("results/shapes/{resolution}/{year}/capacity_factors_reservoir.csv", resolution=["national"], year=[2016])

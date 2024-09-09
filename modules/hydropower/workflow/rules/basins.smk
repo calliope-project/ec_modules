@@ -1,46 +1,26 @@
-"""Download and correct files in the HydroSHEDS-v1 dataset.
+"""Download and preprocess HydroBASINS v1 data.
 
 https://www.hydrosheds.org/products/hydrobasins
 Reference in resources/references/hydroBASINS.bib
 """
-# TODO: preset to download global combination, or run to combine all regions.
-# - This would  avoid arbitrary "chopped regions", like iceland.
-# - Rivers do not care about borders.
-# - Would ensure that no regions are missed in case of mismatches between HydroSHEDS and the provided shapes.
-HYDROSHEDS_CODES = ["af", "ar", "as", "au", "eu", "gr", "na", "sa"]
-
-rule hydrobasin_download:
-    message: "Download HydroSHEDS-HydroBASINS v1.0 zip file for '{wildcards.continent}'."
-    conda: "../envs/shell.yaml"
-    params:
-        prefix = "https://data.hydrosheds.org/file/hydrobasins/standard/hybas_",
-        suffix = "_lev01-12_v1c.zip"
-    output: temp("results/basins/hydrobasin_{continent}.zip")
-    shell:
-        "curl -sSLo {output} '{params.prefix}{wildcards.continent}{params.suffix}' "
-
 
 rule hydrobasin_zip_extract:
     message: "Extract requested basin resolution level."
     input:
-        zipfile = "results/basins/hydrobasin_{continent}.zip"
-    output:
-        shapefile = "results/basins/raw_shape_{continent}.geojson",
-        plot_shapefile = "results/basins/plots/basin_{continent}.png"
+        zipfile = "resources/automatic/basins/hydrobasin_{continent}.zip"
     params:
-        zip_filepath = lambda wc: f"hybas_{wc.continent}_lev"+config["basins"]["HydroBASINS_level"]+"_v1c.shp"
-    wrapper: "v0.0.1/wrappers/geopandas/zip-extraction"
+        zip_filepath = lambda wc: f"hybas_{wc.continent}_lev{config["HydroBASINS_level"]}_v1c.shp"
+    output:
+        shapefile = "resources/automatic/basins/raw_{continent}.geojson",
+        plot_shapefile = "results/plots/basins/basin_{continent}.png"
+    localrule: True
+    wrapper: "v0.0.4/wrappers/geopandas/zip-extraction"
 
-# FIXME: unclear if necessary. Might be distorting results?
+
 rule preprocess_basins:
     message: "Preprocess basins."
     input:
-        basins = "results/basins/raw_shape_eu.geojson"
-    params:
-        x_min = internal["scope"]["spatial"]["bounds"]["x_min"],
-        x_max = internal["scope"]["spatial"]["bounds"]["x_max"],
-        y_min = internal["scope"]["spatial"]["bounds"]["y_min"],
-        y_max = internal["scope"]["spatial"]["bounds"]["y_max"]
-    output: "results/basins/preprocessed_shape_eu.gpkg"
+        basins = "resources/automatic/basins/raw_eu.geojson"
+    output: "results/basins/preprocessed_eu.gpkg"
     conda: "../envs/hydro.yaml"
     script: "../scripts/preprocess_basins.py"

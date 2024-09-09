@@ -1,8 +1,7 @@
 name: shell
 channels:
-    - conda-forge
+  - conda-forge
+  - nodefaults
 dependencies:
-    - curl=8.6.0
-    - unzip=6.0
-    - rsync=3.2.3
-    - graphviz=2.50.0
+  - curl=8.9.1
+  - unzip=6.0
