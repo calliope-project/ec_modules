@@ -8,7 +8,7 @@ build:
     python: "mambaforge-22.9"
 
 mkdocs:
-  configuration: mkdocs.yml
+  configuration: mkdocs.yaml
 
 conda:
-  environment: environment.yml
+  environment: environment.yaml
