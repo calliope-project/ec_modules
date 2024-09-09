@@ -35,3 +35,6 @@ repos:
     - id: codespell
       additional_dependencies:
         - tomli
+
+ci:  # https://pre-commit.ci/
+  autoupdate_schedule: monthly
