@@ -12,7 +12,9 @@ title: biofuels
 ---
 flowchart LR
     D1[("`**automatic**
-        database1
+        biomass potentials (JRC ENSPRESO)
+        population (JRC GHS-POP)
+        land cover (https://doi.org/10.5281/zenodo.3244985)
         ...
     `")] --> |Download| M
     C1[/"`**user**
