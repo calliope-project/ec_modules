@@ -22,7 +22,7 @@ rule preprocess_biofuel_potentials_and_cost:
 rule biofuels:
     message: "Determine biofuels potential on {wildcards.resolution} resolution for scenario {wildcards.scenario}."
     input:
-        units = "resources/customisable/spatial_units.geojson",
+        units = "resources/user/spatial_units.geojson",
         land_cover = rules.unzip_potentials.output.land_cover,
         population = rules.unzip_potentials.output.population,
         national_potentials = rules.preprocess_biofuel_potentials_and_cost.output.potentials,
@@ -42,3 +42,12 @@ rule biofuels:
     wildcard_constraints:
         scenario = "low|medium|high"
     script: "../scripts/allocate.py"
+
+rule plot:
+    input:
+        shapes = "resources/user/spatial_units.geojson",
+        potentials = rules.biofuels.output.potentials,
+        costs = rules.biofuels.output.costs
+    output: "results/{resolution}/{scenario}/potentials.png"
+    conda: "../envs/default.yaml"
+    script: "../scripts/plot.py"

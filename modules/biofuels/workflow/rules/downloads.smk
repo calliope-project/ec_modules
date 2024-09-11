@@ -4,7 +4,7 @@ if config["use_default_user_resources"]:
         message: "Download spatial units."
         params:
             url = internal["resources"]["default_user_shapes"],
-        output: "resources/customisable/spatial_units.geojson"
+        output: "resources/user/spatial_units.geojson"
         conda: "../envs/shell.yaml"
         localrule: True
         shell: "curl -sSLo {output} '{params.url}'"
