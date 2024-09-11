@@ -1,9 +1,8 @@
 # This file contains configuration that users should not modify.
 resources:
+  default_user_shapes: https://www.dropbox.com/scl/fi/ijfihaqy5eki13nplvrn4/units-ehighways.geojson?rlkey=q0agmofhaklt1pytzef59o1xq&e=1&dl=0
   biofuel-potentials-and-costs: https://cidportal.jrc.ec.europa.eu/ftp/jrc-opendata/ENSPRESO/ENSPRESO_BIOMASS.xlsx
   potentials: https://zenodo.org/records/6600619/files/raw-potentials.zip?download=1
-default_customisable_resources:
-  spatial_units: https://www.dropbox.com/scl/fi/ijfihaqy5eki13nplvrn4/units-ehighways.geojson?rlkey=q0agmofhaklt1pytzef59o1xq&e=1&dl=0
 parameters:
     jrc-biofuel: # from [@Ruiz:2019]
         scenario: medium

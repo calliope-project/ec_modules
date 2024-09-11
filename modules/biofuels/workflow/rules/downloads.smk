@@ -3,7 +3,7 @@ if config["use_default_user_resources"]:
     rule download_units:
         message: "Download spatial units."
         params:
-            url = internal["default_customisable_resources"]["spatial_units"],
+            url = internal["resources"]["default_user_shapes"],
         output: "resources/customisable/spatial_units.geojson"
         conda: "../envs/shell.yaml"
         localrule: True
