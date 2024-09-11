@@ -4,7 +4,7 @@ if config["use_default_user_resources"]:
         message: "Download spatial zones."
         params:
             url = internal["resources"]["default_user_shapes"],
-        output: "resources/customisable/units.geojson"
+        output: "resources/user/shapes_ehighways.geojson"
         conda: "../envs/shell.yaml"
         localrule: True
         shell: "curl -sSLo {output} '{params.url}'"
