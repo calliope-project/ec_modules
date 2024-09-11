@@ -1,55 +1,29 @@
-"""Generate heat demand and heat pump COP time series."""
-
 import yaml
 
-from pathlib import Path
-from snakemake.utils import min_version
+from snakemake.utils import min_version, validate
 
+# Limit the snakemake version to a modern one.
 min_version("8.10")
 
-configfile: "config/config.yaml"
-with open(workflow.source_path("resources/internal.yaml"), "r") as f:
+# Load the default configuration. This will be overridden by users.
+configfile: "config/default.yaml"
+# Validate the configuration using the schema file.
+# validate(config, workflow.source_path("schemas/config.schema.yaml"))
+
+# Load internal settings separately so users cannot modify them.
+with open(workflow.source_path("internal/internal_config.yaml"), "r") as f:
     internal = yaml.safe_load(f)
 
+# Add all your includes here.
+include: "rules/downloads.smk"
 include: "rules/aggregated_heat_demand.smk"
 include: "rules/heat_timeseries.smk"
 include: "rules/hp_cop.smk"
 
-rule download_shapes:
-    message: "Download {wildcards.shapes} resolution shapefile."
-    params:
-        uri = lambda wc: config["resolution"][f"{wc.shapes}"]["uri"],
-    output: "results/{shapes}/shapes.geojson"
-    conda: "envs/shell.yaml"
-    localrule: True
-    shell: "curl -sSLo {output} '{params.uri}'"
-
-rule heat_demand_final_timeseries:
-    message: "Generate heat demand timeseries data from gridded data for '{wildcards.shapes}' resolution."
-    input:
-        timeseries_data = "results/{shapes}/hourly_unscaled_heat_demand.nc",
-        annual_demand = "results/{shapes}/annual-heat-demand-twh.csv",
-    conda: "envs/default.yaml"
-    params:
-        sfh_mfh_shares = config["parameters"]["heat"]["sfh-mfh-shares"],
-        scaling_factor = internal["scaling-factors"]["power"]
-    output: "results/{shapes}/final_outputs/heat_demand.csv"
-    script: "scripts/heat_demand_final_timeseries.py"
-
-
-rule heat_pump_final_timeseries:
-    message: "Combine hot water and space heating characteristics to generate a weighted average national heat pump cop `heat` carrier timeseries."
-    input:
-        timeseries_data = "results/{shapes}/heat-pump-cop.nc",
-        annual_demand = "results/{shapes}/annual-heat-demand-twh.csv"
-    conda: "envs/default.yaml"
-    output: "results/{shapes}/final_outputs/heat-pump-cop.csv"
-    script: "scripts/heat_pump_final_timeseries.py"
-
-
-rule all:
-    message: "Produce all files for the heat module."
-    default_target: True
-    input:
-        expand("results/{shapes}/final_outputs/heat-pump-cop.csv", shapes=config["resolution"].keys()),
-        expand("results/{shapes}/final_outputs/heat_demand.csv", shapes=config["resolution"].keys())
+# Only activates if users request the default example in their configuration.
+if config["use_default_user_resources"]:
+    rule all:
+        message: "Generate default user input example output for 'heat'."
+        input:
+            expand("results/{shapes}/timeseries/heat_pump_cop.csv", shapes="national"),
+            expand("results/{shapes}/timeseries/heat_demand.csv", shapes="national")

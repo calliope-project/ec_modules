@@ -28,28 +28,12 @@ rule capacities_per_shape:
     script: "../scripts/hydro_capacities.py"
 
 
-rule prepare_ERA5_runoff_cutout:
-    message: "Prepare atlite cutout with runoff data for {params.time}."
-    input:
-        shapefile = "resources/user/{resolution}.geojson"
-    output:
-        cutout = "results/shapes/{resolution}/{year}/cutout.nc",
-        plot_cutout = "results/plots/{resolution}/{year}/plot_cutout.png"
-    params:
-        time = lambda wc: slice(f"{int(wc.year)- config["year_shift"]}-01", f"{wc.year}-12"),
-        features = ["runoff"],
-        offset_degrees = 0,
-        module = ["era5"],
-        prepare_kwargs = {"monthly_requests": True, "concurrent_requests": True, "compression": None}
-    wrapper: "v0.0.4/wrappers/atlite/cutout"
-
-
 rule inflow_m3:
     message: "Determine volumetric water inflow time series for hydropower for {wildcards.year}."
     input:
         stations = "results/jrc_hydropower_plant_database_preprocessed.csv",
         basins = "results/basins/preprocessed_eu.gpkg",
-        runoff = "results/shapes/{resolution}/{year}/cutout.nc"
+        runoff = "resources/automatic/shapes/{resolution}/{year}/cutout.nc"
     output: "results/shapes/{resolution}/{year}/hydropower_inflow_m3.nc"
     conda: "../envs/hydro.yaml"
     resources:
