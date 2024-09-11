@@ -18,7 +18,7 @@ with open(workflow.source_path("internal/internal_config.yaml"), "r") as f:
 include: "rules/downloads.smk"
 include: "rules/demand.smk"
 
-if config["use_default_customisable_resources"]:
+if config["use_default_user_resources"]:
     rule all:
         message: "Generate all outputs for 'demand_electricity'."
         input: "results/demand-electricity-ehighways.csv"

@@ -1,9 +1,9 @@
 # We recommend adding rules that download necessary files here.
-if config["use_default_customisable_resources"]:
+if config["use_default_user_resources"]:
     rule download_units:
         message: "Download spatial zones."
         params:
-            url = internal["default_customisable_resources"]["spatial_zones"],
+            url = internal["resources"]["default_user_shapes"],
         output: "resources/customisable/units.geojson"
         conda: "../envs/shell.yaml"
         localrule: True
@@ -12,7 +12,7 @@ if config["use_default_customisable_resources"]:
 
 rule download_raw_load:
     message: "Download raw load."
-    params: url = internal["data_sources"]["load"]
+    params: url = internal["resources"]["load"]
     output: protected("resources/raw-load-data.csv")
     conda: "../envs/shell.yaml"
     localrule: True
@@ -20,7 +20,7 @@ rule download_raw_load:
 
 rule download_potentials:
     message: "Download potential data."
-    params: url = internal["data_sources"]["potentials"]
+    params: url = internal["resources"]["potentials"]
     output: protected("resources/raw-potentials.zip")
     conda: "../envs/shell.yaml"
     localrule: True
