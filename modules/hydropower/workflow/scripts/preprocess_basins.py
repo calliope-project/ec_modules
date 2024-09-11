@@ -5,9 +5,9 @@ import geopandas as gpd
 DRIVER = "GPKG"
 
 
-def preprocess_basins(path_to_basins, bbox, path_to_output):
+def preprocess_basins(path_to_basins, path_to_output):
     """Filter and fix basin shapes."""
-    basins = gpd.read_file(path_to_basins, bbox=bbox)
+    basins = gpd.read_file(path_to_basins)
     basins.geometry = basins.geometry.map(_buffer_if_necessary)
     basins.to_file(path_to_output, driver=DRIVER)
 
@@ -27,12 +27,5 @@ def _buffer_if_necessary(shape):
 
 if __name__ == "__main__":
     preprocess_basins(
-        path_to_basins=snakemake.input.basins,
-        bbox=(
-            snakemake.params.x_min,
-            snakemake.params.y_min,
-            snakemake.params.x_max,
-            snakemake.params.y_max,
-        ),
-        path_to_output=snakemake.output[0],
+        path_to_basins=snakemake.input.basins, path_to_output=snakemake.output[0]
     )

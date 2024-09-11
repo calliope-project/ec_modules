@@ -1,35 +1,62 @@
-# Module: Heat
+# Easy Energy Modules - heat
 
-A module to estimate COP timeseries and heat demand timeseries for European countries.
+A module to generate timeseries for building heat demand and heatpump COP for European countries.
 
 >[!important]
->As of 08 Aug 2024, this module has only been tested for national-resolution time series of heat demand and heat pump cop.
+>As of 10 Sept 2024, this module has only been tested for national-resolution time series of heat demand and heat pump cop.
 >Time series at any resolution is coming soon!
-
-## Main functionality
-
-As of 08 Aug 2024, this module can produce national-resolution time series of heat demand and heat pump cop.
 
 ## Input-Output
 
-Here is a brief summary of the IO structure of the module.
-
-The configuration must point to a shapefile with the desired subregions, which will be downloaded and processed into timeseries and capacity values by the module.
+Here is a brief IO diagram of the module's operation.
 
 ```mermaid
+---
+title: heat
+---
 flowchart LR
-    I1(shapefile.geojson) -.-> |Download| C
-    C(config.yaml) -->M((heat))
-    M --> O1(heatpump-cop.csv)
-    M --> O2(heat-demand.csv)
+    D1[("`**Automatic**
+        JRC-IDEES
+        eurostat
+        When2Heat
+        MERRA-2
+        CHE-BFE
+        WAMAK
+    `")] --> |Download| M
+    C1[/"`**User**
+        resources/user/{shape}.geojson
+    `"/] --> M((heat))
+    M --> O1("`**Time series**
+        results/{shape}/timeseries/heat_demand.csv
+        results/{shape}/timeseries/heat_pump_cop.csv
+        `")
 ```
+
+### User
+
+- **resources/user/{shape}.geojson**: desired regional aggregation. CRS must be EPSG:4326.
+
+### Results
+
+- **results/{shape}/timeseries/heat_demand.csv**: heat demand timeseries in 100 GW p.u. .
+- **results/{shape}/timeseries/heat_pump_cop.csv**: heat pump coefficient of performance (COP) timeseries.
 
 ## DAG
 
-Here is a brief overview of the module's steps.
-Please consult the code for more details.
+Here is a brief example of the module's steps.
 
-![dag](rulegraph.png)
+![DAG](rulegraph.png)
+
+## Citation
+
+Pickering, B., Lombardi, F., Pfenninger, S., 2022. Diversity of options to eliminate fossil fuels and reach carbon neutrality across the entire European energy system. Joule. DOI:10.1016/j.joule.2022.05.009
+
+## References
+
+- Ruhnau, O., Hirth, L. & Praktiknjo, A. Time series of heat demand and heat pump efficiency for energy system modeling. Sci Data 6, 189 (2019). <https://doi.org/10.1038/s41597-019-0199-y>
+- Mantzos, L., Matei, N., Mulholland, E., Rózsai, M., Tamba, M. and Wiesenthal, T., The JRC Integrated Database of the European Energy System, European Commission, 2018, JRC112474.
+- Pickering, B., & Pfenninger, S. (2024). Temperature and wind speed time series on a 50 km^2 grid in Europe (2024-06-07) [Data set]. Zenodo. <https://doi.org/10.5281/zenodo.11516744>
+- eurostat: European Union, 2011 - today. For more details, please refer to the [Eurostat copyright policy](https://ec.europa.eu/eurostat/web/main/help/copyright-notice). Please consult the code to identify how this data is processed.
 
 ## Remaining issues
 
@@ -38,21 +65,14 @@ Reviewer: Ivan Ruiz, 18 Aug 2024
 
 ### General issues
 
-1. `units.geojson` was temporarily put in the `resources` folder. The workflow for shapes or arbitrary resolution is still missing.
-    - Ivan: unfortunately this polluted the repo history again, meaning pre-commit CI will most likely reject this module when we PR. We'll need to re-write the history of this commit or find an alternative method...
-2. At this stage, this module can only deal with national resolution data. The interface between this module and the input of shapes file is also missing. To change that, we may need to (a) rewrite quite some rules so that they are compatible with the input shape file, and (b) add rules to transform national data into given shape file.
-3. The contents of the current version of heat module is copied from euro-calliope, commit number cff23740. Any updates afterwards are not synced here.
+1. At this stage, this module can only deal with national resolution data. The interface between this module and the input of shapes file is also missing. To change that, we may need to (a) rewrite quite some rules so that they are compatible with the input shape file, and (b) add rules to transform national data into given shape file.
+2. The contents of the current version of heat module is copied from euro-calliope, commit number cff23740. Any updates afterwards are not synced here.
 
 ### config-specific issues
 
 1. Lots of data sources are from zenodo. At some point, we should check whether these data sources are reliable, and where they come from. For example, `potentials` comes from another workflow of Bryn.
-2. For some reasons, there are two population-related data sources (in `potentials` and `population`). This should not happen in the future.
+2. For some reason, there are two population-related data sources (in `potentials` and `population`). This should not happen in the future.
 3. We might want to recheck how we fill the missing values for certain countries. Right now it is designated in config that the data of Albania is filled up by data from Bulgaria, Croatia, ...
-
-### results-specific issues
-
-1. How many files should be temporary files? Keeping some intermediate files there may help multi-time running of the workflow, but might cause storage problems in the local directory.
-2. Because of the file structure of the old `euro-calliope`, the `results` folder is a bit messy. There's a folder called `national` which should disappear ultimately. Ideally, all results should be ordered in a way that is easy to find.
 
 ### envs-specific issues
 
@@ -61,44 +81,8 @@ Reviewer: Ivan Ruiz, 18 Aug 2024
 
 ### rules-specific issues
 
-1. The namings of the rules are directly copied from euro-calliope and may not really make sense. We might want to change them to more understandable names.
-2. The data processing of eurostat and Swiss data is quite messy in terms of rule dependencies. We might want to simplify them later.
-
-### scripts-specific issues
-
-1. The namings of the scripts might not make sense. The scripts are directly copied from euro-calliope and not checked in detail.
-2. We might want to separate scripts into different sub-folders according to their functionalities (e.g. which snakefile they are related to).
+1. The data processing of eurostat and Swiss data is quite messy in terms of rule dependencies. We might want to simplify them later.
 
 ### When2Heat extraction
 
-1. Scripts and snakemake rules currently extract all When2Heat parameters in a directory and use the `directory()` directive.
-2. We probably want to remove this and make it so that specific variables are downloaded only if requested (like the gridded-weather-data).
-
-## Pending update of the README
-
-General file structure to follow for `snakemake` modules.
-
->[!important]
->Always call snakemake at the `example_module/` level, not at the workflow level!
->This is by `snakemake` design.
-
-```ascii
-example_module/
-┣ config/                # Default configuration, can be overridden!
-┃ ┗ config.yaml
-┣ resources/             # Static files needed by your workflow
-┣ results/               # Put all rule outputs here!
-┣ workflow/
-┃ ┣ envs/                # Conda environments
-┃ ┃ ┗ example_env.yaml
-┃ ┣ report/              # For snakemake's report functionality
-┃ ┣ rules/               # Rule files
-┃ ┃ ┗ example.smk
-┃ ┣ schemas/             # Schemas to check configuration files
-┃ ┃ ┗ config.schema.yaml
-┃ ┣ scripts/             # Actual code!
-┃ ┃ ┗ example.py
-┃ ┗ Snakefile            # main rule lives here!
-┣ LICENSE
-┗ README.md
-```
+1. Scripts and snakemake rules currently extract all When2Heat parameters in a directory and use the `directory()` directive. We probably want to remove this and make it so that specific variables are downloaded only if requested (like the gridded-weather-data).

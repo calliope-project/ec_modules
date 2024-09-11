@@ -1,5 +1,5 @@
 $schema: https://json-schema.org/draft/2020-12/schema
-description: "Configuration schema for '{{module_name}}'."
+description: "Configuration schema for 'heat'."
 type: object
 additionalProperties: false
 properties:

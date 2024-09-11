@@ -1,7 +1,6 @@
-# This is the default configuration of the heat module
-resolution:
-  national:
-    uri: "https://www.dropbox.com/scl/fi/sjjisuqnzck2mhxs9jca7/units-national.geojson?rlkey=rv0q1exsytxws3gfvankbt9p7&dl=0"
+# Required standard configuration keys
+use_default_user_resources: True
+# Module-specific configuration should be below this line
 temporal-scope:
   first-year: 2016
   final-year: 2016
