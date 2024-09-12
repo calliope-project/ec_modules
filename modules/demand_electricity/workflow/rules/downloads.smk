@@ -13,7 +13,7 @@ if config["use_default_user_resources"]:
 rule download_raw_load:
     message: "Download raw load."
     params: url = internal["resources"]["load"]
-    output: protected("resources/raw-load-data.csv")
+    output: protected("resources/raw_load_data.csv")
     conda: "../envs/shell.yaml"
     localrule: True
     shell: "curl -sLo {output} '{params.url}'"
@@ -21,7 +21,7 @@ rule download_raw_load:
 rule download_potentials:
     message: "Download potential data."
     params: url = internal["resources"]["potentials"]
-    output: protected("resources/raw-potentials.zip")
+    output: protected("resources/raw_potentials.zip")
     conda: "../envs/shell.yaml"
     localrule: True
     shell: "curl -sSLo {output} '{params.url}'"

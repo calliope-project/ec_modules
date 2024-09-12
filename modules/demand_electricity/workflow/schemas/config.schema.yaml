@@ -16,9 +16,9 @@ properties:
         additionalProperties: false
         description: Temporal boundaries of the analysis.
         properties:
-          first-year:
+          first_year:
             type: integer
             description: First year of the analysis.
-          final-year:
+          final_year:
             type: integer
             description: Final year of the analysis.

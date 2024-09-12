@@ -55,7 +55,7 @@ scope:
     temporal:
         first-year: 2016
         final-year: 2016
-quality-control:
+quality_control:
   load:
       outlier-data-thresholds:
           relative-to-mean-min: 0.25

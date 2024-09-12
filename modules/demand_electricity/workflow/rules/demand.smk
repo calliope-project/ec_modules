@@ -5,11 +5,11 @@ rule electricity_load_national:
     input:
         load = rules.download_raw_load.output[0]
     params:
-        first_year = config["scope"]["temporal"]["first-year"],
-        final_year = config["scope"]["temporal"]["final-year"],
-        data_quality_config = internal["quality-control"]["load"],
+        first_year = config["scope"]["temporal"]["first_year"],
+        final_year = config["scope"]["temporal"]["final_year"],
+        data_quality_config = internal["quality_control"]["load"],
         countries = internal["scope"]["spatial"]["countries"]
-    output: "results/electricity-demand-national.csv"
+    output: "results/electricity_demand_national.csv"
     conda: "../envs/default.yaml"
     script: "../scripts/national_load.py"
 
@@ -22,7 +22,7 @@ rule electricity_load:
         national_load = rules.electricity_load_national.output[0]
     params:
         scaling_factor = internal["scaling_factors"]["power"]
-    output: "results/demand-electricity-{resolution}.csv"
+    output: "results/demand_electricity_{resolution}.csv"
     conda: "../envs/geo.yaml"
     script: "../scripts/load.py"
 

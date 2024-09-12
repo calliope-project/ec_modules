@@ -21,4 +21,4 @@ include: "rules/demand.smk"
 if config["use_default_user_resources"]:
     rule all:
         message: "Generate all outputs for 'demand_electricity'."
-        input: expand("results/demand-electricity-{resolution}.csv", resolution="ehighways")
+        input: expand("results/demand_electricity_{resolution}.csv", resolution="ehighways")
