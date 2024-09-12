@@ -57,7 +57,7 @@ def load(
         axis=1,
     )
     assert math.isclose(
-        load_ts.sum().sum() * (-1) / scaling_factor,
+        load_ts.sum().sum() * 1 / scaling_factor,
         national_load.reindex(columns=units.country_code.unique()).sum().sum(),
     )
     load_ts.tz_convert(None).to_csv(path_to_result)
@@ -88,14 +88,12 @@ def unit_time_series(
     unit_industrial_ts = (
         national_industrial_load.loc[:, country_code].copy()
         * multiplier
-        * (-1)
         * scaling_factor
     )
     multiplier = unit.fraction_of_national_residential_load
     unit_residential_ts = (
         national_residential_load.loc[:, country_code].copy()
         * multiplier
-        * (-1)
         * scaling_factor
     )
     unit_ts = unit_industrial_ts + unit_residential_ts
