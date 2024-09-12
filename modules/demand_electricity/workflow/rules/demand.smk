@@ -25,3 +25,9 @@ rule electricity_load:
     output: "results/demand-electricity-{resolution}.csv"
     conda: "../envs/geo.yaml"
     script: "../scripts/load.py"
+
+rule plot:
+    input: rules.electricity_load.output
+    output: "results/plot_{resolution}.png"
+    conda: "../envs/geo.yaml"
+    script: "../scripts/plot.py"
