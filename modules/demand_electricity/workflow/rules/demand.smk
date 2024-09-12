@@ -27,7 +27,11 @@ rule electricity_load:
     script: "../scripts/load.py"
 
 rule plot:
-    input: rules.electricity_load.output
-    output: "results/plot_{resolution}.png"
-    conda: "../envs/geo.yaml"
+    input:
+        demand_electricity=rules.electricity_load.output[0],
+        shapes="resources/user/shapes_{resolution}.geojson"
+    output:
+        timeseries="results/plot_timeseries_{resolution}.png",
+        maps="results/plot_map_{resolution}.png"
+    conda: "../envs/plot.yaml"
     script: "../scripts/plot.py"
