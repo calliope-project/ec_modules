@@ -19,12 +19,12 @@ flowchart LR
     C1[/"`**User input**
         units.geojson
         ...
-    `"/] --> |Resources| M((demand_electricity))
+    `"/] --> M((demand_electricity))
     M --> O1("
-        demand-electricity-ehighways.csv
+        electricity-demand-national.csv
         ")
     M --> O2("
-        electricity-demand-national.csv
+        demand-electricity-ehighways.csv
         ")
 ```
 
