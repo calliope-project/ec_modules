@@ -133,9 +133,12 @@ if __name__ == "__main__":
 
     # # Demands are stored as negative values for Calliope to ingest
     # if snakemake.wildcards.tech_group == "demand":
-    scaled_profiles *= -1
 
     final_df = (
-        scaled_profiles.sum("end_use").astype("float32").to_series().unstack("id")
+        scaled_profiles.sum("end_use")
+        .astype("float32")
+        .to_series()
+        .unstack("id")
+        .rename_axis(index="timesteps")
     )
     final_df.to_csv(snakemake.output[0])

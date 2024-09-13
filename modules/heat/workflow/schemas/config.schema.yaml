@@ -1,0 +1,8 @@
+$schema: https://json-schema.org/draft/2020-12/schema
+description: "Configuration schema for 'heat'."
+type: object
+additionalProperties: false
+properties:
+  use_default_user_resources:
+    type: boolean
+    description: "If enabled, download files needed for a default user input example and process them through the 'all' rule."

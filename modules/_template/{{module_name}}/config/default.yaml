@@ -1,5 +1,3 @@
-# Module input files by users go here.
-resources:
-  download: True
-  shapefile: "resources/shapefile.geojson"
-# Any other user configuration goes below
+# Required standard configuration keys
+use_default_user_resources: True
+# Module-specific configuration should be below this line

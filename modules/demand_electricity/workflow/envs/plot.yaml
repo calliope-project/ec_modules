@@ -1,0 +1,11 @@
+# Adding this because dependencies in geo.yaml are very old
+# And cause a problem with matplotlib=3.7.1
+# Once geo.yaml is updated, this can env can probably be removed
+name: plot
+channels:
+    - conda-forge
+dependencies:
+  - python=3.11
+  - pandas=2.2.2
+  - geopandas=1.0.1
+  - matplotlib=3.9.2
