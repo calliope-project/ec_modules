@@ -6,6 +6,6 @@ channels:
     - conda-forge
 dependencies:
   - python=3.11
-  - pandas
-  - geopandas
-  - matplotlib
+  - pandas=2.2.2
+  - geopandas=1.0.1
+  - matplotlib=3.9.2
