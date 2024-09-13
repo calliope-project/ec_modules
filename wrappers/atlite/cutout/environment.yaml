@@ -4,3 +4,4 @@ channels:
   - nodefaults
 dependencies:
   - atlite = 0.2.14
+  - cdsapi = 0.7.2  # remove in next version
