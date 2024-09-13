@@ -9,21 +9,15 @@ from scipy.optimize import minimize
 def _determine_energy_inflow(
     path_to_stations_with_water_inflow,
     path_to_generation,
-    first_year,
-    final_year,
+    year,
     max_capacity_factor,
     path_to_output,
 ):
     plants_with_inflow_m3 = xr.open_dataset(path_to_stations_with_water_inflow)
-    inflow_MWh = xr.merge(
-        [
-            energy_inflow(
-                plants_with_inflow_m3.sel(time=str(year)),
-                _read_generation(path_to_generation, year),
-                max_capacity_factor,
-            )
-            for year in range(first_year, final_year + 1)
-        ]
+    inflow_MWh = energy_inflow(
+        plants_with_inflow_m3.sel(time=str(year)),
+        _read_generation(path_to_generation, year),
+        max_capacity_factor,
     )
     xr.merge([plants_with_inflow_m3, inflow_MWh]).to_netcdf(path_to_output)
 
@@ -147,8 +141,7 @@ if __name__ == "__main__":
     _determine_energy_inflow(
         path_to_stations_with_water_inflow=snakemake.input.stations,
         path_to_generation=snakemake.input.generation,
-        first_year=int(snakemake.wildcards.first_year),
-        final_year=int(snakemake.wildcards.final_year),
+        year=int(snakemake.wildcards.year),
         max_capacity_factor=snakemake.params.max_capacity_factor,
         path_to_output=snakemake.output[0],
     )

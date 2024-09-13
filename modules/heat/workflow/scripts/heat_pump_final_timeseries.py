@@ -48,5 +48,10 @@ if __name__ == "__main__":
 
     timeseries_data_group_end_use = _group_end_uses(timeseries_data, annual_demand_ds)
 
-    final_df = timeseries_data_group_end_use.astype("float32").to_series().unstack("id")
+    final_df = (
+        timeseries_data_group_end_use.astype("float32")
+        .to_series()
+        .unstack("id")
+        .rename_axis(index="timesteps")
+    )
     final_df.to_csv(snakemake.output[0])

@@ -1,7 +1,7 @@
 # yaml-language-server: $schema=https://squidfunk.github.io/mkdocs-material/schema.json
 
 site_name: Easy Energy Modules
-site_url: https://calliope-project.github.io/ec_modules/
+site_url: https://ec-modules.readthedocs.io/
 repo_name: ec_modules
 repo_url: https://github.com/calliope-project/ec_modules/
 edit_uri: edit/main/docs/

@@ -5,56 +5,61 @@ Their settings can be **re-configured**, allowing you to reprocess data with dif
 Modules are best for stable workflows whose inputs are not expected to change much.
 Some use cases:
 
-- Converting transmission line data into nodes / regions.
+- Aggregating transmission line data into regions.
 - Calculating renewable potentials for a given set of regions.
 - Combining datasets of existing power production facilities.
 - And many more!
 
+Generally, modules are used in the following steps:
+
+1. You configure the module to behave a certain way.
+2. You give the module some files to process.
+3. You collect the results.
+
+The module will automatically download necessary files and execute code to produce the requested output.
+
 You can read more about modules in the [`snakemake` documentation](https://snakemake.readthedocs.io/en/stable/snakefiles/modularization.html#modules).
 
-## Visualising a module
+## What is a module?
 
-Modules can be visualised as a regular DAG (direct acyclic graph) that "connects" to your workflow.
+Modules can be visualised as a DAG (direct acyclic graph) with a series of steps that "connects" to your workflow.
 
-??? example "Module as DAG"
+??? example "Module as a DAG"
+
+    The module (blue) connects to your general workflow (yellow).
+
     ![Module example](images/module.png)
 
-However, it's generally more useful to think of them as an IO (input-output) diagram that you can influence by reconfiguring it.
-The databases used and the order of the processing steps may not change, but the output can be influenced depending on the configuration files you give it.
+However, it's generally more useful to think of modules as an IO (input-output) diagram.
+They may require user inputs, automatically downloaded data, a configuration; and produce output files.
 
-!!! example "Module as IO"
+??? example "Module as IO"
 
-    In this case, the module's results will change depending on the shapes and powerplants that the configuration file (`config.yaml`) points to.
-
-    ??? info "Hydropower workflow"
-
-        ![Hydropower workflow](images/module_rulegraph.png)
+    In this case, a hydropower module needs two **user** inputs (`regions.geojson`, `powerplants.csv`) and has four outputs.
 
     ```mermaid
     flowchart LR
-        id1[("
+        id1[("`**Automatic**
             ERA5
             HydroBASINS
-        ")] --> |Download| M
-        C[/"
-            config.yaml
-            - shapefile.geojson
-            - powerplants.csv
-        "/] -->M((hydropower))
-        M --> O1("
+        `")] --> |Download| M
+        C[/"`**User**
+            regions.geojson
+            powerplants.csv
+        `"/] -->M((hydropower))
+        M --> O1("`**Timeseries**
             capacity-factors-RoR.csv
             capacity-factors-basins.csv
-            ")
-        M --> O2("
+            `")
+        M --> O2("`**Installed capacity**
             region-power-capacity.csv
             region-storage-capacity.csv
-            ")
+            `")
     ```
 
 ## Configuring a module
 
-Modules will generally have instructions on how to configure them in their documentation.
-Regardless, you can always find a default configuration in the following location:
+You can always find a default configuration in the following location:
 
 ```tree
 modules/example/
@@ -63,10 +68,16 @@ modules/example/
     └── default.yaml      # Here!
 ```
 
+The module's schema files (`module/workflow/schemas/`) will have detailed information on how to configure the module.
+The number and purpose of the configuration options will vary per module.
+
 We recommend storing module configuration files separately, and adding them to your general configuration with module-specific keys.
 This will ensure there are no conflicts between modules and your general configuration.
 
-??? example "Separate configuration file structure"
+??? example "Module configuration example:"
+
+    This is how you should arrange your files:
+
     ```tree
     your_workflow/
     ├── README.md
@@ -78,21 +89,16 @@ This will ensure there are no conflicts between modules and your general configu
             └── transport_road.yaml
     ```
 
-For a `hydropower` module, the configuration would look like this:
+    And this is how a `hydropower.yaml` above would look like:
 
-```yaml
-module-hydro:
-  # Resources is a general way of communicating that a module
-  # expects files from users!
-  resources:
-    resolution_file: "resources/shapes_spain.geojson"
-  first_year: 2016
-  final_year: 2016
-  hydro_power_database:
-    version: "v10"
-  HydroBASINS_database:
-    level: "07"
-```
+    ```yaml
+    module-hydro:
+        use_default_user_resources: False
+        hydro_power_database:
+            version: "v10"
+        HydroBASINS_database:
+            level: "07"
+    ```
 
 ## Using our modules
 

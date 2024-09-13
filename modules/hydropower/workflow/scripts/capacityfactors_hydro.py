@@ -57,6 +57,7 @@ def time_series(plants, locations, capacities):
         .reindex(columns=locations.index, fill_value=0)
         .div(capacities)
         .rename(columns=lambda col: col.replace(".", "-"))
+        .rename_axis(index="timesteps")
     )
 
 

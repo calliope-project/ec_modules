@@ -1,0 +1,48 @@
+# This file contains configuration that users should not modify.
+resources:
+  default_user_shapes: https://www.dropbox.com/scl/fi/sjjisuqnzck2mhxs9jca7/units-national.geojson?rlkey=rv0q1exsytxws3gfvankbt9p7&dl=0
+  HydroBASINS: https://data.hydrosheds.org/file/hydrobasins/standard/hybas_{continent}_lev01-12_v1c.zip
+  IRENA_hydro_generation: https://zenodo.org/record/5797549/files/hydro-generation.csv?download=1
+  Geth2015_PHS_capacity: https://zenodo.org/record/5797549/files/pumped-hydro-storage-capacities-gwh.csv?download=1
+  JRC_hydropower_plants: "https://github.com/energy-modelling-toolkit/hydro-power-database/raw/{version}/data/jrc-hydro-power-plant-database.csv"
+
+capacity_factors:
+  min: 0.001
+  max: 10 # 0.001 -> 10 leads to a numerical range of 1e5 (hourly resolution)
+
+scope:
+  countries:
+    - "Austria"
+    - "Belgium"
+    - "Bulgaria"
+    - "Croatia"
+    - "Cyprus"
+    - "Czech Republic"
+    - "Denmark"
+    - "Estonia"
+    - "Finland"
+    - "France"
+    - "Germany"
+    - "Greece"
+    - "Hungary"
+    - "Ireland"
+    - "Italy"
+    - "Latvia"
+    - "Lithuania"
+    - "Luxembourg"
+    - "Netherlands"
+    - "Poland"
+    - "Portugal"
+    - "Romania"
+    - "Slovakia"
+    - "Slovenia"
+    - "Spain"
+    - "Sweden"
+    - "United Kingdom"
+    - "Albania"
+    - "Bosnia and Herzegovina"
+    - "Macedonia, Republic of"
+    - "Montenegro"
+    - "Norway"
+    - "Serbia"
+    - "Switzerland"

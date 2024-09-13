@@ -1,4 +1,7 @@
-data-sources:
+# This file contains configuration that users cannot modify.
+resources:
+  # Links to automatic and default user resources
+  default_user_shapes: "https://www.dropbox.com/scl/fi/sjjisuqnzck2mhxs9jca7/units-national.geojson?rlkey=rv0q1exsytxws3gfvankbt9p7&dl=0"
   when2heat-params: https://zenodo.org/records/10965295/files/{dataset}?download=1
   gridded-weather-data: https://zenodo.org/records/11516744
   population: https://ec.europa.eu/eurostat/cache/GISCO/geodatafiles/JRC_GRID_2018.zip

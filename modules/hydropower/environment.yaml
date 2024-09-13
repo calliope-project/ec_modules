@@ -1,7 +1,0 @@
-name: ec-modules-hydro
-channels:
-    - conda-forge
-    - bioconda
-dependencies:
-    - python=3.11
-    - snakemake-minimal=8.18
