@@ -1,0 +1,24 @@
+$schema: https://json-schema.org/draft/2020-12/schema
+description: "Configuration schema for 'demand_electricity'."
+type: object
+additionalProperties: false
+properties:
+  use_default_user_resources:
+    type: boolean
+    description: "If True, the module will attempt to download default resource files instead of relying on custom user inputs."
+  scope:
+    type: object
+    additionalProperties: false
+    description: Scope defines the spatial and temporal boundaries of the analysis.
+    properties:
+      temporal:
+        type: object
+        additionalProperties: false
+        description: Temporal boundaries of the analysis.
+        properties:
+          first_year:
+            type: integer
+            description: First year of the analysis.
+          final_year:
+            type: integer
+            description: Final year of the analysis.
