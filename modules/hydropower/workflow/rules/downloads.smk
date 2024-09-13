@@ -70,4 +70,4 @@ rule prepare_ERA5_runoff_cutout:
         offset_degrees = 0,
         module = ["era5"],
         prepare_kwargs = {"monthly_requests": True, "concurrent_requests": True, "compression": None}
-    wrapper: "v0.0.4/wrappers/atlite/cutout"
+    wrapper: "v0.0.5/wrappers/atlite/cutout"
