@@ -47,11 +47,11 @@ def clean_load_data(path_to_raw_load, year, data_quality_config, countries):
     return get_source_choice_per_country(
         filtered_load[
             (
-                filtered_load.index.get_level_values("utc_timestamp")
+                filtered_load.index.get_level_values("timesteps")
                 >= f"{year}-01-01 00:00"
             )
             & (
-                filtered_load.index.get_level_values("utc_timestamp")
+                filtered_load.index.get_level_values("timesteps")
                 <= f"{year}-12-31 23:00"
             )
         ],
@@ -66,6 +66,7 @@ def read_load_profiles(path_to_raw_load, entsoe_priority):
     load_by_attribute = (
         data[(data.variable == "load") & (data.attribute.isin(entsoe_priority))]
         .set_index(["utc_timestamp", "attribute", "region"])
+        .rename_axis(index={"utc_timestamp": "timesteps"})
         .loc[:, "data"]
         .unstack("region")
     )
