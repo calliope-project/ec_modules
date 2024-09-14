@@ -24,27 +24,17 @@ include: "rules/shapes.smk"
 include: "rules/wind-and-solar.smk"
 
 
-ALL_CF_TECHNOLOGIES = [
-    "wind-onshore",
-    "wind-offshore",
-    "open-field-pv",
-    "rooftop-pv",
-    "rooftop-pv-n",
-    "rooftop-pv-e-w",
-    "rooftop-pv-s-flat",
-]
-
-if config["use_default_customisable_resources"]:
+if config["use_default_user_resources"]:
     rule all:
         message:
             "Generate all outputs for 'capacity_factors_wind_pv'."
         input:
             expand(
                 "results/{resolution}/capacityfactors-wind-offshore.csv",
-                resolution=config["resolution"],
+                resolution="ehighways",
             ),
             expand(
                 "results/{resolution}/capacityfactors-{technology}.csv",
-                resolution=config["resolution"],
-                technology=ALL_CF_TECHNOLOGIES,
+                resolution="ehighways",
+                technology=internal["techs"]["land"],
             ),

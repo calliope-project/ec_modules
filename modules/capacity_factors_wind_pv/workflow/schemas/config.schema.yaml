@@ -1,14 +1,11 @@
 $schema: https://json-schema.org/draft/2020-12/schema
 description: "Configuration schema for 'capacity_factors_wind_pv'."
 type: object
-additionalProperties: false
+unevaluatedProperties: false
 properties:
-  use_default_customisable_resources:
+  use_default_user_resources:
     type: boolean
     description: If True, the module will attempt to download default resource files instead of relying on custom user inputs.
-  resolution:
-    type: string
-    description: The resolution of the data to be used. Options are 'ehighways' or 'ninja'.
   scope:
     temporal:
       type: object

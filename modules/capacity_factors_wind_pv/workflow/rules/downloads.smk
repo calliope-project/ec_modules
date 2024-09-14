@@ -1,13 +1,13 @@
 # We recommend adding rules that download necessary files here.
 
-if config["use_default_customisable_resources"]:
-    rule download_units:
+if config["use_default_user_resources"]:
+    rule user_input_shapes:
         message:
             "Download spatial zones."
         params:
-            url=internal["default_customisable_resources"]["spatial_units"],
+            url=internal["default_user_resources"]["spatial_units"],
         output:
-            "resources/customisable_resources/units_{resolution}.geojson",
+            "resources/user/shapes_ehighways.geojson",
         conda:
             "../envs/shell.yaml"
         localrule: True
@@ -19,7 +19,7 @@ rule download_eez:
     message:
         "Download Exclusive Economic Zones as zip"
     output:
-        protected("resources/eez.gpkg.zip"),
+        protected("resources/automatic/eez.gpkg.zip"),
     params:
         url=internal["resources"]["eez"],
     conda:
@@ -31,13 +31,13 @@ rule download_eez:
 
 rule download_capacity_factors_wind_and_solar:
     message:
-        "Download resources/capacityfactors/{wildcards.filename}."
+        "Download capacity factors: {wildcards.filename}."
     params:
         url=lambda wildcards: internal["resources"]["capacity-factors"].format(
             filename=wildcards.filename
         ),
     output:
-        protected("resources/capacityfactors/{filename}"),
+        protected("resources/automatic/capacityfactors/{filename}"),
     conda:
         "../envs/shell.yaml"
     localrule: True

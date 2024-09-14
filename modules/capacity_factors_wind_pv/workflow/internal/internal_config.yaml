@@ -1,9 +1,19 @@
 # This file contains configuration that users should not modify.
-default_customisable_resources:
-  spatial_units: https://www.dropbox.com/scl/fi/sjjisuqnzck2mhxs9jca7/units-{resolution}.geojson?rlkey=rv0q1exsytxws3gfvankbt9p7&e=1&dl=0
+default_user_resources:
+  spatial_units: https://www.dropbox.com/scl/fi/ijfihaqy5eki13nplvrn4/units-ehighways.geojson?rlkey=q0agmofhaklt1pytzef59o1xq&dl=0
 resources:
   eez: https://sandbox.zenodo.org/records/45135/files/eez_v11.gpkg.zip?download=1  # FIXME: update to actual zenodo record before next Euro-Calliope release.
   capacity-factors: https://zenodo.org/record/3899687/files/{filename}?download=1
+techs:
+  offshore:
+  - "wind-offshore"
+  land:
+  - "wind-onshore"
+  - "open-field-pv"
+  - "rooftop-pv"
+  - "rooftop-pv-n"
+  - "rooftop-pv-e-w"
+  - "rooftop-pv-s-flat"
 capacity-factors:
     min: 0.001
     trim-ninja-timeseries: True
