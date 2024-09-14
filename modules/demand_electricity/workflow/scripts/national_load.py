@@ -24,22 +24,14 @@ import pycountry
 
 
 def national_load(
-    path_to_raw_load,
-    year,
-    data_quality_config,
-    path_to_output,
-    countries,
+    path_to_raw_load, year, data_quality_config, path_to_output, countries
 ):
     """Extracts national load time series for all countries in a specified year."""
-    load = clean_load_data(
-        path_to_raw_load, year, data_quality_config, countries
-    )
+    load = clean_load_data(path_to_raw_load, year, data_quality_config, countries)
     load.to_csv(path_to_output, header=True)
 
 
-def clean_load_data(
-    path_to_raw_load, year, data_quality_config, countries
-):
+def clean_load_data(path_to_raw_load, year, data_quality_config, countries):
     """Cleans load data.
 
     TODO: Extend docstring.
