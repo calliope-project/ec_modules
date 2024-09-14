@@ -46,10 +46,7 @@ def clean_load_data(path_to_raw_load, year, data_quality_config, countries):
     ).sort_index()
     return get_source_choice_per_country(
         filtered_load[
-            (
-                filtered_load.index.get_level_values("timesteps")
-                >= f"{year}-01-01 00:00"
-            )
+            (filtered_load.index.get_level_values("timesteps") >= f"{year}-01-01 00:00")
             & (
                 filtered_load.index.get_level_values("timesteps")
                 <= f"{year}-12-31 23:00"
