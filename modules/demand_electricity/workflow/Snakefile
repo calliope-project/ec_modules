@@ -22,6 +22,6 @@ if config["use_default_user_resources"]:
     rule all:
         message: "Generate all outputs for 'demand_electricity'."
         input:
-            expand("results/{resolution}/demand_electricity.csv", resolution="ehighways"),
-            expand("results/{resolution}/plot_timeseries.png", resolution="ehighways"),
-            expand("results/{resolution}/plot_map.png", resolution="ehighways")
+            expand("results/{resolution}/{year}/demand_electricity.csv", resolution="ehighways", year=2016),
+            expand("results/{resolution}/{year}/plot_timeseries.png", resolution="ehighways", year=2016),
+            expand("results/{resolution}/{year}/plot_map.png", resolution="ehighways", year=2016)

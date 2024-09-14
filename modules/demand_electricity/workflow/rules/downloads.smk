@@ -32,4 +32,5 @@ rule unzip_potentials:
     output:
         demand = "resources/automatic/{resolution}/demand.csv",
     conda: "../envs/shell.yaml"
+    shadow: "minimal"
     shell: "unzip -p {input} '{wildcards.resolution}/demand.csv' > '{output.demand}'"
