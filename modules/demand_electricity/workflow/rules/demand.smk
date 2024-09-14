@@ -22,7 +22,7 @@ rule electricity_load:
         national_load = rules.electricity_load_national.output[0]
     params:
         scaling_factor = internal["scaling_factors"]["power"]
-    output: "results/demand_electricity_{resolution}.csv"
+    output: "results/{resolution}/demand_electricity.csv"
     conda: "../envs/geo.yaml"
     script: "../scripts/load.py"
 
@@ -31,7 +31,7 @@ rule plot:
         demand_electricity=rules.electricity_load.output[0],
         shapes="resources/user/shapes_{resolution}.geojson"
     output:
-        timeseries="results/plot_timeseries_{resolution}.png",
-        maps="results/plot_map_{resolution}.png"
+        timeseries="results/{resolution}/plot_timeseries.png",
+        maps="results/{resolution}/plot_map.png"
     conda: "../envs/plot.yaml"
     script: "../scripts/plot.py"
