@@ -53,7 +53,7 @@ rule download_potentials:
     shell: "curl -sSLo {output} '{params.url}'"
 
 rule unzip_area_potentials:
-    message: "Unzip lang elegibility potentials."
+    message: "Unzip lang eligibility potentials."
     input: ancient(rules.download_potentials.output[0])
     shadow: "minimal"
     output:

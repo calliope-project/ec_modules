@@ -21,7 +21,7 @@ classifiers = [
 dynamic = ["version", "dependencies"]
 
 [tool.codespell]
-skip = 'tests/*.py,AUTHORS,*.shp,*.geojson'
+skip = 'tests/*.py,AUTHORS,*.shp,*.geojson,Wirth'
 count = ''
 quiet-level = 3
 ignore-words-list = "socio-economic,manuel"
