@@ -30,11 +30,13 @@ if config["use_default_user_resources"]:
             "Generate all outputs for 'capacity_factors_wind_pv'."
         input:
             expand(
-                "results/{resolution}/capacityfactors-wind-offshore.csv",
+                "results/{resolution}/{year}/capacityfactors-wind-offshore.csv",
                 resolution="ehighways",
+                year=2010
             ),
             expand(
-                "results/{resolution}/capacityfactors-{technology}.csv",
+                "results/{resolution}/{year}/capacityfactors-{technology}.csv",
                 resolution="ehighways",
                 technology=internal["techs"]["land"],
+                year=2010
             ),
