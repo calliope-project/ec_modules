@@ -29,7 +29,7 @@ rule download_eez:
         "curl -sSLo {output} '{params.url}'"
 
 
-rule download_capacity_factors_wind_and_solar:
+rule download_capacity_factors:
     message:
         "Download capacity factors: {wildcards.filename}."
     params:
@@ -43,3 +43,23 @@ rule download_capacity_factors_wind_and_solar:
     localrule: True
     shell:
         "curl -sSLo {output} '{params.url}'"
+
+rule download_potentials:
+    message: "Download potentials data."
+    params: url = internal["resources"]["potentials"]
+    output: protected("resources/automatic/raw-potentials.zip")
+    conda: "../envs/shell.yaml"
+    localrule: True
+    shell: "curl -sSLo {output} '{params.url}'"
+
+rule unzip_area_potentials:
+    message: "Unzip lang elegibility potentials."
+    input: ancient(rules.download_potentials.output[0])
+    shadow: "minimal"
+    output:
+        land_eligibility_km2 = "resources/automatic/{resolution}/{scenario}/areas.csv"
+    conda: "../envs/shell.yaml"
+    wildcard_constraints:
+        scenario = "|".join(internal["scenarios"]),
+        resolution = "|".join(internal["resolutions"])
+    shell: "unzip -p '{input}' '{wildcards.resolution}/{wildcards.scenario}/areas.csv' > '{output.land_eligibility_km2}'"

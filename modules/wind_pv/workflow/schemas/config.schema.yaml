@@ -1,0 +1,59 @@
+$schema: https://json-schema.org/draft/2020-12/schema
+description: "Configuration schema for 'wind_pv'."
+type: object
+unevaluatedProperties: false
+properties:
+  use_default_user_resources:
+    type: boolean
+    description: If True, the module will attempt to download default resource files instead of relying on custom user inputs.
+  maximum_installable_mw_per_km2:
+    type: object
+    description: Installable capacity density in MW/km² (not annual energy yield).
+    unevaluatedProperties: false
+    properties:
+      pv_on_tilted_roofs:
+        type: number
+        minimum: 0
+        description: (MW/km²)
+      pv_on_flat_areas:
+        type: number
+        minimum: 0
+        description: (MW/km²)
+      onshore_wind:
+        type: number
+        minimum: 0
+        description: (MW/km²)
+      offshore_wind:
+        type: number
+        minimum: 0
+        description: (MW/km²)
+  roof_share:
+    type: object
+    description: Share of roofs by orientation (should add up to 1)
+    unevaluatedProperties: false
+    properties:
+      east:
+        type: number
+        description: East-facing roofs
+        minimum: 0
+        maximum: 1
+      north:
+        type: number
+        description: North-facing roofs
+        minimum: 0
+        maximum: 1
+      south:
+        type: number
+        description: South-facing roofs
+        minimum: 0
+        maximum: 1
+      west:
+        type: number
+        description: West-facing roofs
+        minimum: 0
+        maximum: 1
+      flat:
+        type: number
+        description: Flat roofs
+        minimum: 0
+        maximum: 1

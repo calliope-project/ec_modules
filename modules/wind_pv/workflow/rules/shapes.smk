@@ -1,7 +1,7 @@
 """Snakemake rules to create shapes of administrative regions and exclusive economic zones."""
 
 
-rule eez:
+rule clip_eez:
     message:
         "Clip exclusive economic zones to study area."
     input:

@@ -1,6 +1,6 @@
 """Rules related to wind and solar."""
 
-rule capacity_factors_onshore_wind_and_solar:
+rule calculate_cf_land:
     message:
         "Generate capacityfactor time series disaggregated by location on "
         "{wildcards.resolution} resolution for {wildcards.technology}."
@@ -26,12 +26,12 @@ rule capacity_factors_onshore_wind_and_solar:
         "../scripts/capacityfactors.py"
 
 
-rule shared_coast:
+rule calculate_shared_coast:
     message:
         "Determine share of coast length between EEZ and {wildcards.resolution} units using {threads} threads."
     input:
         units="resources/user/shapes_{resolution}.geojson",
-        eez=rules.eez.output[0],
+        eez=rules.clip_eez.output[0],
     params:
         polygon_area_share_threshold=internal["quality-control"][
             "shared-coast-polygon-area-share-threshold"
@@ -45,12 +45,12 @@ rule shared_coast:
         "../scripts/shared_coast.py"
 
 
-rule capacity_factors_offshore:
+rule calculate_cf_offshore:
     message:
         "Generate capacityfactor time series disaggregated by location on "
         "{wildcards.resolution} resolution for wind-offshore."
     input:
-        eez=rules.eez.output[0],
+        eez=rules.clip_eez.output[0],
         shared_coast="results/{resolution}/shared-coast.csv",
         timeseries=ancient("resources/automatic/capacityfactors/wind-offshore-timeseries.nc"),
     params:
@@ -68,3 +68,19 @@ rule capacity_factors_offshore:
         runtime=30,
     script:
         "../scripts/capacityfactors_offshore.py"
+
+
+rule calculate_area_limits:
+    message: "Use technology densities to convert wind & solar {wildcards.resolution} available area to capacity limits."
+    input:
+        units = "resources/user/shapes_{resolution}.geojson",
+        land_eligibility_km2 = "resources/automatic/{resolution}/{scenario}/areas.csv",
+    params:
+        max_power_densities = config["maximum_installable_mw_per_km2"],
+        roof_shares = config["roof_share"],
+    output:
+        rooftop = "results/{resolution}/{scenario}/rooftop-pv.csv",
+        offshore = "results/{resolution}/{scenario}/wind-offshore.csv",
+        onshore_and_open_field = "results/{resolution}/{scenario}/open-field-pv-and-wind-onshore.csv"
+    conda: "../envs/geo.yaml"
+    script: "../scripts/capacity_limits.py"

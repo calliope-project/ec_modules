@@ -1,0 +1,15 @@
+# Set 'False' to use your own spatial resolution.
+use_default_user_resources: True
+
+# Our recommended settings
+maximum_installable_mw_per_km2:
+  pv_on_tilted_roofs: 160 # from [@Gagnon:2016][@Klauser:2016], i.e. 16% efficiency
+  pv_on_flat_areas: 80 # from [@Gagnon:2016][@Klauser:2016][@Wirth:2017]
+  onshore_wind: 8 # from [@EuropeanEnvironmentAgency:2009]
+  offshore_wind: 15 # from [@EuropeanEnvironmentAgency:2009]
+roof_share: # from [@Trondle:2019]
+  east: 0.1660
+  north: 0.1817
+  south: 0.1821
+  west: 0.1681
+  flat: 0.3020

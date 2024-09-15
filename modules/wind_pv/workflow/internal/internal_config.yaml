@@ -4,6 +4,16 @@ default_user_resources:
 resources:
   eez: https://sandbox.zenodo.org/records/45135/files/eez_v11.gpkg.zip?download=1  # FIXME: update to actual zenodo record before next Euro-Calliope release.
   capacity-factors: https://zenodo.org/record/3899687/files/{filename}?download=1
+  potentials: https://zenodo.org/records/6600619/files/raw-potentials.zip?download=1
+scenarios:
+  - technical-potential
+  - technical-potential-protected
+  - technical-social-potential
+resolutions:
+  - continental
+  - ehighways
+  - national
+  - regional
 techs:
   offshore:
   - "wind-offshore"
