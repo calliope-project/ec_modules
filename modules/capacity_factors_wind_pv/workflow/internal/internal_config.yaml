@@ -16,49 +16,48 @@ techs:
   - "rooftop-pv-s-flat"
 capacity-factors:
     min: 0.001
-    trim-ninja-timeseries: True
 quality-control:
     capacity-factor-gridcell-overlap-threshold: 0.97 # Ceuta y Melilla has smallest overlap
     shared-coast-polygon-area-share-threshold: 0.01
 scope:
-  spatial:
-      countries:
-          - "Austria"
-          - "Belgium"
-          - "Bulgaria"
-          - "Croatia"
-          - "Cyprus"
-          - "Czech Republic"
-          - "Denmark"
-          - "Estonia"
-          - "Finland"
-          - "France"
-          - "Germany"
-          - "Greece"
-          - "Hungary"
-          - "Ireland"
-          - "Italy"
-          - "Latvia"
-          - "Lithuania"
-          - "Luxembourg"
-          - "Netherlands"
-          - "Poland"
-          - "Portugal"
-          - "Romania"
-          - "Slovakia"
-          - "Slovenia"
-          - "Spain"
-          - "Sweden"
-          - "United Kingdom"
-          - "Albania"
-          - "Bosnia and Herzegovina"
-          - "Macedonia, Republic of"
-          - "Montenegro"
-          - "Norway"
-          - "Serbia"
-          - "Switzerland"
-      bounds:
-          x_min: -15.8
-          x_max: 37
-          y_min: 30
-          y_max: 75
+  year_range: [2000, 2017]  # Last year is excluded.
+  countries:
+    - "Austria"
+    - "Belgium"
+    - "Bulgaria"
+    - "Croatia"
+    - "Cyprus"
+    - "Czech Republic"
+    - "Denmark"
+    - "Estonia"
+    - "Finland"
+    - "France"
+    - "Germany"
+    - "Greece"
+    - "Hungary"
+    - "Ireland"
+    - "Italy"
+    - "Latvia"
+    - "Lithuania"
+    - "Luxembourg"
+    - "Netherlands"
+    - "Poland"
+    - "Portugal"
+    - "Romania"
+    - "Slovakia"
+    - "Slovenia"
+    - "Spain"
+    - "Sweden"
+    - "United Kingdom"
+    - "Albania"
+    - "Bosnia and Herzegovina"
+    - "Macedonia, Republic of"
+    - "Montenegro"
+    - "Norway"
+    - "Serbia"
+    - "Switzerland"
+  bounds:
+    x_min: -15.8
+    x_max: 37
+    y_min: 30
+    y_max: 75

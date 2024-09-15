@@ -1,6 +1,5 @@
 """Rules related to wind and solar."""
 
-
 rule capacity_factors_onshore_wind_and_solar:
     message:
         "Generate capacityfactor time series disaggregated by location on "
@@ -13,14 +12,12 @@ rule capacity_factors_onshore_wind_and_solar:
         cf_threshold=internal["capacity-factors"]["min"],
         gridcell_overlap_threshold=internal["quality-control"][
             "capacity-factor-gridcell-overlap-threshold"
-        ],
-        first_year=config["scope"]["temporal"]["first-year"],
-        final_year=config["scope"]["temporal"]["final-year"],
-        trim_ts=internal["capacity-factors"]["trim-ninja-timeseries"],
+        ]
     wildcard_constraints:
-        technology="|".join(internal["techs"]["land"])
+        technology="|".join(internal["techs"]["land"]),
+        year = "|".join([str(i) for i in range(*internal["scope"]["year_range"])])
     output:
-        "results/{resolution}/capacityfactors-{technology}.csv",
+        "results/{resolution}/{year}/capacityfactors-{technology}.csv",
     conda:
         "../envs/geo.yaml"
     resources:
@@ -38,7 +35,7 @@ rule shared_coast:
     params:
         polygon_area_share_threshold=internal["quality-control"][
             "shared-coast-polygon-area-share-threshold"
-        ],
+        ]
     output:
         "results/{resolution}/shared-coast.csv",
     threads: 4
@@ -61,11 +58,10 @@ rule capacity_factors_offshore:
         gridcell_overlap_threshold=internal["quality-control"][
             "capacity-factor-gridcell-overlap-threshold"
         ],
-        first_year=config["scope"]["temporal"]["first-year"],
-        final_year=config["scope"]["temporal"]["final-year"],
-        trim_ts=internal["capacity-factors"]["trim-ninja-timeseries"],
+    wildcard_constraints:
+        year = "|".join([str(i) for i in range(*internal["scope"]["year_range"])])
     output:
-        "results/{resolution}/capacityfactors-wind-offshore.csv",
+        "results/{resolution}/{year}/capacityfactors-wind-offshore.csv",
     conda:
         "../envs/geo.yaml"
     resources:

@@ -10,12 +10,12 @@ rule eez:
         "results/eez.geojson",
     params:
         bounds="{x_min},{y_min},{x_max},{y_max}".format(
-            **internal["scope"]["spatial"]["bounds"]
+            **internal["scope"]["bounds"]
         ),
         countries=",".join(
             [
                 "'{}'".format(country)
-                for country in internal["scope"]["spatial"]["countries"]
+                for country in internal["scope"]["countries"]
             ]
         ),
     conda:

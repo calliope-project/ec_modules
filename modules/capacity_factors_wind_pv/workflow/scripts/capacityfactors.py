@@ -16,8 +16,7 @@ def capacityfactors(
     cf_threshold,
     path_to_result,
     gridcell_overlap_threshold,
-    first_year=None,
-    final_year=None,
+    year
 ):
     """Generate capacityfactor time series for each location."""
     locations = (
@@ -25,23 +24,12 @@ def capacityfactors(
     )
     locations.index = locations.index.map(lambda x: x.replace(".", "-"))
     ts = xr.open_dataset(path_to_timeseries)
-    ts = ts.sel(time=slice(first_year, final_year))
+    ts = ts.sel(time=slice(year, year))
     # xarray will silently miss the fact that data doesn't exist with slice
-    if (
-        first_year is not None
-        and first_year not in ts.time.to_index().year.astype(str).unique()
-    ):
+    if year not in ts.time.to_index().year.astype(str).unique():
         raise ValueError(
             f"Cannot access capacity factor data for timeseries {path_to_timeseries} "
-            f"with a start year of {first_year}."
-        )
-    if (
-        final_year is not None
-        and final_year not in ts.time.to_index().year.astype(str).unique()
-    ):
-        raise ValueError(
-            f"Cannot access capacity factor data for timeseries {path_to_timeseries} "
-            f"with an end year of {final_year}."
+            f"for {year}."
         )
     if ("lat" not in ts.dims) or (
         "lon" not in ts.dims
@@ -66,11 +54,6 @@ if __name__ == "__main__":
         path_to_timeseries_with_coordinates=snakemake.input.coordinates,
         cf_threshold=float(snakemake.params.cf_threshold),
         gridcell_overlap_threshold=float(snakemake.params.gridcell_overlap_threshold),
-        first_year=str(snakemake.params.first_year)
-        if snakemake.params.trim_ts
-        else None,
-        final_year=str(snakemake.params.final_year)
-        if snakemake.params.trim_ts
-        else None,
+        year=str(snakemake.wildcards.year),
         path_to_result=snakemake.output[0],
     )

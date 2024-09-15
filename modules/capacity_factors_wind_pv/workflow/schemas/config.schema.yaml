@@ -6,13 +6,3 @@ properties:
   use_default_user_resources:
     type: boolean
     description: If True, the module will attempt to download default resource files instead of relying on custom user inputs.
-  scope:
-    temporal:
-      type: object
-      properties:
-        first-year:
-          type: integer
-          description: The first year of the simulation.
-        final-year:
-          type: integer
-          description: The final year of the simulation.
