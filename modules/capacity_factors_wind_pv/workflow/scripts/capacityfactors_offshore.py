@@ -18,7 +18,7 @@ def capacityfactors(
     cf_threshold,
     path_to_result,
     gridcell_overlap_threshold,
-    year
+    year,
 ):
     """Generate offshore capacityfactor time series for each location."""
     eez = gpd.read_file(path_to_eez).set_index("MRGID").to_crs(EPSG3035).geometry

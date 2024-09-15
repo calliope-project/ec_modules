@@ -16,7 +16,7 @@ def capacityfactors(
     cf_threshold,
     path_to_result,
     gridcell_overlap_threshold,
-    year
+    year,
 ):
     """Generate capacityfactor time series for each location."""
     locations = (
