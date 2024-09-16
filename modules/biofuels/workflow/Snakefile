@@ -22,6 +22,6 @@ if config["use_default_user_resources"]:
     rule all:
         message: "Generate all outputs for 'biofuels'."
         input:
-            expand("results/ehighways/{scenario}/potential-mwh-per-year.csv", scenario=["low", "medium", "high"]),
-            expand("results/ehighways/{scenario}/costs-eur-per-mwh.csv", scenario=["low", "medium", "high"]),
+            expand("results/ehighways/{scenario}/potential_mwh_per_year.csv", scenario=["low", "medium", "high"]),
+            expand("results/ehighways/{scenario}/costs_eur_per_mwh.csv", scenario=["low", "medium", "high"]),
             expand("results/ehighways/{scenario}/potentials.png", scenario=["low", "medium", "high"])
