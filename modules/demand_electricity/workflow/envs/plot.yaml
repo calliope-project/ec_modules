@@ -3,7 +3,7 @@
 # Once geo.yaml is updated, this can env can probably be removed
 name: plot
 channels:
-    - conda-forge
+  - conda-forge
 dependencies:
   - python=3.11
   - pandas=2.2.2

@@ -24,23 +24,14 @@ import pycountry
 
 
 def national_load(
-    path_to_raw_load,
-    first_year,
-    final_year,
-    data_quality_config,
-    path_to_output,
-    countries,
+    path_to_raw_load, year, data_quality_config, path_to_output, countries
 ):
     """Extracts national load time series for all countries in a specified year."""
-    load = clean_load_data(
-        path_to_raw_load, first_year, final_year, data_quality_config, countries
-    )
+    load = clean_load_data(path_to_raw_load, year, data_quality_config, countries)
     load.to_csv(path_to_output, header=True)
 
 
-def clean_load_data(
-    path_to_raw_load, first_year, final_year, data_quality_config, countries
-):
+def clean_load_data(path_to_raw_load, year, data_quality_config, countries):
     """Cleans load data.
 
     TODO: Extend docstring.
@@ -52,17 +43,13 @@ def clean_load_data(
     gap_filled_load = pd.concat(
         fill_gaps_per_source(filtered_load, year, data_quality_config, source)
         for source in data_sources
-        for year in range(first_year, final_year + 1)
     ).sort_index()
     return get_source_choice_per_country(
         filtered_load[
-            (
-                filtered_load.index.get_level_values("utc_timestamp")
-                >= f"{first_year}-01-01 00:00"
-            )
+            (filtered_load.index.get_level_values("timesteps") >= f"{year}-01-01 00:00")
             & (
-                filtered_load.index.get_level_values("utc_timestamp")
-                <= f"{final_year}-12-31 23:00"
+                filtered_load.index.get_level_values("timesteps")
+                <= f"{year}-12-31 23:00"
             )
         ],
         gap_filled_load,
@@ -76,6 +63,7 @@ def read_load_profiles(path_to_raw_load, entsoe_priority):
     load_by_attribute = (
         data[(data.variable == "load") & (data.attribute.isin(entsoe_priority))]
         .set_index(["utc_timestamp", "attribute", "region"])
+        .rename_axis(index={"utc_timestamp": "timesteps"})
         .loc[:, "data"]
         .unstack("region")
     )
@@ -322,8 +310,7 @@ def _select_load_by_source_priority(load, source_priority):
 if __name__ == "__main__":
     national_load(
         path_to_raw_load=snakemake.input.load,
-        first_year=snakemake.params.first_year,
-        final_year=snakemake.params.final_year,
+        year=int(snakemake.wildcards.year),
         data_quality_config=snakemake.params.data_quality_config,
         countries=snakemake.params.countries,
         path_to_output=snakemake.output[0],
