@@ -2,7 +2,3 @@
 use_default_user_resources: true
 
 # Any other user configuration goes below
-scope:
-    temporal:
-        first_year: 2016
-        final_year: 2016
