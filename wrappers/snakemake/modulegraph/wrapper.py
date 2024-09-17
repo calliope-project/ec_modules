@@ -10,5 +10,5 @@ from ec_utils.modules import write_snakemake_modulegraph_png
 write_snakemake_modulegraph_png(
     snakemake_dotfile=snakemake.input.dotfile,
     output_path=snakemake.output.pngfile,
-    prefixes=snakemake.params.prefixes
+    prefixes=snakemake.params.prefixes,
 )
