@@ -1,0 +1,8 @@
+rule snakemake_modulegraph:
+    input:
+        dotfile = "rulegraph.dot"
+    output:
+        pngfile = "results/modulegraph.png",
+    params:
+        prefixes = ["module_hydropower", "module_biofuels"]
+    wrapper: "file:../"
