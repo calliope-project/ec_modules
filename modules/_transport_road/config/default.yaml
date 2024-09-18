@@ -1,4 +1,3 @@
-# This is the default configuration of your module
 data-sources:
   resolution: "national"
   spatial-zones: "https://www.dropbox.com/scl/fi/sjjisuqnzck2mhxs9jca7/units-national.geojson?rlkey=rv0q1exsytxws3gfvankbt9p7&dl=0"

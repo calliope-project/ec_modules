@@ -5,14 +5,13 @@ import subprocess
 import tempfile
 from pathlib import Path
 
-DOCS_PATH = Path("docs/")
 MODULES_PATH = Path("modules/")
-TEMPDIR = tempfile.TemporaryDirectory(dir=DOCS_PATH / "modules")
+
 
 TEMPLATE = """
 --8<-- "{readme}:intro"
 
-???+ info "General summary"
+??? info "Visual summary"
 
     --8<-- "{readme}:mermaid"
 
@@ -124,16 +123,17 @@ def on_pre_build(config):
     module_docs_dir.mkdir(exist_ok=True)
 
     for module_dir in MODULES_PATH.iterdir():
-        if not str(module_dir.name).startswith("_") or not any(module_dir.iterdir()):
+        if str(module_dir.name).startswith("_") or not any(module_dir.iterdir()):
             continue
         create_module_docfile(module_docs_dir, module_dir)
+
 
 def on_post_build(config):
     """Remove automatically generated files."""
     shutil.rmtree(Path(config["docs_dir"]) / "modules")
 
 
-def create_module_docfile(module_docs_dir: Path, module_dir: Path):
+def create_module_docfile(prefix: Path, module_dir: Path):
     """Save a fully documented page for the requested module."""
     name = module_dir.name
 
@@ -142,7 +142,11 @@ def create_module_docfile(module_docs_dir: Path, module_dir: Path):
     license = module_dir / "LICENSE.txt"
     default_config = module_dir / "config/default.yaml"
     schema = module_dir / "workflow/schemas/config.schema.yaml"
-    rulegraph = create_module_rulegraph(name, Path(TEMPDIR.name), module_dir)
+
+    images_dir = prefix / "images"
+    images_dir.mkdir(exist_ok=True)
+    rulegraph = create_module_rulegraph(name, prefix / "images", module_dir)
+
     assert all(
         [
             file.exists()
@@ -155,14 +159,14 @@ def create_module_docfile(module_docs_dir: Path, module_dir: Path):
     text = TEMPLATE.format(
         readme=str(readme),
         default_config=str(default_config),
-        rulegraph=str(rulegraph.relative_to(module_docs_dir.resolve())),
+        rulegraph=str(rulegraph.relative_to(prefix.resolve())),
         citation=citation,
         schema=schema,
         authors=authors,
         license=license,
     )
 
-    with open(module_docs_dir / f"{name}.md", "w") as file:
+    with open(prefix / f"{name}.md", "w") as file:
         file.write(text)
 
 
@@ -183,4 +187,3 @@ def get_apa_citation(module_dir: Path):
         "cffconvert -f apalike", shell=True, check=True, cwd=dir, capture_output=True
     )
     return citation.stdout.decode()
-

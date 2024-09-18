@@ -1,6 +1,6 @@
 <!-- Please provide a concise summary of the module in this section. -->
 <!-- --8<-- [start:intro] -->
-# Euro-Calliope - biofuels
+# biofuels
 
 A module preparing biofuels cost and potentials for European nations using the [ENSPRESSO - BIOMASS](https://data.jrc.ec.europa.eu/dataset/74ed5a04-7d74-4807-9eab-b94774309d9f) database.
 

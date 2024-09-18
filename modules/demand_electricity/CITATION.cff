@@ -27,7 +27,7 @@ identifiers:
       Electricity in Europe
 repository-code: >-
   https://github.com/calliope-project/ec_modules/commits/main/modules/demand_electricity
-url: 'https://ec-modules.readthedocs.io/en/stable/'
+url: 'https://ec-modules.readthedocs.io/'
 abstract: >-
   A module preparing electricity demand timeseries for European nations.
 license: MIT

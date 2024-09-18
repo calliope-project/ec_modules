@@ -1,6 +1,6 @@
 <!-- Please provide a concise summary of the module in this section. -->
 <!-- --8<-- [start:intro] -->
-# Euro-Calliope - demand_electricity
+# demand_electricity
 
 A module preparing electricity demand time series for European nations.
 

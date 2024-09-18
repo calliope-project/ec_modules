@@ -21,7 +21,7 @@ identifiers:
       carbon neutrality across the entire European energy system
 repository-code: >-
   https://github.com/calliope-project/ec_modules/commits/main/modules/heat
-url: 'https://ec-modules.readthedocs.io/en/stable/'
+url: 'https://ec-modules.readthedocs.io/'
 abstract: >-
   A module to generate timeseries for building heat demand and heatpump COP for European countries.
 license: MIT

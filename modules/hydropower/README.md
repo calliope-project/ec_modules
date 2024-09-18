@@ -1,6 +1,6 @@
 <!-- Please provide a concise summary of the module in this section. -->
 <!-- --8<-- [start:intro] -->
-# Euro-Calliope - hydropower
+# hydropower
 
 A module to produce hourly timeseries of hydropower plants in Europe.
 

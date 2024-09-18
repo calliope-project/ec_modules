@@ -1,6 +1,6 @@
 <!-- Please provide a concise summary of the module in this section. -->
 <!-- --8<-- [start:intro] -->
-# Euro-Calliope - wind_pv
+# wind_pv
 
 A module that prepares capacity factors for pv and wind, both onshore and offshore.
 

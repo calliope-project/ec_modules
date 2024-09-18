@@ -27,7 +27,7 @@ identifiers:
       Electricity in Europe
 repository-code: >-
   https://github.com/calliope-project/ec_modules/commits/main/modules/biofuels
-url: 'https://ec-modules.readthedocs.io/en/stable/'
+url: 'https://ec-modules.readthedocs.io/'
 abstract: >-
   A module that prepares capacity factors for pv and wind, both onshore and offshore.
 license: MIT

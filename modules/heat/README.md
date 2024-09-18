@@ -1,10 +1,10 @@
 <!-- Please provide a concise summary of the module in this section. -->
 <!-- --8<-- [start:intro] -->
-# Sector-Coupled-Euro-Calliope - heat
+# heat
 
 A module to generate timeseries for building heat demand and heatpump COP for European countries.
 
->[!important]
+>**important**
 >As of 10 Sept 2024, this module has only been tested for national-resolution time series of heat demand and heatpump COP.
 >Time series at any resolution is coming soon!
 
