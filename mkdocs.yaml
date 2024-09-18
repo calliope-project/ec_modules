@@ -54,6 +54,9 @@ markdown_extensions:
       emoji_generator: !!python/name:material.extensions.emoji.to_svg
   - pymdownx.highlight:
       anchor_linenums: true
+  - pymdownx.snippets:
+      check_paths: true
+      restrict_base_path: true
   - pymdownx.superfences:
       custom_fences:
         - name: mermaid
@@ -67,4 +70,6 @@ plugins:
       repository: calliope-project/ec_modules
       branch: main
   - search
+# hooks:
+#   - docs/hooks/module_sections.py
 copyright: Copyright &copy; since 2024 <a href="https://github.com/calliope-project/ec_modules/blob/main/AUTHORS">ec_modules contributors</a> (MIT licensed)

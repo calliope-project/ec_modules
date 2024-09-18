@@ -1,5 +1,7 @@
 # Authors
 
+<!-- --8<-- [start:authors] -->
+
 This is the list of contributors to the 'biofuels' module for copyright purposes.
 
 - Tim Tröndle, ETH Zürich and IASS Potsdam <tim.troendle@usys.ethz.ch>
@@ -10,3 +12,5 @@ This does not necessarily list everyone who has contributed to the 'biofuels' mo
 For a full contributor list, see:
 
 <https://github.com/calliope-project/ec_modules/commits/main/modules/biofuels>
+
+<!-- --8<-- [end:authors] -->
