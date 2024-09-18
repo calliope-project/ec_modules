@@ -2,7 +2,6 @@
 
 import shutil
 import subprocess
-import tempfile
 from pathlib import Path
 
 MODULES_PATH = Path("modules/")
