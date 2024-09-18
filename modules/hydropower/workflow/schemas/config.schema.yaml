@@ -37,4 +37,4 @@ properties:
       station_nearest_basin_max_km:
         type: number
         minimum: 0
-        description: Move stations outside of hydrobasins into closes basin by max this amount (fails otherwise).
+        description: Move stations outside of hydrobasins into closest basin by max this amount (fails otherwise).

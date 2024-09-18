@@ -1,0 +1,33 @@
+# This CITATION.cff file was generated with cffinit.
+# Visit https://bit.ly/cffinit to generate yours today!
+
+cff-version: 1.2.0
+title: 'Euro-Calliope: hydropower.'
+message: >-
+  If you use this software, please cite it using the
+  metadata from this file.
+type: software
+authors:
+  - given-names: Tim
+    family-names: Tröndle
+    email: tim.troendle@usys.ethz.ch
+    affiliation: ETH Zürich
+    orcid: 'https://orcid.org/0000-0002-3734-8284'
+  - given-names: Bryn
+    family-names: Pickering
+    email: bp325@cam.ac.uk
+    affiliation: University of Cambridge
+    orcid: 'https://orcid.org/0000-0003-4044-6587'
+identifiers:
+  - type: doi
+    value: 10.1016/j.joule.2020.07.018
+    description: >-
+      Trade-Offs between Geographic Scale, Cost, and
+      Infrastructure Requirements for Fully Renewable
+      Electricity in Europe
+repository-code: >-
+  https://github.com/calliope-project/ec_modules/commits/main/modules/biofuels
+url: 'https://ec-modules.readthedocs.io/en/stable/'
+abstract: >-
+  A module to produce hourly timeseries of hydropower plants in Europe.
+license: MIT

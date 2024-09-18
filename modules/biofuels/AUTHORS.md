@@ -1,5 +1,4 @@
 # Authors
-
 <!-- --8<-- [start:authors] -->
 
 This is the list of contributors to the 'biofuels' module for copyright purposes.

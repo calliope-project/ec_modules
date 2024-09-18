@@ -10,7 +10,8 @@ Additionally, we extend it with a few quality of life improvements.
     ```tree
     modules/example/
     ├── AUTHORS
-    ├── LICENSE
+    ├── CITATION.cff
+    ├── LICENSE.txt
     ├── README.md
     ├── rulegraph.png
     ├── config/
@@ -56,6 +57,7 @@ Additionally, we extend it with a few quality of life improvements.
 Please ensure that your module has the following:
 
 - An `AUTHORS` file. This lists all the people who have contributed to the module.
+- A `CITATION` file. This allows us to automatically build a citation for your module.
 - A `LICENSE` file. This should refer to the `AUTHORS` file above. To ensure license compatibility, we only permit permissive licenses like [MIT](https://opensource.org/license/mit).
 - A `README.md` file. Here you describe the module's functionality using our standard template (see [documentation](#documentation)).
 - A `config/default.yaml` file. This contains the module's default configuration.

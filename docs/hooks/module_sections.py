@@ -17,8 +17,6 @@ TEMPLATE = """
 
 ??? info "`snakemake` execution steps"
 
-    This module executes the following `snakemake` rules:
-
     ![rulegraph]({rulegraph})
 
 ## How to use
@@ -26,8 +24,30 @@ TEMPLATE = """
 All you need is three easy steps:
 
 1. Configuring the module correctly.
-2. Placing some required files in the `resources/user` folder (if needed).
-3. Requesting results using the correct location and wildcards (if needed):
+2. Placing files in the `resources/user` folder with the correct filename (if needed).
+
+    ??? example "User file with wildcard"
+
+        Imagine that a module requests `resources/user/something_{{wildcard}}.txt`,
+        with no limitations in wildcard naming.
+        The following would be valid:
+
+        ```txt
+        resources/
+            └── user/
+                └── something_foobar.txt
+        ```
+
+        For prefixed modules (i.e., using `prefix: some_prefix` in `snakemake`):
+
+        ```txt
+        some_prefix/
+        └── resources/
+            └── user/
+                └── something_foobar.txt
+        ```
+
+3. Requesting results using the correct filenames and wildcards (if needed):
 
     ```bash
     snakemake results/{{wildcard1}}/filename_{{wildcard2}}.csv --cores 2
@@ -101,20 +121,23 @@ def on_pre_build(config):
     """
     for module_dir in MODULES_PATH.iterdir():
         name = module_dir.name
-        create_module_docfile(name, )
-
-
+        create_module_docfile(name)
 
 
 def create_module_docfile(name: str, docs_dir: Path, module_dir: Path):
     """Save a fully documented page for the requested module."""
     authors = module_dir / "AUTHORS.md"
     readme = module_dir / "README.md"
-    license = module_dir / "LICENSE.md"
+    license = module_dir / "LICENSE.txt"
     default_config = module_dir / "config/default.yaml"
     schema = module_dir / "workflow/schemas/config.schema.yaml"
     rulegraph = create_module_rulegraph(name, Path(TEMPDIR.name), module_dir)
-    assert all([file.exists() for file in [authors, readme, default_config, rulegraph, schema, license]])
+    assert all(
+        [
+            file.exists()
+            for file in [authors, readme, default_config, rulegraph, schema, license]
+        ]
+    )
 
     citation = get_apa_citation(module_dir)
 
@@ -125,7 +148,7 @@ def create_module_docfile(name: str, docs_dir: Path, module_dir: Path):
         citation=citation,
         schema=schema,
         authors=authors,
-        license=license
+        license=license,
     )
 
     with open(docs_dir / f"{name}.md", "w") as file:
@@ -143,12 +166,16 @@ def create_module_rulegraph(name, prefix: Path, module_dir: Path) -> Path:
 
 def get_apa_citation(module_dir: Path):
     """Return APA citation if the .cff file is correct."""
-    path = str(module_dir / "docs")
-    subprocess.run("cffconvert --validate", shell=True, check=True, cwd=path)
-    citation = subprocess.run("cffconvert -f apalike", shell=True, check=True, cwd=path, capture_output=True)
+    dir = str(module_dir)
+    subprocess.run("cffconvert --validate", shell=True, check=True, cwd=dir)
+    citation = subprocess.run(
+        "cffconvert -f apalike", shell=True, check=True, cwd=dir, capture_output=True
+    )
     return citation.stdout.decode()
 
 
 if __name__ == "__main__":
-    create_module_docfile("biofuels", Path("docs/modules/"), Path("modules/biofuels/"))
+    create_module_docfile(
+        "wind_pv", Path("docs/modules/"), Path("modules/wind_pv/")
+    )
     pass

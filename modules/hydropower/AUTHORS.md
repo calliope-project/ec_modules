@@ -1,5 +1,7 @@
 # Authors
 
+<!-- --8<-- [start:authors] -->
+
 This is the list of contributors to the 'hydropower' module for copyright purposes.
 
 - Tim Tröndle, ETH Zürich and IASS Potsdam <tim.troendle@usys.ethz.ch>
@@ -11,3 +13,5 @@ This does not necessarily list everyone who has contributed to the 'hydropower' 
 For a full contributor list, see:
 
 <https://github.com/calliope-project/ec_modules/commits/main/modules/hydropower>
+
+<!-- --8<-- [end:authors] -->

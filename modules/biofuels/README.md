@@ -1,6 +1,6 @@
 <!-- Please provide a concise summary of the module in this section. -->
 <!-- --8<-- [start:intro] -->
-# Euro-Calliope - Biofuels
+# Euro-Calliope - biofuels
 
 A module preparing biofuels cost and potentials for European nations using the [ENSPRESSO - BIOMASS](https://data.jrc.ec.europa.eu/dataset/74ed5a04-7d74-4807-9eab-b94774309d9f) database.
 
@@ -11,6 +11,9 @@ A module preparing biofuels cost and potentials for European nations using the [
 <!-- Please fill in this diagram including: wildcards, user resources and final results. -->
 <!-- --8<-- [start:mermaid] -->
 ```mermaid
+---
+title: biofuels
+---
 flowchart LR
     D1[("`**automatic**
         biomass potentials (JRC ENSPRESO)
@@ -44,11 +47,10 @@ flowchart LR
 - **{scenario}**: these are based on [ENSPRESSO - BIOMASS](https://data.jrc.ec.europa.eu/dataset/74ed5a04-7d74-4807-9eab-b94774309d9f). Three can be requested:
     - low
     - medium
-    - high.
+    - high
 
 <!-- --8<-- [end:wildcards] -->
 ### User
-
 <!-- Please briefly explain user resources here. -->
 <!-- --8<-- [start:user] -->
 
@@ -56,7 +58,6 @@ flowchart LR
 
 <!-- --8<-- [end:user] -->
 ### Result files
-
 <!-- Please briefly explain final result files here. -->
 <!-- --8<-- [start:results] -->
 
@@ -65,10 +66,9 @@ flowchart LR
 
 <!-- --8<-- [end:results]  -->
 ## References
-
 <!-- Please cite studies and datasets used for this workflow below. -->
 <!-- --8<-- [start:references] -->
 
 - Ruiz, Pablo (2019): ENSPRESO - BIOMASS. European Commission, Joint Research Centre (JRC) [Dataset] PID: <http://data.europa.eu/89h/74ed5a04-7d74-4807-9eab-b94774309d9f>
 
-<!-- --8<-- [start:references] -->
+<!-- --8<-- [end:references] -->
