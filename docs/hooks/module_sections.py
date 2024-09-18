@@ -1,5 +1,6 @@
 """Generate documentation for all the existing modules."""
 
+import shutil
 import subprocess
 import tempfile
 from pathlib import Path
@@ -119,13 +120,23 @@ def on_pre_build(config):
 
     Automatically called by mkdocs if the hook is configured.
     """
+    module_docs_dir = Path(config["docs_dir"]) / "modules"
+    module_docs_dir.mkdir(exist_ok=True)
+
     for module_dir in MODULES_PATH.iterdir():
-        name = module_dir.name
-        create_module_docfile(name)
+        if not str(module_dir.name).startswith("_") or not any(module_dir.iterdir()):
+            continue
+        create_module_docfile(module_docs_dir, module_dir)
+
+def on_post_build(config):
+    """Remove automatically generated files."""
+    shutil.rmtree(Path(config["docs_dir"]) / "modules")
 
 
-def create_module_docfile(name: str, docs_dir: Path, module_dir: Path):
+def create_module_docfile(module_docs_dir: Path, module_dir: Path):
     """Save a fully documented page for the requested module."""
+    name = module_dir.name
+
     authors = module_dir / "AUTHORS.md"
     readme = module_dir / "README.md"
     license = module_dir / "LICENSE.txt"
@@ -144,14 +155,14 @@ def create_module_docfile(name: str, docs_dir: Path, module_dir: Path):
     text = TEMPLATE.format(
         readme=str(readme),
         default_config=str(default_config),
-        rulegraph=str(rulegraph.relative_to(docs_dir.resolve())),
+        rulegraph=str(rulegraph.relative_to(module_docs_dir.resolve())),
         citation=citation,
         schema=schema,
         authors=authors,
         license=license,
     )
 
-    with open(docs_dir / f"{name}.md", "w") as file:
+    with open(module_docs_dir / f"{name}.md", "w") as file:
         file.write(text)
 
 
@@ -173,9 +184,3 @@ def get_apa_citation(module_dir: Path):
     )
     return citation.stdout.decode()
 
-
-if __name__ == "__main__":
-    create_module_docfile(
-        "wind_pv", Path("docs/modules/"), Path("modules/wind_pv/")
-    )
-    pass

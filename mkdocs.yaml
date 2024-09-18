@@ -70,6 +70,6 @@ plugins:
       repository: calliope-project/ec_modules
       branch: main
   - search
-# hooks:
-#   - docs/hooks/module_sections.py
+hooks:
+  - docs/hooks/module_sections.py
 copyright: Copyright &copy; since 2024 <a href="https://github.com/calliope-project/ec_modules/blob/main/AUTHORS">ec_modules contributors</a> (MIT licensed)
