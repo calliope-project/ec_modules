@@ -1,6 +1,6 @@
 # Conventions
 
-The tools in this project should focus on being easily re-used by others.
+The tools in this project should focus on being easily reused by others.
 We want to increase compatibility without over-complicating things, so here is a list of simple pragmatic rules to follow.
 
 ## File formats
@@ -10,7 +10,7 @@ To ensure modules, wrappers and user workflows interact as seamlessly as possibl
 ### Configuration data
 
 Use [`.yaml`](https://yaml.org/) files for `snakemake` configuration and schema validation.
-Aim to make configuration files succint and robust against user mistakes.
+Aim to make configuration files succinct and robust against user mistakes.
 
 If a configuration value requires specific **units**, it must be specified in its name explicitly.
 
@@ -117,7 +117,7 @@ Make use of the [`pycountry`](https://github.com/pycountry/pycountry) library to
 
 ### Geographic data
 
-- :white_check_mark: Use `longitude` | `latitude` to express position (i.e., avoid ambigous values like `x` | `y`).
+- :white_check_mark: Use `longitude` | `latitude` to express position (i.e., avoid ambiguous values like `x` | `y`).
 - :white_check_mark: **Geographic data**, where preserving *position* matters, should be in [EPSG:4326](https://epsg.io/4326).
 - :white_check_mark: **Projected data**, preserving *distance* or *area* matters, should use the representation that best fits the needs of the calculation. For European data, [EPSG:3035](https://epsg.io/3035) should fit most needs. Otherwise, we recommend using the [EPSG Dataset](https://epsg.org/home.html) to choose the best fitting reference system.
 

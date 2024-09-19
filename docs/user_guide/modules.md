@@ -178,7 +178,7 @@ Examples for all relevant files will be detailed in the module's documentation.
 
     After placing your spatial resolution file, all you need to do is request the timeseries file, respecting the same wildcards.
 
-    In this case, the module spacifies
+    In this case, the module specifies
 
     `results/{resolution}/{year}/run_of_river_timeseries.csv`
 

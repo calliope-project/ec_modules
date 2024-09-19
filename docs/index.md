@@ -9,7 +9,7 @@ We aim to do so in the following ways:
 - By providing an expanding collection of [high-quality modular workflows](./user_guide/modules.md) used for peer-reviewed research.
 - By providing a wide array of [wrappers](./user_guide/wrappers.md) for popular tools used in Energy System research.
 
-In essense, we wish to turn very complex models that are hard to maintain and re-use...
+In essence, we wish to turn very complex models that are hard to maintain and reuse...
 
 ![no modules](./images/not_modular.png)
 
