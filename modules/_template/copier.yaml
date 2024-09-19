@@ -10,23 +10,55 @@ module_description:
   type: str
   help: Please give a brief sentence describing your module.
   placeholder: A module to estimate energy demand of road vehicles at a subnational level.
+  validator: >-
+    {% if  module_description|length < 1 %}
+    "Please provide a value."
+    {% endif %}
+author_family_name:
+  type: str
+  help: Please provide your family name(s). We auto-generate MIT license and citation files for you.
+  placeholder: Orellana
+  validator: >-
+    {% if  author_family_name|length < 1 %}
+    "Please provide a value."
+    {% endif %}
 author_name:
   type: str
-  help: We auto-generate an MIT license for you. Please provide your full name.
-  placeholder: Laura Patricia Orellana
-author_institution:
+  help: Please provide your given name(s). We auto-generate MIT license and citation files for you.
+  placeholder: Laura Patricia
+  validator: >-
+    {% if  author_name|length < 1 %}
+    "Please provide a value."
+    {% endif %}
+author_affiliation:
   type: str
-  help: We auto-generate an MIT license for you. Please provide the name of your institution.
+  help: We auto-generate MIT license and citation files for you. Please provide the name of your institution.
   placeholder: TU Delft
+  validator: >-
+    {% if  author_affiliation|length < 1 %}
+    "Please provide a value."
+    {% endif %}
 author_email:
   type: str
-  help: We auto-generate an MIT license for you. Please provide an email address.
+  help: We auto-generate MIT license and citation files for you. Please provide an email address.
   placeholder: yourname@university.edu
   validator: >-
     {% if not (author_email | regex_search('^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$')) %}
     "This email does not seem valid... did you forget to add a dot?"
     {% endif %}
+author_orcid:
+  type: str
+  help: Please provide your ORCID. We auto-generate a citation file for you.
+  placeholder: 0000-0000-0000-0000
+  validator: >-
+    {% if not (author_orcid | regex_search('^([0-9]{4}-[0-9]{4}-[0-9]{4}-[0-9]{3}[0-9X]{1})$')) %}
+    "This ORCID does not seem valid..."
+    {% endif %}
 year:
   type: str
-  help: We auto-generate an MIT license for you. What year is this?
+  help: We auto-generate MIT license and citation files for you. What year is this?
   placeholder: "2024"
+  validator: >-
+    {% if not (year | regex_search('^^([0-9]{4})$')) %}
+    "This does not seem like a valid year..."
+    {% endif %}

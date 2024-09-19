@@ -60,9 +60,9 @@ flowchart LR
     - rooftop-pv-e-w
     - rooftop-pv-s-flat
 - **{scenario}**: The socio-technial scenario to process, which will constrain the amount of land use allowed (See @Trondle:2019 for more information). Can be any of the following:
-- technical-potential`
-- technical-potential-protected`
-- technical-social-potential`
+    - technical-potential
+    - technical-potential-protected
+    - technical-social-potential
 
 <!-- --8<-- [end:wildcards] -->
 ### User files

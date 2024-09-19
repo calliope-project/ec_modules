@@ -1,3 +1,3 @@
-# Required standard configuration keys
+# Set this to 'False' to enable user inputs
 use_default_user_resources: True
-# Module-specific configuration should be below this line
+# Below you can find our recommended default configuration
