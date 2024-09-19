@@ -1,6 +1,6 @@
 # We recommend adding rules that download necessary files here.
 if config["use_default_user_resources"]:
-    rule download_units:
+    rule user_input_shapes:
         message: "Download spatial zones."
         params:
             url = internal["resources"]["default_user_shapes"],

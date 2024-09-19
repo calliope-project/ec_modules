@@ -1,15 +1,19 @@
-# Easy Energy Modules - heat
+<!-- Please provide a concise summary of the module in this section. -->
+<!-- --8<-- [start:intro] -->
+# heat
 
 A module to generate timeseries for building heat demand and heatpump COP for European countries.
 
->[!important]
->As of 10 Sept 2024, this module has only been tested for national-resolution time series of heat demand and heat pump cop.
+>**important**
+>As of 10 Sept 2024, this module has only been tested for national-resolution time series of heat demand and heatpump COP.
 >Time series at any resolution is coming soon!
+
+<!-- --8<-- [end:intro] -->
 
 ## Input-Output
 
-Here is a brief IO diagram of the module's operation.
-
+<!-- Please fill in this diagram including: wildcards, user resources and final results. -->
+<!-- --8<-- [start:mermaid] -->
 ```mermaid
 ---
 title: heat
@@ -31,32 +35,46 @@ flowchart LR
         results/{shape}/timeseries/heat_pump_cop.csv
         `")
 ```
+<!-- --8<-- [end:mermaid] -->
+
+### Wildcards
+
+<!-- Please explain what wildcards are required by users here. -->
+<!-- --8<-- [start:wildcards] -->
+
+- **{shape}**: Determines the number of regions that the module will process. Importantly, it must be specified for the correct input file, which can be obtained from [Euro-Calliope datasets](https://zenodo.org/records/6600619). The following options are possible:
+    - national
+
+<!-- --8<-- [end:wildcards] -->
 
 ### User
+<!-- Please briefly explain user resources here. -->
+<!-- --8<-- [start:user] -->
 
 - **resources/user/{shape}.geojson**: desired regional aggregation. CRS must be EPSG:4326.
 
+<!-- --8<-- [end:user] -->
 ### Results
+<!-- Please briefly explain final result files here. -->
+<!-- --8<-- [start:results] -->
 
 - **results/{shape}/timeseries/heat_demand.csv**: heat demand timeseries in 100 GW p.u. .
 - **results/{shape}/timeseries/heat_pump_cop.csv**: heat pump coefficient of performance (COP) timeseries.
 
-## DAG
-
-Here is a brief example of the module's steps.
-
-![DAG](rulegraph.png)
-
-## Citation
+<!-- --8<-- [end:results]  -->
 
 Pickering, B., Lombardi, F., Pfenninger, S., 2022. Diversity of options to eliminate fossil fuels and reach carbon neutrality across the entire European energy system. Joule. DOI:10.1016/j.joule.2022.05.009
 
 ## References
+<!-- Please cite studies and datasets used for this workflow below. -->
+<!-- --8<-- [start:references] -->
 
 - Ruhnau, O., Hirth, L. & Praktiknjo, A. Time series of heat demand and heat pump efficiency for energy system modeling. Sci Data 6, 189 (2019). <https://doi.org/10.1038/s41597-019-0199-y>
 - Mantzos, L., Matei, N., Mulholland, E., Rózsai, M., Tamba, M. and Wiesenthal, T., The JRC Integrated Database of the European Energy System, European Commission, 2018, JRC112474.
 - Pickering, B., & Pfenninger, S. (2024). Temperature and wind speed time series on a 50 km^2 grid in Europe (2024-06-07) [Data set]. Zenodo. <https://doi.org/10.5281/zenodo.11516744>
 - eurostat: European Union, 2011 - today. For more details, please refer to the [Eurostat copyright policy](https://ec.europa.eu/eurostat/web/main/help/copyright-notice). Please consult the code to identify how this data is processed.
+
+<!-- --8<-- [end:references] -->
 
 ## Remaining issues
 

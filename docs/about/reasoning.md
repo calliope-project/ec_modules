@@ -10,7 +10,7 @@ Multiple open-source workflows have appeared, each delineating the many steps an
 
 Although each model has its own differences, the data needed by them is often similar (demand profiles, existing capacity, land availability limits, etc.).
 
-![Example workflow](https://raw.githubusercontent.com/calliope-project/sector-coupled-euro-calliope/main/rulegraph.png)
+![Example workflow](./../images/not_modular.png)
 
 ## Bloat and reproducibility
 
@@ -39,4 +39,4 @@ Snakemake was specifically developed to make data processing methods easier betw
 
 ## Further reading
 
-- Wratten, L., Wilm, A. & Göke, J. Reproducible, scalable, and shareable analysis pipelines with bioinformatics workflow managers. Nat Methods 18, 1161–1168 (2021). https://doi.org/10.1038/s41592-021-01254-9
+- Wratten, L., Wilm, A. & Göke, J. Reproducible, scalable, and shareable analysis pipelines with bioinformatics workflow managers. Nat Methods 18, 1161–1168 (2021). <https://doi.org/10.1038/s41592-021-01254-9>

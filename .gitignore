@@ -33,10 +33,10 @@ gurobi.log
 .ipynb_checkpoints
 
 ### Project-specific
-out/
-output/
 tmp/
 results/
 resources/
+docs/modules/
+docs/wrappers/
 
 !modules/_example_module/**

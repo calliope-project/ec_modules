@@ -1,6 +1,6 @@
-# Required standard configuration keys
+# Set this to 'False' to enable user inputs
 use_default_user_resources: True
-# Module-specific configuration should be below this line
+
 temporal-scope:
   first-year: 2016
   final-year: 2016

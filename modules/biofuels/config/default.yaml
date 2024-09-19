@@ -1,4 +1,2 @@
-# Module input files by users go here.
+# Set this to 'False' to enable user inputs
 use_default_user_resources: True
-
-# Any other user configuration goes below

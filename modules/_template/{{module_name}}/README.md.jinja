@@ -1,38 +1,72 @@
-# Easy Energy Modules - {{module_name}}
+<!-- Please provide a concise summary of the module in this section. -->
+<!-- --8<-- [start:intro] -->
+# {{module_name}}
 
 {{module_description}}
 
+<!-- --8<-- [end:intro] -->
+
 ## Input-Output
 
-Here is a brief IO diagram of the module's operation.
-
+<!-- Please fill in this diagram including: wildcards, user resources and final results. -->
+<!-- If you wish to edit this in VSCode, we recommend the Markdown Preview Merdmaid extension. -->
+<!-- https://marketplace.visualstudio.com/items?itemName=bierner.markdown-mermaid -->
+--> --8<-- [start:mermaid] -->
 ```mermaid
 ---
 title: {{module_name}}
 ---
 flowchart LR
-    D1[("`**Automatic**
+    D1[("`**automatic**
         database1
         ...
     `")] --> |Download| M
-    C1[/"`**User**
+    C1[/"`**user**
         shapefile.geojson
         ...
     `"/] --> M(({{module_name}}))
-    M --> O1("`**File type (e.g. Timeseries)**
+    M --> O1("`**file type (e.g. timeseries)**
         output1.csv
         `")
-    M --> O2("`**File type (e.g. Energy potential)**
+    M --> O2("`**tile type (e.g. energy potential)**
         output2.nc
         `")
 ```
+<!-- --8<-- [end:mermaid] -->
 
-## DAG
+### Wildcards
 
-Here is a brief example of the module's steps.
+<!-- Please explain the wildcards shown in the diagram here, in the format shown below. -->
+<!-- --8<-- [start:wildcards] -->
 
-![DAG](rulegraph.png)
+- **{wildcard1}**: Description.
+- **{wildcard2}**: Description. This wildcard must match the following options:
+    - option1: description.
+    - option2: description.
+    - option3: description.
 
-## Citation
+<!-- --8<-- [end:wildcards] -->
+
+### User
+<!-- Please briefly explain user resources here, showing wildcards and location. -->
+<!-- --8<-- [start:user] -->
+
+- **resources/user/example_{wildcard1}.csv**: it's important that wildcard names match so users know how to use your module!
+
+<!-- --8<-- [end:user] -->
+### Result files
+<!-- Please briefly explain final result files here, showing wildcards and location. -->
+<!-- --8<-- [start:results] -->
+
+- **results/{wildcard1}/example_{wildcard2}.csv**: Description.
+
+<!-- --8<-- [end:results]  -->
 
 ## References
+<!-- Please cite studies and datasets used for this workflow below. -->
+<!-- --8<-- [start:references] -->
+
+- CITATION1
+- CITATION2
+
+<!-- --8<-- [end:references] -->

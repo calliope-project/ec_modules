@@ -1,5 +1,7 @@
 # Authors
 
+<!-- --8<-- [start:authors] -->
+
 This is the list of contributors to the 'demand_electricity' module for copyright purposes.
 
 - Tim Tröndle, ETH Zürich and IASS Potsdam <tim.troendle@usys.ethz.ch>
@@ -11,3 +13,5 @@ This does not necessarily list everyone who has contributed to the 'demand_elect
 For a full contributor list, see:
 
 <https://github.com/calliope-project/ec_modules/commits/main/modules/demand_electricity>
+
+<!-- --8<-- [end:authors] -->

@@ -1,4 +1,5 @@
 # Authors
+<!-- --8<-- [start:authors] -->
 
 This is the list of contributors to the 'wind_pv' module for copyright purposes.
 
@@ -11,3 +12,5 @@ This does not necessarily list everyone who has contributed to the 'wind_pv' mod
 For a full contributor list, see:
 
 <https://github.com/calliope-project/ec_modules/commits/main/modules/wind_pv>
+
+<!-- --8<-- [end:authors] -->
