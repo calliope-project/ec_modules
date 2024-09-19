@@ -2,7 +2,6 @@
 
 Think of them as **workflows that can be exported to other projects**.
 Their settings can be **re-configured**, allowing you to reprocess data with different parametric assumptions.
-Modules are best for stable workflows whose inputs are not expected to change much.
 Some use cases:
 
 - Aggregating transmission line data into regions.
@@ -31,7 +30,7 @@ Modules can be visualised as a DAG (direct acyclic graph) with a series of steps
     ![Module example](images/module.png)
 
 However, it's generally more useful to think of modules as an IO (input-output) diagram.
-They may require user inputs, automatically downloaded data, a configuration; and produce output files.
+After they are given certain inputs and configuration, they will automatically process them and produce output files.
 
 ??? example "Module as IO"
 
@@ -62,7 +61,7 @@ They may require user inputs, automatically downloaded data, a configuration; an
 You can always find a default configuration in the following location:
 
 ```tree
-modules/example/
+module_name/
 ├── README.md
 └── config/
     └── default.yaml      # Here!
@@ -102,30 +101,37 @@ This will ensure there are no conflicts between modules and your general configu
 
 ## Using our modules
 
+### Import
+
 Adding a module to your `snakemake` workflow is easy, as long as you have followed our [getting started](getting_started.md) instructions.
-All you need to do is import it with the following structure:
+All you need to do is import it with a standardised structure.
 
-```python
-# Extend your general configuration with your module-specific configuration
-configfile: "config/modules/hydropower.yaml"
+???+ example "Using a `hydropower` module"
 
-module hydropower:
-    # Request snakemake to use a specific module version (tag)
-    snakefile:
-        github(
-          "calliope-project/ec_modules",
-          path="modules/hydropower/Snakefile",
-          tag="v1.0.0"
-        )
-    # Provide your module-specific configuration
-    config: config["hydropower"]
-    # Add a prefix to to avoid file conflicts
-    # (e.g., results/output.csv -> module-hydropower/results/output.csv)
-    prefix: "module-hydropower"
+    In this example, assume you wish to obtain hydropower data.
+    You must tell `snakemake` the location of the module in GitHub, and pass your configuration to it.
 
-# Rewrite rule names to avoid conflicts (e.g., all -> module_hydro_all)
-use rule * from hydropower as module_hydropower_*
-```
+    ```python
+    # Extend your general configuration with your module-specific configuration
+    configfile: "config/modules/hydropower.yaml"
+
+    module hydropower:
+        # Request snakemake to use a specific module version (tag)
+        snakefile:
+            github(
+            "calliope-project/ec_modules",
+            path="modules/hydropower/Snakefile",
+            tag="v1.0.0"
+            )
+        # Provide your module-specific configuration
+        config: config["hydropower"]
+        # Add a prefix to avoid file conflicts
+        # (e.g., results/output.csv -> module_hydropower/results/output.csv)
+        prefix: "module_hydropower"
+
+    # Rewrite rule names to avoid conflicts (e.g., all -> module_hydro_all)
+    use rule * from hydropower as module_hydropower_*
+    ```
 
 ??? example "using `prefix:`"
 
@@ -135,10 +141,56 @@ use rule * from hydropower as module_hydropower_*
 
     So, you should place your `shapes_spain.geojson` file in the following location:
 
-    `prefix:` + `resources/shapes_spain.geojson` -> `module-hydropower/resources/shapes_spain.geojson`
+    `prefix:` + `resources/shapes_spain.geojson` -> `module_hydropower/resources/shapes_spain.geojson`
 
 ??? warning "`snakemake` compatibility"
 
     Some modules might be incompatible with older versions of `snakemake`.
     We recommend to update `snakemake` to the newest version possible in such cases.
     We generally enforce `snakemake = 8.10` as the minimum supported version.
+
+### Adding input files
+
+Afterwards, all you need to do is place input files in the module's `resources/user` folder (either manually or via `snakemake`).
+Each module will specify the file it needs in its documentation, and provide examples.
+
+??? example "Inputting a national resolution file"
+
+    Our example module needs a file in the format `shapes_{resolution}.geojson`, which can contain an arbitrary regional resolution.
+
+    Assuming that you want data aggregated at a national level, you should use a `.geojson` file with that resolution as input.
+
+    ```python
+    rule hydropower_input:
+        message: "Input the desired resolution to the module."
+        input: "data/national_resolution.geojson"
+        output: f"module_hydropower/resources/user/shapes_national.geojson"
+        conda: "../envs/shell.yaml"
+        shell: "cp {input} {output}"
+    ```
+
+### Requesting results
+
+To obtain results, all you need to do is tell `snakemake` to output a specific file that the module produces.
+Examples for all relevant files will be detailed in the module's documentation.
+
+??? example "Requesting national data"
+
+    After placing your spatial resolution file, all you need to do is request the timeseries file, respecting the same wildcards.
+
+    In this case, the module spacifies
+
+    `results/{resolution}/{year}/run_of_river_timeseries.csv`
+
+    Assuming you want data for 2020, you would do the following:
+
+    ```python
+    rule hydropower_output:
+        message: "Request hydropower timeseries."
+        # Request timeseries for 2020 specifically.
+        input: f"module_hydropower/results/national/2020/run_of_river_timeseries.csv"
+        # Copy it to a different location for further processing.
+        output: f"build/model/timeseries/demand/electricity.csv"
+        conda: "../envs/shell.yaml"
+        shell: "cp '{input}' '{output}'"
+    ```

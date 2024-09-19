@@ -10,7 +10,7 @@ MODULES_PATH = Path("modules/")
 TEMPLATE = """
 --8<-- "{readme}:intro"
 
-??? info "Visual summary"
+???+ info "Visual summary"
 
     --8<-- "{readme}:mermaid"
 
