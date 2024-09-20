@@ -1,0 +1,8 @@
+name: ec-snakemake-modulegraph
+channels:
+  - conda-forge
+  - nodefaults
+dependencies:
+  - pip
+  - pip:
+    - "git+https://github.com/calliope-project/ec_utils.git@feature-modulegraph"

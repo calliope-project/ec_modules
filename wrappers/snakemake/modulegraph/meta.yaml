@@ -1,0 +1,12 @@
+name: ec_utils - modulegraph
+description: |
+  Converts a snakemake .dot file (rulegraph, dag) into a modulegraph for the requested prefixes.
+url: https://github.com/calliope-project/ec_utils
+authors:
+  - Ivan Ruiz Manuel
+input:
+  dotfile: path to the dot file produced by snakemake (`snakemake --dag > file.dot`).
+output:
+  pngfile: path where the  image will be placed.
+params:
+  prefixes: string or list of prefixes to modularise.

@@ -1,0 +1,120 @@
+digraph snakemake_dag {
+    graph[bgcolor=white, margin=0];
+    node[shape=box, style=rounded, fontname=sans,                 fontsize=10, penwidth=2];
+    edge[penwidth=2, color=grey];
+	0[label = "all", color = "0.48 0.6 0.85", style="rounded"];
+	1[label = "model", color = "0.36 0.6 0.85", style="rounded"];
+	2[label = "auxiliary_files", color = "0.45 0.6 0.85", style="rounded"];
+	3[label = "model_input_locations", color = "0.63 0.6 0.85", style="rounded"];
+	4[label = "units", color = "0.37 0.6 0.85", style="rounded"];
+	5[label = "module_without_location_specific_data", color = "0.66 0.6 0.85", style="rounded"];
+	6[label = "module_with_location_specific_data", color = "0.62 0.6 0.85", style="rounded"];
+	7[label = "hydropower_output", color = "0.43 0.6 0.85", style="rounded"];
+	8[label = "module_hydropower_capacities_per_shape", color = "0.28 0.6 0.85", style="rounded"];
+	9[label = "hydropower_input", color = "0.49 0.6 0.85", style="rounded"];
+	10[label = "module_hydropower_preprocess_powerplants", color = "0.51 0.6 0.85", style="rounded"];
+	11[label = "module_hydropower_download_JRC_hydropower_plants", color = "0.05 0.6 0.85", style="rounded"];
+	12[label = "module_hydropower_preprocess_basins", color = "0.20 0.6 0.85", style="rounded"];
+	13[label = "module_hydropower_hydrobasin_zip_extract", color = "0.06 0.6 0.85", style="rounded"];
+	14[label = "module_hydropower_download_HydroBASINS", color = "0.02 0.6 0.85", style="rounded"];
+	15[label = "module_hydropower_download_Geth2015_PHS_capacity", color = "0.32 0.6 0.85", style="rounded"];
+	16[label = "module_hydropower_capacity_factors", color = "0.54 0.6 0.85", style="rounded"];
+	17[label = "module_hydropower_inflow_mwh", color = "0.23 0.6 0.85", style="rounded"];
+	18[label = "module_hydropower_inflow_m3", color = "0.59 0.6 0.85", style="rounded"];
+	19[label = "module_hydropower_prepare_ERA5_runoff_cutout", color = "0.34 0.6 0.85", style="rounded"];
+	20[label = "module_hydropower_download_IRENA_hydro_generation", color = "0.21 0.6 0.85", style="rounded"];
+	21[label = "wind_pv_output_area_limits", color = "0.53 0.6 0.85", style="rounded"];
+	22[label = "module_wind_pv_calculate_area_limits", color = "0.01 0.6 0.85", style="rounded"];
+	23[label = "wind_pv_input", color = "0.60 0.6 0.85", style="rounded"];
+	24[label = "module_wind_pv_unzip_area_potentials", color = "0.11 0.6 0.85", style="rounded"];
+	25[label = "module_wind_pv_download_potentials", color = "0.50 0.6 0.85", style="rounded"];
+	26[label = "nuclear_regional_capacity", color = "0.22 0.6 0.85", style="rounded"];
+	27[label = "jrc_power_plant_database", color = "0.29 0.6 0.85", style="rounded"];
+	28[label = "jrc_power_plant_database_zipped", color = "0.65 0.6 0.85", style="rounded"];
+	29[label = "wind_pv_output_timeseries", color = "0.27 0.6 0.85", style="rounded"];
+	30[label = "module_wind_pv_calculate_cf_land", color = "0.08 0.6 0.85", style="rounded"];
+	31[label = "module_wind_pv_download_capacity_factors", color = "0.35 0.6 0.85", style="rounded"];
+	32[label = "module_wind_pv_calculate_cf_offshore", color = "0.08 0.6 0.85", style="rounded"];
+	33[label = "module_wind_pv_clip_eez", color = "0.39 0.6 0.85", style="rounded"];
+	34[label = "module_wind_pv_download_eez", color = "0.19 0.6 0.85", style="rounded"];
+	35[label = "module_wind_pv_calculate_shared_coast", color = "0.55 0.6 0.85", style="rounded"];
+	36[label = "demand_electricity_output", color = "0.42 0.6 0.85", style="rounded"];
+	37[label = "module_demand_electricity_electricity_load", color = "0.39 0.6 0.85", style="rounded"];
+	38[label = "demand_electricity_input", color = "0.57 0.6 0.85", style="rounded"];
+	39[label = "module_demand_electricity_unzip_potentials", color = "0.27 0.6 0.85", style="rounded"];
+	40[label = "module_demand_electricity_download_potentials", color = "0.61 0.6 0.85", style="rounded"];
+	41[label = "module_demand_electricity_electricity_load_national", color = "0.29 0.6 0.85", style="rounded"];
+	42[label = "module_demand_electricity_download_raw_load", color = "0.17 0.6 0.85", style="rounded"];
+	43[label = "biofuel_tech_module", color = "0.15 0.6 0.85", style="rounded"];
+	44[label = "module_biofuels_biofuels", color = "0.14 0.6 0.85", style="rounded"];
+	45[label = "biofuel_input", color = "0.64 0.6 0.85", style="rounded"];
+	46[label = "module_biofuels_unzip_potentials", color = "0.25 0.6 0.85", style="rounded"];
+	47[label = "module_biofuels_download_potentials", color = "0.46 0.6 0.85", style="rounded"];
+	48[label = "module_biofuels_preprocess_biofuel_potentials_and_cost", color = "0.32 0.6 0.85", style="rounded"];
+	49[label = "module_biofuels_download_biofuel_potentials_and_costs", color = "0.24 0.6 0.85", style="rounded"];
+	1 -> 0
+	7 -> 1
+	5 -> 1
+	43 -> 1
+	3 -> 1
+	2 -> 1
+	36 -> 1
+	6 -> 1
+	29 -> 1
+	4 -> 3
+	3 -> 5
+	26 -> 6
+	21 -> 6
+	7 -> 6
+	8 -> 7
+	16 -> 7
+	9 -> 8
+	10 -> 8
+	4 -> 9
+	11 -> 10
+	12 -> 10
+	15 -> 10
+	13 -> 12
+	14 -> 13
+	8 -> 16
+	17 -> 16
+	9 -> 16
+	18 -> 17
+	20 -> 17
+	12 -> 18
+	19 -> 18
+	10 -> 18
+	9 -> 19
+	22 -> 21
+	24 -> 22
+	23 -> 22
+	4 -> 23
+	25 -> 24
+	4 -> 26
+	27 -> 26
+	28 -> 27
+	32 -> 29
+	30 -> 29
+	23 -> 30
+	31 -> 30
+	35 -> 32
+	33 -> 32
+	31 -> 32
+	34 -> 33
+	23 -> 35
+	33 -> 35
+	37 -> 36
+	38 -> 37
+	41 -> 37
+	39 -> 37
+	4 -> 38
+	40 -> 39
+	42 -> 41
+	44 -> 43
+	45 -> 44
+	48 -> 44
+	46 -> 44
+	4 -> 45
+	47 -> 46
+	49 -> 48
+}
