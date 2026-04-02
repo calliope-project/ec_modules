@@ -1,5 +1,9 @@
 # The easy energy system workflows and wrappers repository
 
+> [ WARNING ]
+> This project is now [Modelblocks](https://www.modelblocks.org/)!
+> You can access all the fully modularised workflows at https://github.com/modelblocks-org
+
 This aims to be a collection of helper workflows and wrappers that aid in quickly developing Energy System (ESM) models, inspired by Snakemake's [workflow catalog](https://snakemake.github.io/snakemake-workflow-catalog/) and [wrapper repository](https://snakemake-wrappers.readthedocs.io/en/stable/).
 Its main purpose is enabling researchers to share data workflows between studies to avoid the bloat problem in large energy system workflows.
 
