@@ -1,6 +1,6 @@
 # The easy energy system workflows and wrappers repository
 
-> [ WARNING ]
+> [!WARNING]
 > This project is now [Modelblocks](https://www.modelblocks.org/)!
 > You can access all the fully modularised workflows at https://github.com/modelblocks-org
 
