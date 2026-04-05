@@ -60,9 +60,9 @@ def create_road_transport_demand_timeseries(
         .tz_localize(None)
         .rename_axis("utc-timestamp")
     )  # FIXME: this approach to historical data bloats the model. Re think it.
-    assert not df_timeseries.isna().any(
-        axis=None
-    ), "There are NaN values in the timeseries dataframe"
+    assert not df_timeseries.isna().any(axis=None), (
+        "There are NaN values in the timeseries dataframe"
+    )
     df_timeseries.to_csv(path_to_output)
 
 

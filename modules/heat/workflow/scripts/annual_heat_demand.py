@@ -131,9 +131,9 @@ def _slice_energy_balance_by_sector(
 ) -> pd.DataFrame:
     df = df.loc[cat_codes]  # cat_code is always the first element
 
-    assert df.index.get_level_values("unit").unique().tolist() == [
-        "TJ"
-    ], "There are other units than TJ in the energy balance data. This is not expected."
+    assert df.index.get_level_values("unit").unique().tolist() == ["TJ"], (
+        "There are other units than TJ in the energy balance data. This is not expected."
+    )
 
     df = (
         df.xs("TJ", level="unit")
@@ -178,9 +178,9 @@ def _get_household_final_energy_demand(
         axis=0, level="country_code", labels=not_countries
     )
 
-    assert _check_units_removed(
-        hh_end_use_df, carrier_names_df
-    ), "Check that you can slice by 'TJ' only, some other units in the hh_end_use data might be relevant."  # noqa: E501
+    assert _check_units_removed(hh_end_use_df, carrier_names_df), (
+        "Check that you can slice by 'TJ' only, some other units in the hh_end_use data might be relevant."
+    )  # noqa: E501
 
     # Just keep relevant data
     hh_end_use_df = (

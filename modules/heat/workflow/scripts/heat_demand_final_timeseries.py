@@ -36,9 +36,9 @@ def scale_heat_demand_profiles(
     Returns:
         xr.DataArray: merged and scaled heat demand profiles.
     """
-    assert np.isclose(
-        sum(sfh_mfh_shares.values()), 1
-    ), "Household type (single- vs multi-family home) shares must add up to 1."
+    assert np.isclose(sum(sfh_mfh_shares.values()), 1), (
+        "Household type (single- vs multi-family home) shares must add up to 1."
+    )
 
     sfh_mfh_shares_da = (
         pd.Series({"COM": 1, **sfh_mfh_shares})
@@ -106,9 +106,9 @@ def electrify_heat_demand_profiles(
         .to_xarray()
         .to_array("end_use")
     )
-    assert np.isclose(
-        electrification_shares_da.sum("tech"), 1
-    ).all(), "Heat electrification shares must add up to 1."
+    assert np.isclose(electrification_shares_da.sum("tech"), 1).all(), (
+        "Heat electrification shares must add up to 1."
+    )
     electrified_heat_demand = (
         heat_demand * electrification_shares_da / efficiency_da
     ).sum("tech")
